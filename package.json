@@ -1,0 +1,20 @@
+{
+  "name": "azf-fint-folk-api",
+  "version": "1.0.0",
+  "description": "API for getting smoother data from FINT (easier usage)",
+  "scripts": {
+    "start": "func start",
+    "test": "echo \"No tests yet...\""
+  },
+  "dependencies": {
+    "@azure/msal-node": "^1.17.1",
+    "@vtfk/logger": "^4.3.2",
+    "axios": "^1.2.3",
+    "client-oauth2": "^4.3.3",
+    "jsonwebtoken": "^9.0.0",
+    "node-cache": "^5.1.2"
+  },
+  "devDependencies": {
+    "azure-functions-core-tools": "^4.x"
+  }
+}
