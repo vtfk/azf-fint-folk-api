@@ -41,6 +41,26 @@ module.exports = (feidenavn) => {
             identifikatorverdi
           }
           undervisningsforhold {
+            systemId {
+              identifikatorverdi
+            }
+            beskrivelse
+            hovedskole
+            skole {
+              navn
+              skolenummer {
+                identifikatorverdi
+              }
+              organisasjonsnummer {
+                identifikatorverdi
+              }
+              organisasjon {
+                organisasjonsId {
+                  identifikatorverdi
+                }
+                kortnavn
+              }
+            }
             basisgruppe {
               navn
               termin {
@@ -191,30 +211,6 @@ module.exports = (feidenavn) => {
                     }
                   }
                 }
-              }
-            }
-          }
-          personalressurs {
-            ansattnummer {
-              identifikatorverdi
-            }
-            person {
-                bostedsadresse {
-                adresselinje
-                postnummer
-                poststed
-              }
-            }
-            ansettelsesperiode {
-              start
-              slutt
-            }
-            arbeidsforhold {
-              systemId { identifikatorverdi }
-              ansettelsesprosent
-              gyldighetsperiode {
-                start
-                slutt
               }
             }
           }
