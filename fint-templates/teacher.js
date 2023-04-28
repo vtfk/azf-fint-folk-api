@@ -4,17 +4,37 @@ module.exports = (feidenavn) => {
       query {
         skoleressurs(feidenavn: "${feidenavn}") {
           person {
-            navn {
-              fornavn
-              mellomnavn
-              etternavn
+            kontaktinformasjon {
+              epostadresse
+              mobiltelefonnummer
+            }
+          }
+          personalressurs {
+            ansattnummer {
+              identifikatorverdi
             }
             kontaktinformasjon {
               epostadresse
               mobiltelefonnummer
             }
-            fodselsnummer {
-              identifikatorverdi
+            person {
+              fodselsnummer {
+                identifikatorverdi
+              }
+              navn {
+                fornavn
+                mellomnavn
+                etternavn
+              }
+              bostedsadresse {
+                adresselinje
+                postnummer
+                poststed
+              }
+              kontaktinformasjon {
+                epostadresse
+                mobiltelefonnummer
+              }
             }
           }
           feidenavn {
@@ -63,6 +83,9 @@ module.exports = (feidenavn) => {
                     feidenavn {
                       identifikatorverdi
                     }
+                    elevnummer {
+                      identifikatorverdi
+                    }
                   }
                   kontaktlarergruppe {
                     systemId {identifikatorverdi}
@@ -101,11 +124,17 @@ module.exports = (feidenavn) => {
               navn
               termin {
                 kode
-                gyldighetsperiode { start slutt }
+                gyldighetsperiode {
+                  start
+                  slutt
+                }
               }
               skolear {
                 kode
-                gyldighetsperiode { start slutt }
+                gyldighetsperiode {
+                  start
+                  slutt
+                }
               }
               fag {
                 navn
@@ -113,7 +142,9 @@ module.exports = (feidenavn) => {
               }
               skole {
                 navn
-                skolenummer { identifikatorverdi }
+                skolenummer {
+                  identifikatorverdi
+                }
               }
               systemId {
                 identifikatorverdi
@@ -130,9 +161,14 @@ module.exports = (feidenavn) => {
                   feidenavn {
                     identifikatorverdi
                   }
+                  elevnummer {
+                    identifikatorverdi
+                  }
                 }
                 kontaktlarergruppe {
-                  systemId {identifikatorverdi}
+                  systemId {
+                    identifikatorverdi
+                  }
                 }
               }
               gruppemedlemskap {
@@ -150,14 +186,18 @@ module.exports = (feidenavn) => {
                     }
                   }
                   kontaktlarergruppe {
-                    systemId {identifikatorverdi}
+                    systemId {
+                      identifikatorverdi
+                    }
                   }
                 }
               }
             }
           }
           personalressurs {
-            ansattnummer {identifikatorverdi}
+            ansattnummer {
+              identifikatorverdi
+            }
             person {
                 bostedsadresse {
                 adresselinje
