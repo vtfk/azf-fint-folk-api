@@ -12,7 +12,6 @@ module.exports = (feidenavn) => {
             kontaktinformasjon {
               epostadresse
               mobiltelefonnummer
-              telefonnummer
             }
             fodselsdato
             fodselsnummer {
@@ -30,53 +29,159 @@ module.exports = (feidenavn) => {
           feidenavn {
             identifikatorverdi
           }
+          elevnummer {
+            identifikatorverdi
+          }
+          kontaktinformasjon {
+            epostadresse
+            mobiltelefonnummer
+          }
+          hybeladresse {
+            adresselinje
+            poststed
+            postnummer
+          }
           elevforhold {
+            systemId {
+              identifikatorverdi
+            }
+            avbruddsdato
+            gyldighetsperiode {
+              start
+              slutt
+            }
             skole {
               navn
+              skolenummer {
+                identifikatorverdi
+              }
+              organisasjonsnummer {
+                identifikatorverdi
+              }
+              organisasjon {
+                organisasjonsId {
+                  identifikatorverdi
+                }
+                kortnavn
+              }
             }
             hovedskole
             programomrade {
+              navn
+              systemId {
+                identifikatorverdi
+              }
               utdanningsprogram {
+                systemId {
+                  identifikatorverdi
+                }
                 navn
+                grepreferanse
               }
             }
             gyldighetsperiode {
               start
               slutt
             }
-            basisgruppe {
+            kategori {
+              kode
               navn
-              trinn {
+            }
+            basisgruppemedlemskap {
+              basisgruppe {
                 navn
-              }
-              termin {
-                navn
-              }
-              skolear {
-                navn
-              }
-              periode {
-                start
-                slutt
-              }
-              systemId {
-                identifikatorverdi
+                termin {
+                  kode
+                  gyldighetsperiode {
+                    start
+                    slutt
+                  }
+                }
+                skolear {
+                  kode
+                  gyldighetsperiode { 
+                    start
+                    slutt
+                  }
+                }
+                skole {
+                  navn
+                  skolenummer {
+                    identifikatorverdi
+                  }
+                }
+                systemId {
+                  identifikatorverdi
+                }
+                trinn {
+                  navn
+                  grepreferanse
+                }
+                undervisningsforhold {
+                  skoleressurs {
+                    feidenavn {
+                      identifikatorverdi
+                    }
+                    personalressurs {
+                      ansattnummer {
+                        identifikatorverdi
+                      }
+                      person {
+                        navn {
+                          fornavn
+                          mellomnavn
+                          etternavn
+                        }
+                      }
+                    }
+                  }
+                }
               }
             }
             undervisningsgruppe {
               navn
-              periode {
-                start
-                slutt
+              termin {
+                kode
+                gyldighetsperiode { start slutt }
               }
               skolear {
-                navn
+                kode
+                gyldighetsperiode { start slutt }
               }
               skole {
                 navn
+                skolenummer {
+                  identifikatorverdi
+                }
+              }
+              fag {
+                systemId {
+                  identifikatorverdi
+                }
+                navn
+                grepreferanse
               }
               systemId {
                 identifikatorverdi
+              }
+              undervisningsforhold {
+                skoleressurs {
+                  feidenavn {
+                    identifikatorverdi
+                  }
+                  personalressurs {
+                    ansattnummer {
+                      identifikatorverdi
+                    }
+                    person {
+                      navn {
+                        fornavn
+                        mellomnavn
+                        etternavn
+                      }
+                    }
+                  }
+                }
               }
             }
             kontaktlarergruppe {
@@ -84,21 +189,35 @@ module.exports = (feidenavn) => {
               systemId {
                 identifikatorverdi
               }
+              termin {
+                kode
+                gyldighetsperiode { start slutt }
+              }
+              skolear {
+                kode
+                gyldighetsperiode { start slutt }
+              }
+              skole {
+                navn
+                skolenummer {
+                  identifikatorverdi
+                }
+              }
               undervisningsforhold {
                 skoleressurs {
-                  person {
-                    fodselsnummer {
+                  feidenavn {
+                    identifikatorverdi
+                  }
+                  personalressurs {
+                    ansattnummer {
                       identifikatorverdi
                     }
-                    navn {
-                      fornavn
-                      mellomnavn
-                      etternavn
-                    }
-                    kontaktinformasjon {
-                      epostadresse
-                      mobiltelefonnummer
-                      telefonnummer
+                    person {
+                      navn {
+                        fornavn
+                        mellomnavn
+                        etternavn
+                      }
                     }
                   }
                 }
