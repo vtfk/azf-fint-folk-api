@@ -4,16 +4,16 @@
       "authLevel": "function",
       "type": "httpTrigger",
       "direction": "in",
+      "route": "student/{identifikator}/{identifikatorverdi}",
       "name": "req",
       "methods": [
-        "get",
-        "post"
+        "get"
       ]
     },
     {
       "type": "http",
       "direction": "out",
-      "name": "res"
+      "name": "$return"
     }
   ]
 }
