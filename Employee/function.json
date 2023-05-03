@@ -3,7 +3,7 @@
     {
       "authLevel": "function",
       "type": "httpTrigger",
-      "route": "Employee/{ansattnummer}",
+      "route": "employee/{identifikator}/{identifikatorverdi}",
       "direction": "in",
       "name": "req",
       "methods": [

@@ -16,6 +16,7 @@ module.exports = (ansattnummer) => {
             fodselsnummer {
               identifikatorverdi
             }
+						fodselsdato
             bostedsadresse {
               adresselinje
               postnummer
@@ -76,6 +77,10 @@ module.exports = (ansattnummer) => {
             lonnsprosent
             stillingsnummer
             stillingstittel
+						arbeidsforholdstype {
+							kode
+							navn
+						}
             gyldighetsperiode {
               start
               slutt
