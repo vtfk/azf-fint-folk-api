@@ -21,6 +21,7 @@ module.exports = (feidenavn) => {
               fodselsnummer {
                 identifikatorverdi
               }
+              fodselsdato
               navn {
                 fornavn
                 mellomnavn
@@ -35,6 +36,9 @@ module.exports = (feidenavn) => {
                 epostadresse
                 mobiltelefonnummer
               }
+              kjonn {
+                kode
+              }
             }
           }
           feidenavn {
@@ -45,6 +49,23 @@ module.exports = (feidenavn) => {
               identifikatorverdi
             }
             beskrivelse
+            arbeidsforhold {
+							systemId {
+              identifikatorverdi
+							}
+							gyldighetsperiode {
+								start
+								slutt
+							}
+							arbeidsforholdsperiode {
+								start
+								slutt
+							}
+              arbeidsforholdstype {
+                kode
+                navn
+              }
+						}
             hovedskole
             skole {
               navn

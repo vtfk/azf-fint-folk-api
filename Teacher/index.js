@@ -2,7 +2,7 @@ const fintTeacher = require('../lib/fint-teacher')
 const { logger, logConfig } = require('@vtfk/logger')
 const { decodeAccessToken } = require('../lib/decode-access-token')
 const httpResponse = require('../lib/http-response')
-const validateEmail = require('../lib/validate-email')
+const { isEmail } = require('../lib/identifikator-type')
 const { roles } = require('../config')
 const { getFeidenavn } = require('../lib/call-graph')
 
@@ -33,38 +33,35 @@ module.exports = async function (context, req) {
     return httpResponse(400, 'Missing query params')
   }
 
-  if (!req.params.feidenavn) {
-    logger('info', ['Missing required query parameter "feidenavn"'])
-    return httpResponse(400, 'Missing required query parameter "feidenavn')
-  }
+  const { identifikator, identifikatorverdi } = req.params
+  const validIdentifiers = ['feidenavn', 'upn']
+  if (!validIdentifiers.includes(identifikator)) return httpResponse(400, `Query param ${identifikator} is not valid - must be ${validIdentifiers.join(' or ')}`)
 
-  if (req.params.feidenavn.toLowerCase() !== 'me' && !validateEmail(req.params.feidenavn)) {
-    logger('info', ['Query parameter "feidenavn" must be valid email or "me"'])
-    return httpResponse(400, 'Query parameter "feidenavn" must be valid email or "me"')
+  if (identifikator === 'feidenavn' && !isEmail(identifikatorverdi)) return httpResponse(400, '"feidenavn" must be valid email')
+  if (identifikator === 'upn' && !isEmail(identifikatorverdi)) return httpResponse(400, '"upn" must be valid email')
+
+  logger('info', ['Validating role'])
+  if (!decoded.roles.includes(roles.teacherRead)) {
+    logger('info', [`Missing required role for access`])
+    return httpResponse(403, 'Missing required role for access')
   }
+  logger('info', ['Role validated'])
+
   let feidenavn
-  if (req.params.feidenavn.toLowerCase() !== 'me') {
-    logger('info', ['Queryparameter is type "feidenavn", validating role'])
-    if (!decoded.roles.includes(roles.teacherRead)) {
-      logger('info', [`Missing required role for access`])
-      return httpResponse(403, 'Missing required role for access')
-    }
-    logger('info', ['Role validated'])
-    feidenavn = req.params.feidenavn
-  } else {
-    logger('info', ['Queryparameter is type "me", fetching feidenavn from AzureAd'])
-    if (!decoded.oid) {
-      logger('warn', ['Token is not valid, missing property "oid"'])
-      return httpResponse(401, 'Token is not valid, missing property "oid"')
-    }
+  // If getting with upn
+  if (identifikator === 'upn') {
+    logger('info', ['Queryparam is type "upn", fetching feidenavn from AzureAD'])
     try {
-      feidenavn = await getFeidenavn(decoded.oid)
+      feidenavn = await getFeidenavn(identifikatorverdi)
       logger('info', [`Got feidenavn: ${feidenavn}`])
     } catch (error) {
-      logger('error', ['Failed when getting feidenavn', error.response?.data || error.stack || error.toString()])
+      logger('error', ['Failed when getting feidenavn from AzureAD', error.response?.data || error.stack || error.toString()])
       return httpResponse(500, error)
     }
   }
+
+  // If simply getting with feidenavn
+  if (identifikator === 'feidenavn') feidenavn = identifikatorverdi
 
   try {
     const res = await fintTeacher(feidenavn)
