@@ -2,9 +2,10 @@ const fintTeacher = require('../lib/fint-teacher')
 const { logger, logConfig } = require('@vtfk/logger')
 const { decodeAccessToken } = require('../lib/decode-access-token')
 const httpResponse = require('../lib/http-response')
-const { isEmail } = require('../lib/identifikator-type')
+const { isEmail, isFnr } = require('../lib/identifikator-type')
 const { roles } = require('../config')
-const { getFeidenavn } = require('../lib/call-graph')
+const { getFeidenavn, getFeidenavnFromAnsattnummer } = require('../lib/call-graph')
+const { fintGraph } = require('../lib/call-fint')
 
 module.exports = async function (context, req) {
   logConfig({
@@ -34,11 +35,12 @@ module.exports = async function (context, req) {
   }
 
   const { identifikator, identifikatorverdi } = req.params
-  const validIdentifiers = ['feidenavn', 'upn']
+  const validIdentifiers = ['feidenavn', 'upn', 'fodselsnummer']
   if (!validIdentifiers.includes(identifikator)) return httpResponse(400, `Query param ${identifikator} is not valid - must be ${validIdentifiers.join(' or ')}`)
 
   if (identifikator === 'feidenavn' && !isEmail(identifikatorverdi)) return httpResponse(400, '"feidenavn" must be valid email')
   if (identifikator === 'upn' && !isEmail(identifikatorverdi)) return httpResponse(400, '"upn" must be valid email')
+  if (identifikator === 'fodselsnummer' && !isFnr(identifikatorverdi)) return httpResponse(400, 'Property "fodselsnummer" must be 11 characters')
 
   logger('info', ['Validating role'])
   if (!decoded.roles.includes(roles.teacherRead)) {
@@ -56,6 +58,35 @@ module.exports = async function (context, req) {
       logger('info', [`Got feidenavn: ${feidenavn}`])
     } catch (error) {
       logger('error', ['Failed when getting feidenavn from AzureAD', error.response?.data || error.stack || error.toString()])
+      return httpResponse(500, error)
+    }
+  }
+
+  // If getting with fnr
+  if (identifikator === 'fodselsnummer') {
+    logger('info', ['Queryparam is type "fodselsnummer", fetching ansattnummer from FINT and then feidenavn from Azure AD'])
+    try {
+      const payload = {
+        query: `
+          query {
+            person(fodselsnummer: "${identifikatorverdi}") {
+              personalressurs {
+                ansattnummer {
+                  identifikatorverdi
+                }
+              }
+            }
+          }
+        `
+      }
+      const { data } = await fintGraph(payload)
+      ansattnummer = data.person?.personalressurs?.ansattnummer?.identifikatorverdi
+      if (!ansattnummer) return httpResponse(404, `No teacher with fodselsnummer "${identifikatorverdi}" found in FINT`)
+      const azureFeidenavnRes = await getFeidenavnFromAnsattnummer(ansattnummer)
+      if (!azureFeidenavnRes) return httpResponse(404, `No teacher with fodselsnummer "${identifikatorverdi}" found in FINT`)
+      feidenavn = azureFeidenavnRes.feidenavn
+    } catch (error) {
+      logger('error', ['Failed when getting feidenavn from FINT', error.response?.data || error.stack || error.toString()])
       return httpResponse(500, error)
     }
   }
