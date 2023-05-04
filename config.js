@@ -22,7 +22,6 @@ module.exports = {
     scope: process.env.GRAPH_SCOPE ?? 'etSkikkeligSkuup'
   },
   graphUrl: process.env.GRAPH_URL ?? 'url til graph',
-  feidenavnTeacherDomain: process.env.FEIDENAVN_TEACHER_DOMAIN ?? '@domene.com',
-  feidenavnStudentDomain: process.env.FEIDENAVN_STUDENT_DOMAIN ?? '@domene.com',
+  feidenavnDomain: process.env.FEIDENAVN_DOMAIN ?? '@domene.com',
   employeeNumberExtenstionAttribute: process.env.EMPLOYEE_NUMBER_EXTENSION_ATTRIBUTE ?? 'extensionAttributeX'
 }
