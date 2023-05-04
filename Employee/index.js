@@ -81,8 +81,9 @@ module.exports = async function (context, req) {
       }
       const { data } = await fintGraph(payload)
       ansattnummer = data.person?.personalressurs?.ansattnummer?.identifikatorverdi
-      if (!ansattnummer) return httpResponse(404, `No student with feidenavn "${ansattnummer}" found in FINT`)
-      logger('info', [`Got feidenavn: ${ansattnummer}`])
+      if (!ansattnummer) return httpResponse(404, `No employee with fodselsnummer "${identifikatorverdi}" found in FINT`)
+      logger('info', [`Got ansattnummer: ${ansattnummer}`])
+
     } catch (error) {
       logger('error', ['Failed when getting ansattnummer from FINT', error.response?.data || error.stack || error.toString()])
       return httpResponse(500, error)
