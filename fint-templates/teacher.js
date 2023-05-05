@@ -65,6 +65,8 @@ module.exports = (feidenavn) => {
                 kode
                 navn
               }
+              ansettelsesprosent
+              lonnsprosent
 						}
             hovedskole
             skole {
