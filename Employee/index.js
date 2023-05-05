@@ -1,11 +1,11 @@
 const fintEmployee = require('../lib/fint-employee')
 const { logger, logConfig } = require('@vtfk/logger')
-const { decodeAccessToken } = require('../lib/decode-access-token')
-const httpResponse = require('../lib/http-response')
+const { decodeAccessToken } = require('../lib/helpers/decode-access-token')
+const httpResponse = require('../lib/requests/http-response')
 const { roles } = require('../config')
-const { getAnsattnummer } = require('../lib/call-graph')
-const { fintGraph } = require('../lib/call-fint')
-const { isAnsattnummer, isEmail, isFnr } = require('../lib/identifikator-type')
+const { getAnsattnummer } = require('../lib/requests/call-graph')
+const { fintGraph } = require('../lib/requests/call-fint')
+const { isAnsattnummer, isEmail, isFnr } = require('../lib/helpers/identifikator-type')
 
 module.exports = async function (context, req) {
   logConfig({
