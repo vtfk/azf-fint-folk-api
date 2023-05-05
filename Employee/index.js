@@ -95,7 +95,8 @@ module.exports = async function (context, req) {
   try {
     const res = await fintEmployee(ansattnummer)
     if (!res) return httpResponse(404, `No employee with ansattnummer "${ansattnummer}" found in FINT`)
-    return httpResponse(200, res)
+    const result = req.query.includeRaw === 'true' ? { ...res.repacked, raw: res.raw } : res.repacked
+    return httpResponse(200, result)
   } catch (error) {
     logger('error', [error])
     return { status: 500, body: error.toString() }
