@@ -77,6 +77,10 @@ module.exports = (ansattnummer) => {
             lonnsprosent
             stillingsnummer
             stillingstittel
+						stillingskode {
+							kode
+							navn
+						}
 						arbeidsforholdstype {
 							kode
 							navn
