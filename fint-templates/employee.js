@@ -17,7 +17,7 @@ module.exports = (ansattnummer) => {
               identifikatorverdi
             }
 						fodselsdato
-            bostedsadresse {
+						bostedsadresse {
               adresselinje
               postnummer
               poststed

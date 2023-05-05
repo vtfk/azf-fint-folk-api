@@ -44,7 +44,7 @@ module.exports = async function (context, req) {
 
   logger('info', ['Validating role'])
   if (!decoded.roles.includes(roles.studentRead)) {
-    logger('info', [`Missing required role for access`])
+    logger('info', ['Missing required role for access'])
     return httpResponse(403, 'Missing required role for access')
   }
   logger('info', ['Role validated'])
@@ -61,7 +61,7 @@ module.exports = async function (context, req) {
       return httpResponse(500, error)
     }
   }
-  
+
   // If getting with fnr
   if (identifikator === 'fodselsnummer') {
     logger('info', ['Queryparam is type "fodselsnummer", fetching feidenavn from FINT'])

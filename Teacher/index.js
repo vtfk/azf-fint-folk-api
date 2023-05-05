@@ -44,7 +44,7 @@ module.exports = async function (context, req) {
 
   logger('info', ['Validating role'])
   if (!decoded.roles.includes(roles.teacherRead)) {
-    logger('info', [`Missing required role for access`])
+    logger('info', ['Missing required role for access'])
     return httpResponse(403, 'Missing required role for access')
   }
   logger('info', ['Role validated'])
@@ -80,7 +80,7 @@ module.exports = async function (context, req) {
         `
       }
       const { data } = await fintGraph(payload)
-      ansattnummer = data.person?.personalressurs?.ansattnummer?.identifikatorverdi
+      const ansattnummer = data.person?.personalressurs?.ansattnummer?.identifikatorverdi
       if (!ansattnummer) return httpResponse(404, `No teacher with fodselsnummer "${identifikatorverdi}" found in FINT`)
       const azureFeidenavnRes = await getFeidenavnFromAnsattnummer(ansattnummer)
       if (!azureFeidenavnRes) return httpResponse(404, `No teacher with fodselsnummer "${identifikatorverdi}" found in FINT`)

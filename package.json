@@ -16,5 +16,10 @@
   },
   "devDependencies": {
     "azure-functions-core-tools": "^4.x"
+  },
+  "standard": {
+    "ignore": [
+      "/fint-templates"
+    ]
   }
 }

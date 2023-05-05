@@ -13,7 +13,7 @@ module.exports = {
     teacherRead: process.env.ROLES_TEACHER_READ ?? 'Teacher.Read',
     employeeRead: process.env.ROLES_EMPLOYEE_READ ?? 'Employee.Read',
     studentRead: process.env.ROLES_EMPLOYEE_READ ?? 'Student.Read',
-    personRead: process.env.ROLES_PERSON_READ ?? 'Person.Read',
+    personRead: process.env.ROLES_PERSON_READ ?? 'Person.Read'
   },
   graphClient: {
     clientId: process.env.GRAPH_CLIENT_ID ?? 'superId',
