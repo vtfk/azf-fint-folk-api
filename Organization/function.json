@@ -4,7 +4,7 @@
       "authLevel": "function",
       "type": "httpTrigger",
       "direction": "in",
-      "route": "organization/{identifikator}/{identifikatorverdi}",
+      "route": "organization/{identifikator}/{identifikatorverdi?}",
       "name": "req",
       "methods": [
         "get"

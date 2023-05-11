@@ -1,8 +1,10 @@
 const fintOrganization = require('../lib/fint-organization')
+const fintOrganizationStructure = require('../lib/fint-organization-structure')
+const fintOrganizationFlat = require('../lib/fint-organization-flat')
 const { logger, logConfig } = require('@vtfk/logger')
 const { decodeAccessToken } = require('../lib/helpers/decode-access-token')
 const httpResponse = require('../lib/requests/http-response')
-const { roles } = require('../config')
+const { roles, topUnitId } = require('../config')
 
 module.exports = async function (context, req) {
   logConfig({
@@ -32,7 +34,7 @@ module.exports = async function (context, req) {
   }
 
   const { identifikator, identifikatorverdi } = req.params
-  const validIdentifiers = ['organisasjonsId', 'organisasjonsKode']
+  const validIdentifiers = ['organisasjonsId', 'organisasjonsKode', 'structure', 'flat']
   if (!validIdentifiers.includes(identifikator)) return httpResponse(400, `Query param ${identifikator} is not valid - must be ${validIdentifiers.join(' or ')}`)
 
   logger('info', ['Validating role'])
@@ -41,6 +43,32 @@ module.exports = async function (context, req) {
     return httpResponse(403, 'Missing required role for access')
   }
   logger('info', ['Role validated'])
+
+  // If all units are requested
+  if (identifikator === 'structure') {
+    try {
+      const res = await fintOrganizationStructure()
+      if (!res) return httpResponse(404, `No organizationUnit with organisasjonsId "${topUnitId}" found in FINT`)
+      const result = req.query.includeRaw === 'true' ? { ...res.repacked, raw: res.raw } : res.repacked
+      return httpResponse(200, result)
+    } catch (error) {
+      logger('error', [error])
+      return { status: 500, body: error.toString() }
+    }
+  }
+
+   // If all units are requested and flattened (array)
+   if (identifikator === 'flat') {
+    try {
+      const res = await fintOrganizationFlat()
+      if (!res) return httpResponse(404, `No organizationUnit with organisasjonsId "${topUnitId}" found in FINT`)
+      const result = req.query.includeRaw === 'true' ? { flat: res.repacked.reverse(), raw: res.raw } : res.repacked.reverse()
+      return httpResponse(200, result)
+    } catch (error) {
+      logger('error', [error])
+      return { status: 500, body: error.toString() }
+    }
+  }
 
   try {
     const res = await fintOrganization(identifikator, identifikatorverdi)

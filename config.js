@@ -24,5 +24,6 @@ module.exports = {
   },
   graphUrl: process.env.GRAPH_URL ?? 'url til graph',
   feidenavnDomain: process.env.FEIDENAVN_DOMAIN ?? '@domene.com',
-  employeeNumberExtenstionAttribute: process.env.EMPLOYEE_NUMBER_EXTENSION_ATTRIBUTE ?? 'extensionAttributeX'
+  employeeNumberExtenstionAttribute: process.env.EMPLOYEE_NUMBER_EXTENSION_ATTRIBUTE ?? 'extensionAttributeX',
+  topUnitId: process.env.TOP_UNIT_ID ?? 'hoved'
 }

@@ -11,9 +11,21 @@ upn, feidenavn
 ## /employee/{identifikator}/{identifikatorverdi}
 upn, ansattnummer, fodselsnummer
 
-## Employee
+## /person/fodselsnummer/{fodselsnummer}
+fodselsnummer
+
+## /organization/{identfikator}/{identifikatorverdi}
+organisasjonsId, organisasjonsKode
+
+## /orgaization/structure
+Nesta struktur for hele org
+
+## /organization/flat
+Flat liste med alle org-enheter. Sortert hierarkisk - det betyr at et element vil alltid komme etter et forelder-element (overordnet ligger alltid før underordnet i lista)
+
 
 # Contribute
+feel free
 # Azure function setup
 - Must have azure ad authentication enabled
 - App reg representing the func must have application permission User.Read.All
