@@ -1,6 +1,6 @@
-const fintOrganization = require('../lib/fint-organization')
-const fintOrganizationStructure = require('../lib/fint-organization-structure')
-const fintOrganizationFlat = require('../lib/fint-organization-flat')
+const { fintOrganization } = require('../lib/fint-organization')
+const { fintOrganizationStructure } = require('../lib/fint-organization-structure')
+const { fintOrganizationFlat } = require('../lib/fint-organization-flat')
 const { logger, logConfig } = require('@vtfk/logger')
 const { decodeAccessToken } = require('../lib/helpers/decode-access-token')
 const httpResponse = require('../lib/requests/http-response')
@@ -47,7 +47,8 @@ module.exports = async function (context, req) {
   // If all units are requested
   if (identifikator === 'structure') {
     try {
-      const res = await fintOrganizationStructure()
+      const includeInactiveUnits = req.query.includeInactiveUnits === 'true'
+      const res = await fintOrganizationStructure(includeInactiveUnits)
       if (!res) return httpResponse(404, `No organizationUnit with organisasjonsId "${topUnitId}" found in FINT`)
       const result = req.query.includeRaw === 'true' ? { ...res.repacked, raw: res.raw } : res.repacked
       return httpResponse(200, result)
@@ -61,9 +62,10 @@ module.exports = async function (context, req) {
   if (identifikator === 'flat') {
     try {
       const res = await fintOrganizationFlat()
+      if (req.query.includeInactiveUnits !== 'true') res.repacked = res.repacked.filter(unit => unit.aktiv && unit.overordnet.aktiv)
       if (!res) return httpResponse(404, `No organizationUnit with organisasjonsId "${topUnitId}" found in FINT`)
-      const result = req.query.includeRaw === 'true' ? { flat: res.repacked.reverse(), raw: res.raw } : res.repacked.reverse()
-      return httpResponse(200, result)
+      let result = req.query.includeRaw === 'true' ? { flat: res.repacked.reverse(), raw: res.raw } : res.repacked.reverse()
+      return httpResponse(200, result.length)
     } catch (error) {
       logger('error', [error])
       return { status: 500, body: error.toString() }
