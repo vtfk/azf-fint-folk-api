@@ -57,8 +57,8 @@ module.exports = async function (context, req) {
     }
   }
 
-   // If all units are requested and flattened (array)
-   if (identifikator === 'flat') {
+  // If all units are requested and flattened (array)
+  if (identifikator === 'flat') {
     try {
       const res = await fintOrganizationFlat()
       if (!res) return httpResponse(404, `No organizationUnit with organisasjonsId "${topUnitId}" found in FINT`)
