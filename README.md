@@ -277,7 +277,7 @@ GET https://{base_url}/student/fodselsnummer/12345678910
 }
 ```
 
-### /teacher/{identifikator}/{identifikatorverdi}
+## /teacher/{identifikator}/{identifikatorverdi}
 Valid "identifikator"-values:
  - **upn** (Will first fetch feidenavn from AzureAD, so is more expensive)
  - **feidenavn**
