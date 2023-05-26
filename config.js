@@ -1,7 +1,6 @@
 module.exports = {
   fint: {
     url: process.env.FINT_URL ?? 'url til fint prod miljø',
-    betaUrl: process.env.FINT_BETA_URL ?? 'url til fint beta miljø',
     clientId: process.env.FINT_CLIENT_ID ?? 'klient id',
     clientSecret: process.env.FINT_CLIENT_SECRET ?? 'klient secret',
     username: process.env.FINT_USERNAME ?? 'klient brukernavn',
