@@ -32,248 +32,248 @@ GET https://{base_url}/student/fodselsnummer/12345678910
 ### Returns
 ```json
 {
-	"feidenavn": "elev.elevesen@domene.no",
-	"elevnummer": "12345678",
-	"upn": "elev.elevesen@skole.domene.no",
-	"navn": "Elev Elevesen",
-	"fornavn": "Elev",
-	"etternavn": "Elevesen",
-	"fodselsnummer": "12345678910",
-	"fodselsdato": "2005-07-09T00:00:00Z",
-	"alder": 17,
-	"kjonn": "1",
-	"kontaktEpostadresse": "elev.elevesen@gmail.com",
-	"kontaktMobiltelefonnummer": "12345678",
-	"privatEpostadresse": "elev.elevesen@gmail.com",
-	"privatMobiltelefonnummer": "12345678",
-	"bostedsadresse": {
-		"adresselinje": "Tower of Sauron 6",
-		"postnummer": "6666",
-		"poststed": "Mordor"
-	},
-	"hybeladresse": {
-		"adresselinje": null,
-		"postnummer": null,
-		"poststed": null
-	},
-	"hovedskole": {
-		"navn": "Mordor videregående skole",
-		"skolenummer": "123455"
-	},
-	"kontaktlarere": [
-		{
-			"feidenavn": "sauron@skole.no",
-			"ansattnummer": "1111111",
-			"navn": "Sauron Hanson",
-			"fornavn": "Sauron",
-			"etternavn": "Hanson",
-			"kontaktlarer": true,
-			"gruppe": "2TMA",
-			"skole": {
-				"navn": "Mordor videregående skole",
-				"skolenummer": "12345",
-				"hovedskole": true
-			}
-		}
-	],
-	"elevforhold": [
-		{
-			"systemId": "9144823",
-			"aktiv": true,
-			"beskrivelse": null,
-			"avbruddsdato": null,
-			"gyldighetsperiode": {
-				"start": "2022-08-17T00:00:00Z",
-				"slutt": "2023-07-31T00:00:00Z",
-				"aktiv": true
-			},
-			"skole": {
-				"navn": "Mordor videregående skole",
-				"kortnavn": "OF-MRD",
-				"skolenummer": "12345",
-				"organisasjonsnummer": "12345678",
-				"organisasjonsId": "87",
-				"hovedskole": true
-			},
-			"programomrade": {
-				"navn": "Tømrer",
-				"systemId": {
-					"identifikatorverdi": "BATMF2----"
-				},
-				"utdanningsprogram": [
-					{
-						"systemId": {
-							"identifikatorverdi": "BA"
-						},
-						"navn": "Bygg- og anleggsteknikk",
-						"grepreferanse": [
-							"https://psi.udir.no/kl06/BA"
-						]
-					}
-				]
-			},
-			"kategori": {
-				"kode": "2",
-				"navn": "heltid"
-			},
-			"basisgrupper": [
-				{
-					"navn": "2TMA",
-					"systemId": "1476223",
-					"aktiv": true,
-					"trinn": "VG2",
-					"skole": {
-						"navn": "Mordor videregående skole",
-						"skolenummer": "12345",
-						"hovedskole": true
-					},
-					"termin": [
-						{
-							"kode": "H1",
-							"gyldighetsperiode": {
-								"start": "2022-08-01T00:00:00Z",
-								"slutt": "2023-01-13T00:00:00Z",
-								"aktiv": false
-							}
-						},
-						{
-							"kode": "H2",
-							"gyldighetsperiode": {
-								"start": "2023-01-14T00:00:00Z",
-								"slutt": "2023-07-31T00:00:00Z",
-								"aktiv": true
-							}
-						}
-					],
-					"skolear": {
-						"kode": "20222023",
-						"gyldighetsperiode": {
-							"start": "2022-08-01T00:00:00Z",
-							"slutt": "2023-07-31T00:00:00Z",
-							"aktiv": true
-						}
-					},
-					"undervisningsforhold": [
-						{
-							"feidenavn": "sauron@skole.no",
-							"ansattnummer": "1111111",
-							"navn": "Sauron Hanson",
-							"fornavn": "Sauron",
-							"etternavn": "Hanson",
-							"kontaktlarer": true
-						}
-					]
-				}
-			],
-			"undervisningsgrupper": [
-				{
-					"navn": "2TMA/KRO1018",
-					"systemId": "12029734",
-					"aktiv": true,
-					"fag": [
-						{
-							"systemId": {
-								"identifikatorverdi": "KRO1018"
-							},
-							"navn": "Kroppsøving vg2",
-							"grepreferanse": [
-								"https://psi.udir.no/kl06/KRO1018"
-							]
-						}
-					],
-					"skole": {
-						"navn": "Mordor videregående skole",
-						"skolenummer": "12345",
-						"hovedskole": true
-					},
-					"termin": [
-						{
-							"kode": "H1",
-							"gyldighetsperiode": {
-								"start": "2022-08-01T00:00:00Z",
-								"slutt": "2023-01-13T00:00:00Z",
-								"aktiv": false
-							}
-						},
-						{
-							"kode": "H2",
-							"gyldighetsperiode": {
-								"start": "2023-01-14T00:00:00Z",
-								"slutt": "2023-07-31T00:00:00Z",
-								"aktiv": true
-							}
-						}
-					],
-					"skolear": {
-						"kode": "20222023",
-						"gyldighetsperiode": {
-							"start": "2022-08-01T00:00:00Z",
-							"slutt": "2023-07-31T00:00:00Z",
-							"aktiv": true
-						}
-					},
-					"undervisningsforhold": [
-						{
-							"feidenavn": "nasgul@skole.no",
-							"ansattnummer": "1234566",
-							"navn": "Nasgul Gulesen",
-							"fornavn": "Nasgul",
-							"etternavn": "Gulesen",
-							"kontaktlarer": false
-						}
-					]
-				}
-			],
-			"kontaktlarergrupper": [
-				{
-					"navn": "2TMA",
-					"systemId": "1476214_528823",
-					"aktiv": true,
-					"skole": {
-						"navn": "Mordor videregående skole",
-						"skolenummer": "123456",
-						"hovedskole": true
-					},
-					"termin": [
-						{
-							"kode": "H1",
-							"gyldighetsperiode": {
-								"start": "2022-08-01T00:00:00Z",
-								"slutt": "2023-01-13T00:00:00Z",
-								"aktiv": false
-							}
-						},
-						{
-							"kode": "H2",
-							"gyldighetsperiode": {
-								"start": "2023-01-14T00:00:00Z",
-								"slutt": "2023-07-31T00:00:00Z",
-								"aktiv": true
-							}
-						}
-					],
-					"skolear": {
-						"kode": "20222023",
-						"gyldighetsperiode": {
-							"start": "2022-08-01T00:00:00Z",
-							"slutt": "2023-07-31T00:00:00Z",
-							"aktiv": true
-						}
-					},
-					"undervisningsforhold": [
-						{
-							"feidenavn": "sauron@skole.no",
-							"ansattnummer": "11111111",
-							"navn": "Sauron Hanson",
-							"fornavn": "Sauron",
-							"etternavn": "Hanson",
-							"kontaktlarer": true
-						}
-					]
-				}
-			]
-		}
-	]
+  "feidenavn": "elev.elevesen@domene.no",
+  "elevnummer": "12345678",
+  "upn": "elev.elevesen@skole.domene.no",
+  "navn": "Elev Elevesen",
+  "fornavn": "Elev",
+  "etternavn": "Elevesen",
+  "fodselsnummer": "12345678910",
+  "fodselsdato": "2005-07-09T00:00:00Z",
+  "alder": 17,
+  "kjonn": "1",
+  "kontaktEpostadresse": "elev.elevesen@gmail.com",
+  "kontaktMobiltelefonnummer": "12345678",
+  "privatEpostadresse": "elev.elevesen@gmail.com",
+  "privatMobiltelefonnummer": "12345678",
+  "bostedsadresse": {
+    "adresselinje": "Tower of Sauron 6",
+    "postnummer": "6666",
+    "poststed": "Mordor"
+  },
+  "hybeladresse": {
+    "adresselinje": null,
+    "postnummer": null,
+    "poststed": null
+  },
+  "hovedskole": {
+    "navn": "Mordor videregående skole",
+    "skolenummer": "123455"
+  },
+  "kontaktlarere": [
+    {
+      "feidenavn": "sauron@skole.no",
+      "ansattnummer": "1111111",
+      "navn": "Sauron Hanson",
+      "fornavn": "Sauron",
+      "etternavn": "Hanson",
+      "kontaktlarer": true,
+      "gruppe": "2TMA",
+      "skole": {
+        "navn": "Mordor videregående skole",
+        "skolenummer": "12345",
+        "hovedskole": true
+      }
+    }
+  ],
+  "elevforhold": [
+    {
+      "systemId": "9144823",
+      "aktiv": true,
+      "beskrivelse": null,
+      "avbruddsdato": null,
+      "gyldighetsperiode": {
+        "start": "2022-08-17T00:00:00Z",
+        "slutt": "2023-07-31T00:00:00Z",
+        "aktiv": true
+      },
+      "skole": {
+        "navn": "Mordor videregående skole",
+        "kortnavn": "OF-MRD",
+        "skolenummer": "12345",
+        "organisasjonsnummer": "12345678",
+        "organisasjonsId": "87",
+        "hovedskole": true
+      },
+      "programomrade": {
+        "navn": "Tømrer",
+        "systemId": {
+          "identifikatorverdi": "BATMF2----"
+        },
+        "utdanningsprogram": [
+          {
+            "systemId": {
+              "identifikatorverdi": "BA"
+            },
+            "navn": "Bygg- og anleggsteknikk",
+            "grepreferanse": [
+              "https://psi.udir.no/kl06/BA"
+            ]
+          }
+        ]
+      },
+      "kategori": {
+        "kode": "2",
+        "navn": "heltid"
+      },
+      "basisgrupper": [
+        {
+          "navn": "2TMA",
+          "systemId": "1476223",
+          "aktiv": true,
+          "trinn": "VG2",
+          "skole": {
+            "navn": "Mordor videregående skole",
+            "skolenummer": "12345",
+            "hovedskole": true
+          },
+          "termin": [
+            {
+              "kode": "H1",
+              "gyldighetsperiode": {
+                "start": "2022-08-01T00:00:00Z",
+                "slutt": "2023-01-13T00:00:00Z",
+                "aktiv": false
+              }
+            },
+            {
+              "kode": "H2",
+              "gyldighetsperiode": {
+                "start": "2023-01-14T00:00:00Z",
+                "slutt": "2023-07-31T00:00:00Z",
+                "aktiv": true
+              }
+            }
+          ],
+          "skolear": {
+            "kode": "20222023",
+            "gyldighetsperiode": {
+              "start": "2022-08-01T00:00:00Z",
+              "slutt": "2023-07-31T00:00:00Z",
+              "aktiv": true
+            }
+          },
+          "undervisningsforhold": [
+            {
+              "feidenavn": "sauron@skole.no",
+              "ansattnummer": "1111111",
+              "navn": "Sauron Hanson",
+              "fornavn": "Sauron",
+              "etternavn": "Hanson",
+              "kontaktlarer": true
+            }
+          ]
+        }
+      ],
+      "undervisningsgrupper": [
+        {
+          "navn": "2TMA/KRO1018",
+          "systemId": "12029734",
+          "aktiv": true,
+          "fag": [
+            {
+              "systemId": {
+                "identifikatorverdi": "KRO1018"
+              },
+              "navn": "Kroppsøving vg2",
+              "grepreferanse": [
+                "https://psi.udir.no/kl06/KRO1018"
+              ]
+            }
+          ],
+          "skole": {
+            "navn": "Mordor videregående skole",
+            "skolenummer": "12345",
+            "hovedskole": true
+          },
+          "termin": [
+            {
+              "kode": "H1",
+              "gyldighetsperiode": {
+                "start": "2022-08-01T00:00:00Z",
+                "slutt": "2023-01-13T00:00:00Z",
+                "aktiv": false
+              }
+            },
+            {
+              "kode": "H2",
+              "gyldighetsperiode": {
+                "start": "2023-01-14T00:00:00Z",
+                "slutt": "2023-07-31T00:00:00Z",
+                "aktiv": true
+              }
+            }
+          ],
+          "skolear": {
+            "kode": "20222023",
+            "gyldighetsperiode": {
+              "start": "2022-08-01T00:00:00Z",
+              "slutt": "2023-07-31T00:00:00Z",
+              "aktiv": true
+            }
+          },
+          "undervisningsforhold": [
+            {
+              "feidenavn": "nasgul@skole.no",
+              "ansattnummer": "1234566",
+              "navn": "Nasgul Gulesen",
+              "fornavn": "Nasgul",
+              "etternavn": "Gulesen",
+              "kontaktlarer": false
+            }
+          ]
+        }
+      ],
+      "kontaktlarergrupper": [
+        {
+          "navn": "2TMA",
+          "systemId": "1476214_528823",
+          "aktiv": true,
+          "skole": {
+            "navn": "Mordor videregående skole",
+            "skolenummer": "123456",
+            "hovedskole": true
+          },
+          "termin": [
+            {
+              "kode": "H1",
+              "gyldighetsperiode": {
+                "start": "2022-08-01T00:00:00Z",
+                "slutt": "2023-01-13T00:00:00Z",
+                "aktiv": false
+              }
+            },
+            {
+              "kode": "H2",
+              "gyldighetsperiode": {
+                "start": "2023-01-14T00:00:00Z",
+                "slutt": "2023-07-31T00:00:00Z",
+                "aktiv": true
+              }
+            }
+          ],
+          "skolear": {
+            "kode": "20222023",
+            "gyldighetsperiode": {
+              "start": "2022-08-01T00:00:00Z",
+              "slutt": "2023-07-31T00:00:00Z",
+              "aktiv": true
+            }
+          },
+          "undervisningsforhold": [
+            {
+              "feidenavn": "sauron@skole.no",
+              "ansattnummer": "11111111",
+              "navn": "Sauron Hanson",
+              "fornavn": "Sauron",
+              "etternavn": "Hanson",
+              "kontaktlarer": true
+            }
+          ]
+        }
+      ]
+    }
+  ]
 }
 ```
 
@@ -649,50 +649,50 @@ GET https://{base_url}/person/fodselsnummer/12345678910
 ### Returns
 ```json
 {
-	"navn": "Shrek Sump",
-	"fornavn": "Shrek",
-	"etternavn": "Sump",
-	"fodselsnummer": "11112345677",
-	"fodselsdato": "1993-01-29T00:00:00Z",
-	"alder": 30,
-	"kjonn": "1",
-	"privatEpostadresse": "shrek@swamp.no",
-	"privatMobiltelefonnummer": null,
-	"bostedsadresse": {
-		"adresselinje": "Sumpen 1",
-		"postnummer": "1234",
-		"poststed": "SUMPSTAD"
-	},
-	"postadresse": {
-		"adresselinje": null,
-		"postnummer": null,
-		"poststed": null
-	},
-	"statsborgerskap": [
-		{
-			"kode": "NO",
-			"navn": "Norge"
-		}
-	],
-	"kommune": {
-		"kode": null,
-		"navn": null,
-		"fylke": {
-			"kode": null,
-			"navn": null
-		}
-	},
-	"morsmal": {
-		"kode": null,
-		"navn": null
-	},
-	"malform": {
-		"kode": null,
-		"navn": null
-	},
-	"bilde": null,
-	"foreldreansvar": "Kommer forhåpentligvis",
-	"parorende": "Kommer forhåpentligvis"
+  "navn": "Shrek Sump",
+  "fornavn": "Shrek",
+  "etternavn": "Sump",
+  "fodselsnummer": "11112345677",
+  "fodselsdato": "1993-01-29T00:00:00Z",
+  "alder": 30,
+  "kjonn": "1",
+  "privatEpostadresse": "shrek@swamp.no",
+  "privatMobiltelefonnummer": null,
+  "bostedsadresse": {
+    "adresselinje": "Sumpen 1",
+    "postnummer": "1234",
+    "poststed": "SUMPSTAD"
+  },
+  "postadresse": {
+    "adresselinje": null,
+    "postnummer": null,
+    "poststed": null
+  },
+  "statsborgerskap": [
+    {
+      "kode": "NO",
+      "navn": "Norge"
+    }
+  ],
+  "kommune": {
+    "kode": null,
+    "navn": null,
+    "fylke": {
+      "kode": null,
+      "navn": null
+    }
+  },
+  "morsmal": {
+    "kode": null,
+    "navn": null
+  },
+  "malform": {
+    "kode": null,
+    "navn": null
+  },
+  "bilde": null,
+  "foreldreansvar": "Kommer forhåpentligvis",
+  "parorende": "Kommer forhåpentligvis"
 }
 ```
 ## /organization/{identfikator}/{identifikatorverdi}
@@ -712,109 +712,109 @@ GET https://{base_url}/organization/organisasjonsKode/1950-23
 ### Returns
 ```json
 {
-	"aktiv": true,
-	"organisasjonsId": "123",
-	"organisasjonsKode": "11210-10",
-	"navn": "Team Shrek Teknologi",
-	"kortnavn": "SHREK-TEK",
-	"gyldighetsperiode": {
-		"start": "2022-05-01T00:00:00Z",
-		"slutt": null,
-		"aktiv": true
-	},
-	"kontaktEpostadresse": null,
-	"kontaktMobiltelefonnummer": null,
-	"kontaktTelefonnummer": null,
-	"kontaktNettsted": null,
-	"postadresse": {
-		"adresselinje": null,
-		"postnummer": null,
-		"poststed": null
-	},
-	"forretningsadresse": {
-		"adresselinje": null,
-		"postnummer": null,
-		"poststed": null
-	},
-	"organisasjonsnavn": null,
-	"organisasjonsnummer": "12345678",
-	"leder": {
-		"ansattnummer": "123456",
-		"navn": "Grev Farquaad",
-		"fornavn": "Grev",
-		"etternavn": "Farquaad"
-	},
-	"ansvar": [],
-	"overordnet": {
-		"organisasjonsId": "31",
-		"aktiv": true,
-		"gyldighetsperiode": {
-			"start": "2019-11-01T00:00:00Z",
-			"slutt": null,
-			"aktiv": true
-		},
-		"navn": "Avdeling for Shrek",
-		"kortnavn": "SHREK"
-	},
-	"underordnet": [],
-	"arbeidsforhold": [
-		{
-			"aktiv": true,
-			"systemId": "24047531--2--20221121",
-			"ansattnummer": "24047531",
-			"navn": "Grev Farquaad",
-			"fornavn": "Grev",
-			"etternavn": "Farquaad",
-			"gyldighetsperiode": {
-				"start": "2022-11-24T00:00:00Z",
-				"slutt": "2023-12-31T23:59:59Z",
-				"aktiv": true
-			},
-			"arbeidsforholdsperiode": {
-				"start": "2022-05-01T00:00:00Z",
-				"slutt": "2023-12-31T23:59:59Z",
-				"aktiv": true
-			},
-			"stillingstittel": "Teamleder",
-			"arbeidsforholdstype": {
-				"kode": "MB",
-				"navn": "Midl. aml§14-9(2) b"
-			},
-			"ansettelsesperiode": {
-				"start": "2012-08-06T00:00:00Z",
-				"slutt": null,
-				"aktiv": true
-			}
-		},
-		{
-			"aktiv": true,
-			"systemId": "26107423--2--20230111",
-			"ansattnummer": "26104401",
-			"navn": "Pepper Kake",
-			"fornavn": "Pepper",
-			"etternavn": "Kake",
-			"gyldighetsperiode": {
-				"start": "2023-01-01T00:00:00Z",
-				"slutt": null,
-				"aktiv": true
-			},
-			"arbeidsforholdsperiode": {
-				"start": "2023-01-01T00:00:00Z",
-				"slutt": null,
-				"aktiv": true
-			},
-			"stillingstittel": "Rådgiver",
-			"arbeidsforholdstype": {
-				"kode": "FA",
-				"navn": "Fast ansatt"
-			},
-			"ansettelsesperiode": {
-				"start": "2005-06-01T00:00:00Z",
-				"slutt": null,
-				"aktiv": true
-			}
-		}
-	]
+  "aktiv": true,
+  "organisasjonsId": "123",
+  "organisasjonsKode": "11210-10",
+  "navn": "Team Shrek Teknologi",
+  "kortnavn": "SHREK-TEK",
+  "gyldighetsperiode": {
+    "start": "2022-05-01T00:00:00Z",
+    "slutt": null,
+    "aktiv": true
+  },
+  "kontaktEpostadresse": null,
+  "kontaktMobiltelefonnummer": null,
+  "kontaktTelefonnummer": null,
+  "kontaktNettsted": null,
+  "postadresse": {
+    "adresselinje": null,
+    "postnummer": null,
+    "poststed": null
+  },
+  "forretningsadresse": {
+    "adresselinje": null,
+    "postnummer": null,
+    "poststed": null
+  },
+  "organisasjonsnavn": null,
+  "organisasjonsnummer": "12345678",
+  "leder": {
+    "ansattnummer": "123456",
+    "navn": "Grev Farquaad",
+    "fornavn": "Grev",
+    "etternavn": "Farquaad"
+  },
+  "ansvar": [],
+  "overordnet": {
+    "organisasjonsId": "31",
+    "aktiv": true,
+    "gyldighetsperiode": {
+      "start": "2019-11-01T00:00:00Z",
+      "slutt": null,
+      "aktiv": true
+    },
+    "navn": "Avdeling for Shrek",
+    "kortnavn": "SHREK"
+  },
+  "underordnet": [],
+  "arbeidsforhold": [
+    {
+      "aktiv": true,
+      "systemId": "24047531--2--20221121",
+      "ansattnummer": "24047531",
+      "navn": "Grev Farquaad",
+      "fornavn": "Grev",
+      "etternavn": "Farquaad",
+      "gyldighetsperiode": {
+        "start": "2022-11-24T00:00:00Z",
+        "slutt": "2023-12-31T23:59:59Z",
+        "aktiv": true
+      },
+      "arbeidsforholdsperiode": {
+        "start": "2022-05-01T00:00:00Z",
+        "slutt": "2023-12-31T23:59:59Z",
+        "aktiv": true
+      },
+      "stillingstittel": "Teamleder",
+      "arbeidsforholdstype": {
+        "kode": "MB",
+        "navn": "Midl. aml§14-9(2) b"
+      },
+      "ansettelsesperiode": {
+        "start": "2012-08-06T00:00:00Z",
+        "slutt": null,
+        "aktiv": true
+      }
+    },
+    {
+      "aktiv": true,
+      "systemId": "26107423--2--20230111",
+      "ansattnummer": "26104401",
+      "navn": "Pepper Kake",
+      "fornavn": "Pepper",
+      "etternavn": "Kake",
+      "gyldighetsperiode": {
+        "start": "2023-01-01T00:00:00Z",
+        "slutt": null,
+        "aktiv": true
+      },
+      "arbeidsforholdsperiode": {
+        "start": "2023-01-01T00:00:00Z",
+        "slutt": null,
+        "aktiv": true
+      },
+      "stillingstittel": "Rådgiver",
+      "arbeidsforholdstype": {
+        "kode": "FA",
+        "navn": "Fast ansatt"
+      },
+      "ansettelsesperiode": {
+        "start": "2005-06-01T00:00:00Z",
+        "slutt": null,
+        "aktiv": true
+      }
+    }
+  ]
 }
 ```
 
@@ -828,68 +828,68 @@ GET https://{base_url}/organization/structure
 ### Returns
 ```json
 {
-	"organisasjonsId": "hoved",
-	"gyldighetsperiode": {
-		"start": "2019-01-01T00:00:00Z",
-		"slutt": null,
-		"aktiv": true
-	},
-	"navn": "Shrek INC",
-	"kortnavn": null,
-	"leder": {
-		"ansattnummer": null,
-		"navn": null,
-		"fornavn": null,
-		"etternavn": null
-	},
-	"underordnet": [
-		{
-			"organisasjonsId": "6",
-			"gyldighetsperiode": {
-				"start": "2019-11-01T00:00:00Z",
-				"slutt": null,
-				"aktiv": true
-			},
-			"navn": "Avdeling for Shrek",
-			"kortnavn": "SHREK",
-			"leder": {
-				"ansattnummer": "5056034",
-				"navn": "Grev Farquaad",
-				"fornavn": "Grev",
-				"etternavn": "Farquaad"
-			},
-			"underordnet": [
-				{
-					"organisasjonsId": "19",
-					"gyldighetsperiode": {
-						"start": "2019-11-01T00:00:00Z",
-						"slutt": null,
-						"aktiv": true
-					},
-					"navn": "Shrek Teknologi",
-					"kortnavn": "SHREK-TEK",
-					"leder": {
-						"ansattnummer": "17102303",
-						"navn": "Kaptein Sabeltann",
-						"fornavn": "Kaptein",
-						"etternavn": "Sabeltann"
-					}
+  "organisasjonsId": "hoved",
+  "gyldighetsperiode": {
+    "start": "2019-01-01T00:00:00Z",
+    "slutt": null,
+    "aktiv": true
+  },
+  "navn": "Shrek INC",
+  "kortnavn": null,
+  "leder": {
+    "ansattnummer": null,
+    "navn": null,
+    "fornavn": null,
+    "etternavn": null
+  },
+  "underordnet": [
+    {
+      "organisasjonsId": "6",
+      "gyldighetsperiode": {
+        "start": "2019-11-01T00:00:00Z",
+        "slutt": null,
+        "aktiv": true
+      },
+      "navn": "Avdeling for Shrek",
+      "kortnavn": "SHREK",
+      "leder": {
+        "ansattnummer": "5056034",
+        "navn": "Grev Farquaad",
+        "fornavn": "Grev",
+        "etternavn": "Farquaad"
+      },
+      "underordnet": [
+        {
+          "organisasjonsId": "19",
+          "gyldighetsperiode": {
+            "start": "2019-11-01T00:00:00Z",
+            "slutt": null,
+            "aktiv": true
+          },
+          "navn": "Shrek Teknologi",
+          "kortnavn": "SHREK-TEK",
+          "leder": {
+            "ansattnummer": "17102303",
+            "navn": "Kaptein Sabeltann",
+            "fornavn": "Kaptein",
+            "etternavn": "Sabeltann"
+          }
         },
         {
-					"organisasjonsId": "21",
-					"gyldighetsperiode": {
-						"start": "2019-11-01T00:00:00Z",
-						"slutt": null,
-						"aktiv": true
-					},
-					"navn": "Shrek HR",
-					"kortnavn": "SHREK-HR",
-					"leder": {
-						"ansattnummer": "17106423",
-						"navn": "Mulle Mekk",
-						"fornavn": "Mulle",
-						"etternavn": "Mekk"
-					}
+          "organisasjonsId": "21",
+          "gyldighetsperiode": {
+            "start": "2019-11-01T00:00:00Z",
+            "slutt": null,
+            "aktiv": true
+          },
+          "navn": "Shrek HR",
+          "kortnavn": "SHREK-HR",
+          "leder": {
+            "ansattnummer": "17106423",
+            "navn": "Mulle Mekk",
+            "fornavn": "Mulle",
+            "etternavn": "Mekk"
+          }
         }
       ]
     }
@@ -908,122 +908,122 @@ GET https://{base_url}/organization/flat
 ### Returns
 ```json
 [
-	{
-		"organisasjonsId": "hoved",
-		"gyldighetsperiode": {
-			"start": "2019-01-01T00:00:00Z",
-			"slutt": null,
-			"aktiv": true
-		},
-		"navn": "SHREK INC",
-		"kortnavn": null,
-		"leder": {
-			"ansattnummer": null,
-			"navn": null,
-			"fornavn": null,
-			"etternavn": null
-		},
-		"overordnet": {
-			"aktiv": true,
-			"organisasjonsId": "hoved",
-			"gyldighetsperiode": {
-				"start": "2019-01-01T00:00:00Z",
-				"slutt": null,
-				"aktiv": true
-			},
-			"navn": "SHREK INC",
-			"kortnavn": null
-		},
-		"aktiv": true,
-		"level": 0
-	},
-	{
-		"overordnet": {
-			"aktiv": true,
-			"organisasjonsId": "hoved",
-			"gyldighetsperiode": {
-				"start": "2019-11-01T00:00:00Z",
-				"slutt": null,
-				"aktiv": true
-			},
-			"navn": "SHREK INC",
-			"kortnavn": null
-		},
-		"organisasjonsId": "6",
-		"gyldighetsperiode": {
-			"start": "2019-11-01T00:00:00Z",
-			"slutt": null,
-			"aktiv": true
-		},
-		"navn": "Avdeling for Shrek",
-		"kortnavn": "SHREK",
-		"leder": {
-			"ansattnummer": "24434554",
-			"navn": "Grev Farquaad",
-			"fornavn": "Grev",
-			"etternavn": "Farquaad"
-		},
-		"aktiv": true,
-		"level": 1
-	},
-	{
-		"overordnet": {
-			"aktiv": true,
-			"organisasjonsId": "6",
-			"gyldighetsperiode": {
-				"start": "2019-11-01T00:00:00Z",
-				"slutt": null,
-				"aktiv": true
-			},
-			"navn": "Avdeling for Shrek",
-			"kortnavn": "SHREK"
-		},
-		"organisasjonsId": "15",
-		"gyldighetsperiode": {
-			"start": "2019-11-01T00:00:00Z",
-			"slutt": null,
-			"aktiv": true
-		},
-		"navn": "Shrek Teknologi",
-		"kortnavn": "SHREK-TEK",
-		"leder": {
-			"ansattnummer": "435454",
-			"navn": "Kaptein Sabeltann",
-			"fornavn": "Kaptein",
-			"etternavn": "Sabeltann"
-		},
-		"aktiv": true,
-		"level": 2
-	},
   {
-		"overordnet": {
-			"aktiv": true,
-			"organisasjonsId": "6",
-			"gyldighetsperiode": {
-				"start": "2019-11-01T00:00:00Z",
-				"slutt": null,
-				"aktiv": true
-			},
-			"navn": "Avdeling for Shrek",
-			"kortnavn": "SHREK"
-		},
-		"organisasjonsId": "16",
-		"gyldighetsperiode": {
-			"start": "2019-11-01T00:00:00Z",
-			"slutt": null,
-			"aktiv": true
-		},
-		"navn": "Shrek HR",
-		"kortnavn": "SHREK-HR",
-		"leder": {
-			"ansattnummer": "435254",
-			"navn": "Mulle Mekk",
-			"fornavn": "Mulle",
-			"etternavn": "Mekk"
-		},
-		"aktiv": true,
-		"level": 2
-	}
+    "organisasjonsId": "hoved",
+    "gyldighetsperiode": {
+      "start": "2019-01-01T00:00:00Z",
+      "slutt": null,
+      "aktiv": true
+    },
+    "navn": "SHREK INC",
+    "kortnavn": null,
+    "leder": {
+      "ansattnummer": null,
+      "navn": null,
+      "fornavn": null,
+      "etternavn": null
+    },
+    "overordnet": {
+      "aktiv": true,
+      "organisasjonsId": "hoved",
+      "gyldighetsperiode": {
+        "start": "2019-01-01T00:00:00Z",
+        "slutt": null,
+        "aktiv": true
+      },
+      "navn": "SHREK INC",
+      "kortnavn": null
+    },
+    "aktiv": true,
+    "level": 0
+  },
+  {
+    "overordnet": {
+      "aktiv": true,
+      "organisasjonsId": "hoved",
+      "gyldighetsperiode": {
+        "start": "2019-11-01T00:00:00Z",
+        "slutt": null,
+        "aktiv": true
+      },
+      "navn": "SHREK INC",
+      "kortnavn": null
+    },
+    "organisasjonsId": "6",
+    "gyldighetsperiode": {
+      "start": "2019-11-01T00:00:00Z",
+      "slutt": null,
+      "aktiv": true
+    },
+    "navn": "Avdeling for Shrek",
+    "kortnavn": "SHREK",
+    "leder": {
+      "ansattnummer": "24434554",
+      "navn": "Grev Farquaad",
+      "fornavn": "Grev",
+      "etternavn": "Farquaad"
+    },
+    "aktiv": true,
+    "level": 1
+  },
+  {
+    "overordnet": {
+      "aktiv": true,
+      "organisasjonsId": "6",
+      "gyldighetsperiode": {
+        "start": "2019-11-01T00:00:00Z",
+        "slutt": null,
+        "aktiv": true
+      },
+      "navn": "Avdeling for Shrek",
+      "kortnavn": "SHREK"
+    },
+    "organisasjonsId": "15",
+    "gyldighetsperiode": {
+      "start": "2019-11-01T00:00:00Z",
+      "slutt": null,
+      "aktiv": true
+    },
+    "navn": "Shrek Teknologi",
+    "kortnavn": "SHREK-TEK",
+    "leder": {
+      "ansattnummer": "435454",
+      "navn": "Kaptein Sabeltann",
+      "fornavn": "Kaptein",
+      "etternavn": "Sabeltann"
+    },
+    "aktiv": true,
+    "level": 2
+  },
+  {
+    "overordnet": {
+      "aktiv": true,
+      "organisasjonsId": "6",
+      "gyldighetsperiode": {
+        "start": "2019-11-01T00:00:00Z",
+        "slutt": null,
+        "aktiv": true
+      },
+      "navn": "Avdeling for Shrek",
+      "kortnavn": "SHREK"
+    },
+    "organisasjonsId": "16",
+    "gyldighetsperiode": {
+      "start": "2019-11-01T00:00:00Z",
+      "slutt": null,
+      "aktiv": true
+    },
+    "navn": "Shrek HR",
+    "kortnavn": "SHREK-HR",
+    "leder": {
+      "ansattnummer": "435254",
+      "navn": "Mulle Mekk",
+      "fornavn": "Mulle",
+      "etternavn": "Mekk"
+    },
+    "aktiv": true,
+    "level": 2
+  }
 ]
 ```
 
