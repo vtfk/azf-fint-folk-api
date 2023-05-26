@@ -1,4 +1,4 @@
-const fintTeacher = require('../lib/fint-teacher')
+const { fintTeacher } = require('../lib/fint-teacher')
 const { logger, logConfig } = require('@vtfk/logger')
 const { decodeAccessToken } = require('../lib/helpers/decode-access-token')
 const httpResponse = require('../lib/requests/http-response')

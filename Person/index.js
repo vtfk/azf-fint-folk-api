@@ -3,7 +3,7 @@ const { decodeAccessToken } = require('../lib/helpers/decode-access-token')
 const httpResponse = require('../lib/requests/http-response')
 const { isFnr } = require('../lib/helpers/identifikator-type')
 const { roles } = require('../config')
-const fintPerson = require('../lib/fint-person')
+const { fintPerson } = require('../lib/fint-person')
 
 module.exports = async function (context, req) {
   logConfig({

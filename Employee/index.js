@@ -1,4 +1,4 @@
-const fintEmployee = require('../lib/fint-employee')
+const { fintEmployee } = require('../lib/fint-employee')
 const { logger, logConfig } = require('@vtfk/logger')
 const { decodeAccessToken } = require('../lib/helpers/decode-access-token')
 const httpResponse = require('../lib/requests/http-response')
