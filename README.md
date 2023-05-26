@@ -292,7 +292,7 @@ GET https://{base_url}/teacher/feidenavn/larer.laresen@domene.no
 ```
 
 ### Returns
-```json
+```js
 {
 	"feidenavn": "larer.laresen@domene.no",
 	"ansattnummer": "12345678",
