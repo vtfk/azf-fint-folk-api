@@ -292,9 +292,9 @@ GET https://{base_url}/teacher/feidenavn/larer.laresen@domene.no
 ```
 
 ### Returns
-```js
+```yaml
 {
-	"feidenavn": "larer.laresen@domene.no",
+  "feidenavn": "larer.laresen@domene.no",
 	"ansattnummer": "12345678",
 	"upn": "larer.laresen@domene.no",
 	"navn": "Lærer Læresen",
