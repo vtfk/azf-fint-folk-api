@@ -14,9 +14,9 @@ API for getting predifned data from FINT (easier usage - predefined graph-templa
 
 ## /student/{identifikator}/{identifikatorverdi}
 Valid "identifikator"-values:
- - **upn** (Will first fetch feidenavn from AzureAD, so is more expensive)
+ - **upn** (Will first fetch feidenavn from AzureAD, so is more resource expensive)
  - **feidenavn**
- - **fodselsnummer** (Will first fetch feidenavn from FINT, so is more expensive)
+ - **fodselsnummer** (Will first fetch feidenavn from FINT, so is more resource expensive)
 
 ### Example calls
 ```
@@ -281,7 +281,7 @@ GET https://{base_url}/student/fodselsnummer/12345678910
 
 ## /teacher/{identifikator}/{identifikatorverdi}
 Valid "identifikator"-values:
- - **upn** (Will first fetch feidenavn from AzureAD, so is more expensive)
+ - **upn** (Will first fetch feidenavn from AzureAD, so is more resource expensive)
  - **feidenavn**
 
 ### Example calls
@@ -521,9 +521,9 @@ GET https://{base_url}/teacher/feidenavn/larer.laresen@domene.no
 ## /employee/{identifikator}/{identifikatorverdi}
 upn, ansattnummer, fodselsnummer
 Valid "identifikator"-values:
- - **upn** (Will first fetch feidenavn from AzureAD, so is more expensive)
+ - **upn** (Will first fetch feidenavn from AzureAD, so is more resource expensive)
  - **ansattnummer**
- - **fodselsnummer** (Will first fetch feidenavn from FINT, so is more expensive)
+ - **fodselsnummer** (Will first fetch feidenavn from FINT, so is more resource expensive)
 
 ### Example calls
 ```
