@@ -52,7 +52,7 @@ module.exports = async function (context, req) {
 
   try {
     const res = await fintPerson(fodselsnummer)
-    if (!res) return httpResponse(404, `No person with fodselsnummer "${fodselsnummer}" found in FINT`)
+    if (!res) return httpResponse(404, 'No person with provided identificator found in FINT')
     const result = req.query.includeRaw === 'true' ? { ...res.repacked, raw: res.raw } : res.repacked
     return httpResponse(200, result)
   } catch (error) {

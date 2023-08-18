@@ -81,7 +81,7 @@ module.exports = async function (context, req) {
       }
       const { data } = await fintGraph(payload)
       feidenavn = data.person?.elev?.feidenavn?.identifikatorverdi
-      if (!feidenavn) return httpResponse(404, `No student with fodselsnummer "${identifikatorverdi}" found in FINT`)
+      if (!feidenavn) return httpResponse(404, 'No student with provided identificator found in FINT')
       logger('info', [`Got feidenavn: ${feidenavn}`])
     } catch (error) {
       logger('error', ['Failed when getting feidenavn from FINT', error.response?.data || error.stack || error.toString()])
@@ -94,7 +94,7 @@ module.exports = async function (context, req) {
 
   try {
     const res = await fintStudent(feidenavn)
-    if (!res) return httpResponse(404, `No student with feidenavn "${feidenavn}" found in FINT`)
+    if (!res) return httpResponse(404, 'No student with provided identificator found in FINT')
     const result = req.query.includeRaw === 'true' ? { ...res.repacked, raw: res.raw } : res.repacked
     return httpResponse(200, result)
   } catch (error) {
