@@ -64,8 +64,8 @@ module.exports = async function (context, req) {
       const res = await fintOrganizationFlat()
       if (req.query.includeInactiveUnits !== 'true') res.repacked = res.repacked.filter(unit => unit.aktiv && unit.overordnet.aktiv)
       if (!res) return httpResponse(404, `No organizationUnit with organisasjonsId "${topUnitId}" found in FINT`)
-      let result = req.query.includeRaw === 'true' ? { flat: res.repacked.reverse(), raw: res.raw } : res.repacked.reverse()
-      return httpResponse(200, result.length)
+      const result = req.query.includeRaw === 'true' ? { flat: res.repacked.reverse(), raw: res.raw } : res.repacked.reverse()
+      return httpResponse(200, result)
     } catch (error) {
       logger('error', [error])
       return { status: 500, body: error.toString() }
