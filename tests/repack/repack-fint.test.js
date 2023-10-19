@@ -4,7 +4,7 @@ describe('aktivPeriode is aktiv when', () => {
   test('Sluttdato is null', () => {
     const periode = {
       start: '2019-08-01T00:00:00Z',
-			slutt: null
+      slutt: null
     }
     const aktiv = aktivPeriode(periode)
     expect(aktiv).toBe(true)
@@ -12,7 +12,7 @@ describe('aktivPeriode is aktiv when', () => {
   test('Sluttdato is false', () => {
     const periode = {
       start: '2019-08-01T00:00:00Z',
-			slutt: false
+      slutt: false
     }
     const aktiv = aktivPeriode(periode)
     expect(aktiv).toBe(true)
@@ -20,7 +20,7 @@ describe('aktivPeriode is aktiv when', () => {
   test('Sluttdato is invalid date', () => {
     const periode = {
       start: '2019-08-01T00:00:00Z',
-			slutt: 'trompetsolo'
+      slutt: 'trompetsolo'
     }
     const aktiv = aktivPeriode(periode)
     expect(aktiv).toBe(true)
@@ -31,7 +31,7 @@ describe('aktivPeriode is aktiv when', () => {
     tomorrow.setDate(tomorrow.getDate() + 1)
     const periode = {
       start: '2019-08-01T00:00:00Z',
-			slutt: tomorrow.toISOString()
+      slutt: tomorrow.toISOString()
     }
     const aktiv = aktivPeriode(periode)
     expect(aktiv).toBe(true)
@@ -45,7 +45,7 @@ describe('aktivPeriode is NOT aktiv when', () => {
     yesterday.setDate(yesterday.getDate() - 1)
     const periode = {
       start: '2019-08-01T00:00:00Z',
-			slutt: yesterday.toISOString()
+      slutt: yesterday.toISOString()
     }
     const aktiv = aktivPeriode(periode)
     expect(aktiv).toBe(false)
@@ -56,7 +56,7 @@ describe('aktivPeriode is NOT aktiv when', () => {
     tomorrow.setDate(tomorrow.getDate() + 1)
     const periode = {
       start: tomorrow.toISOString(),
-			slutt: false
+      slutt: false
     }
     const aktiv = aktivPeriode(periode)
     expect(aktiv).toBe(false)
@@ -64,7 +64,7 @@ describe('aktivPeriode is NOT aktiv when', () => {
   test('Startdato is invalid date', () => {
     const periode = {
       start: 'tubasolo',
-			slutt: 'trompetsolo'
+      slutt: 'trompetsolo'
     }
     const aktiv = aktivPeriode(periode)
     expect(aktiv).toBe(false)
