@@ -18,7 +18,7 @@ module.exports = async function (context, req) {
     return httpResponse(401, decoded.msg)
   }
   logConfig({
-    prefix: `azf-fint-folk - Employee - ${decoded.appid}${decoded.upn ? ' - ' + decoded.upn : ''}`,
+    prefix: `azf-fint-folk - Employee - ${decoded.appid}${decoded.upn ? ' - ' + decoded.upn : ''}`
   })
   logger('info', ['Token is valid, checking params'], context)
   if (!req.params) {

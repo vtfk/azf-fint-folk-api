@@ -7,7 +7,7 @@ const { fintPerson } = require('../lib/fint-person')
 
 module.exports = async function (context, req) {
   logConfig({
-    prefix: 'azf-fint-folk - Person',
+    prefix: 'azf-fint-folk - Person'
 
   })
   logger('info', ['New Request. Validating token'], context)
@@ -17,7 +17,7 @@ module.exports = async function (context, req) {
     return httpResponse(401, decoded.msg)
   }
   logConfig({
-    prefix: `azf-fint-folk - Person - ${decoded.appid}${decoded.upn ? ' - ' + decoded.upn : ''}`,
+    prefix: `azf-fint-folk - Person - ${decoded.appid}${decoded.upn ? ' - ' + decoded.upn : ''}`
   })
   logger('info', ['Token is valid, checking params'], context)
   if (!req.params) {

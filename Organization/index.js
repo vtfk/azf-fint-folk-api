@@ -8,7 +8,7 @@ const { roles, topUnitId } = require('../config')
 
 module.exports = async function (context, req) {
   logConfig({
-    prefix: 'azf-fint-folk - Organization',
+    prefix: 'azf-fint-folk - Organization'
   })
   logger('info', ['New Request. Validating token'], context)
   const decoded = decodeAccessToken(req.headers.authorization)
@@ -17,7 +17,7 @@ module.exports = async function (context, req) {
     return httpResponse(401, decoded.msg)
   }
   logConfig({
-    prefix: `azf-fint-folk - Organization - ${decoded.appid}${decoded.upn ? ' - ' + decoded.upn : ''}`,
+    prefix: `azf-fint-folk - Organization - ${decoded.appid}${decoded.upn ? ' - ' + decoded.upn : ''}`
   })
   logger('info', ['Token is valid, checking params'], context)
   if (!req.params) {
