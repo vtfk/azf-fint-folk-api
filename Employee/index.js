@@ -9,13 +9,9 @@ const { isAnsattnummer, isEmail, isFnr } = require('../lib/helpers/identifikator
 
 module.exports = async function (context, req) {
   logConfig({
-    prefix: 'azf-fint-folk - Employee',
-    azure: {
-      context,
-      excludeInvocationId: false
-    }
+    prefix: 'azf-fint-folk - Employee'
   })
-  logger('info', ['New Request. Validating token'])
+  logger('info', ['New Request. Validating token'], context)
   const decoded = decodeAccessToken(req.headers.authorization)
   if (!decoded.verified) {
     logger('warn', ['Token is not valid', decoded.msg])
@@ -23,14 +19,10 @@ module.exports = async function (context, req) {
   }
   logConfig({
     prefix: `azf-fint-folk - Employee - ${decoded.appid}${decoded.upn ? ' - ' + decoded.upn : ''}`,
-    azure: {
-      context,
-      excludeInvocationId: false
-    }
   })
-  logger('info', ['Token is valid, checking params'])
+  logger('info', ['Token is valid, checking params'], context)
   if (!req.params) {
-    logger('info', ['No params here...'])
+    logger('info', ['No params here...'], context)
     return httpResponse(400, 'Missing query params')
   }
 
@@ -42,12 +34,12 @@ module.exports = async function (context, req) {
   if (identifikator === 'upn' && !isEmail(identifikatorverdi)) return httpResponse(400, '"upn" must be valid email')
   if (identifikator === 'fodselsnummer' && !isFnr(identifikatorverdi)) return httpResponse(400, 'Property "fodselsnummer" must be 11 characters')
 
-  logger('info', ['Validating role'])
-  if (!decoded.roles.includes(roles.employeeRead)) {
-    logger('info', ['Missing required role for access'])
+  logger('info', ['Validating role'], context)
+  if (!decoded.roles.includes(roles.employeeRead) && !decoded.roles.includes(roles.readAll)) {
+    logger('info', ['Missing required role for access'], context)
     return httpResponse(403, 'Missing required role for access')
   }
-  logger('info', ['Role validated'])
+  logger('info', ['Role validated'], context)
 
   let ansattnummer
   // If getting with upn
@@ -55,16 +47,16 @@ module.exports = async function (context, req) {
     logger('info', ['Queryparam is type "upn", fetching ansattnummer from AzureAD'])
     try {
       ansattnummer = await getAnsattnummer(identifikatorverdi)
-      logger('info', [`Got ansattnummer: ${ansattnummer}`])
+      logger('info', [`Got ansattnummer: ${ansattnummer}`], context)
     } catch (error) {
-      logger('error', ['Failed when getting ansattnummer from AzureAD', error.response?.data || error.stack || error.toString()])
+      logger('error', ['Failed when getting ansattnummer from AzureAD', error.response?.data || error.stack || error.toString()], context)
       return httpResponse(500, error)
     }
   }
 
   // If getting with fnr
   if (identifikator === 'fodselsnummer') {
-    logger('info', ['Queryparam is type "fodselsnummer", fetching ansattnummer from FINT'])
+    logger('info', ['Queryparam is type "fodselsnummer", fetching ansattnummer from FINT'], context)
     try {
       const payload = {
         query: `
@@ -82,9 +74,9 @@ module.exports = async function (context, req) {
       const { data } = await fintGraph(payload)
       ansattnummer = data.person?.personalressurs?.ansattnummer?.identifikatorverdi
       if (!ansattnummer) return httpResponse(404, 'No employee with provided identificator found in FINT')
-      logger('info', [`Got ansattnummer: ${ansattnummer}`])
+      logger('info', [`Got ansattnummer: ${ansattnummer}`], context)
     } catch (error) {
-      logger('error', ['Failed when getting ansattnummer from FINT', error.response?.data || error.stack || error.toString()])
+      logger('error', ['Failed when getting ansattnummer from FINT', error.response?.data || error.stack || error.toString()], context)
       return httpResponse(500, error)
     }
   }
@@ -93,12 +85,12 @@ module.exports = async function (context, req) {
   if (identifikator === 'ansattnummer') ansattnummer = identifikatorverdi
 
   try {
-    const res = await fintEmployee(ansattnummer)
+    const res = await fintEmployee(ansattnummer, context)
     if (!res) return httpResponse(404, 'No employee with provided identificator found in FINT')
     const result = req.query.includeRaw === 'true' ? { ...res.repacked, raw: res.raw } : res.repacked
     return httpResponse(200, result)
   } catch (error) {
-    logger('error', [error])
+    logger('error', [error], context)
     return { status: 500, body: error.toString() }
   }
 }
