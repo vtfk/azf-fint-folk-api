@@ -229,6 +229,34 @@ GET https://{base_url}/student/fodselsnummer/12345678910
             ]
           }
         ],
+        "faggrupper": [
+          {
+            "navn": "B6/REA3036",
+            "systemId": "48889",
+            "fag": {
+              "systemId": {
+                "identifikatorverdi": "REA3036"
+              },
+              "navn": "Biologi 2",
+              "grepreferanse": [
+                "https://psi.udir.no/kl06/REA3036"
+              ]
+            }
+          },
+          {
+            "navn": "3STK/NOR1267",
+            "systemId": "34451",
+            "fag": {
+              "systemId": {
+                "identifikatorverdi": "NOR1267"
+              },
+              "navn": "Norsk hovedmål, skriftlig",
+              "grepreferanse": [
+                "https://psi.udir.no/kl06/NOR1267"
+              ]
+            }
+          }
+        ],
         "kontaktlarergrupper": [
           {
             "navn": "2TMA",
