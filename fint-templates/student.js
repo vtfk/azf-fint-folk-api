@@ -184,6 +184,21 @@ module.exports = (feidenavn) => {
                 }
               }
             }
+            faggruppemedlemskap {
+							faggruppe {
+								navn
+								systemId {
+									identifikatorverdi
+								}
+								fag {
+									systemId {
+										identifikatorverdi
+									}
+									navn
+									grepreferanse
+								}
+							}
+						}
             kontaktlarergruppe {
               navn
               systemId {
