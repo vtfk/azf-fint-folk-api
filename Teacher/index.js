@@ -43,7 +43,7 @@ module.exports = async function (context, req) {
   if (identifikator === 'fodselsnummer' && !isFnr(identifikatorverdi)) return httpResponse(400, 'Property "fodselsnummer" must be 11 characters')
 
   logger('info', ['Validating role'])
-  if (!decoded.roles.includes(roles.teacherRead)) {
+  if (!decoded.roles.includes(roles.teacherRead) && !decoded.roles.includes(roles.readAll)) {
     logger('info', ['Missing required role for access'])
     return httpResponse(403, 'Missing required role for access')
   }

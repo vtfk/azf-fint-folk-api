@@ -1,6 +1,6 @@
 module.exports = {
   fint: {
-    url: process.env.FINT_URL ?? 'url til fint prod miljø',
+    url: process.env.FINT_URL ?? 'url til fint miljø',
     clientId: process.env.FINT_CLIENT_ID ?? 'klient id',
     clientSecret: process.env.FINT_CLIENT_SECRET ?? 'klient secret',
     username: process.env.FINT_USERNAME ?? 'klient brukernavn',
@@ -9,6 +9,7 @@ module.exports = {
     scope: process.env.FINT_SCOPE ?? 'scope for token'
   },
   roles: {
+    readAll: process.env.ROLES_READ_ALL ?? 'Read.All',
     teacherRead: process.env.ROLES_TEACHER_READ ?? 'Teacher.Read',
     employeeRead: process.env.ROLES_EMPLOYEE_READ ?? 'Employee.Read',
     studentRead: process.env.ROLES_EMPLOYEE_READ ?? 'Student.Read',

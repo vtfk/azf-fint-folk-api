@@ -38,7 +38,7 @@ module.exports = async function (context, req) {
   if (!validIdentifiers.includes(identifikator)) return httpResponse(400, `Query param ${identifikator} is not valid - must be ${validIdentifiers.join(' or ')}`)
 
   logger('info', ['Validating role'])
-  if (!decoded.roles.includes(roles.organizationRead)) {
+  if (!decoded.roles.includes(roles.organizationRead) && !decoded.roles.includes(roles.readAll)) {
     logger('info', ['Missing required role for access'])
     return httpResponse(403, 'Missing required role for access')
   }
