@@ -1,7 +1,7 @@
 {
   "bindings": [
     {
-      "authLevel": "function",
+      "authLevel": "anonymous",
       "type": "httpTrigger",
       "direction": "in",
       "route": "organization/{identifikator}/{identifikatorverdi?}",
