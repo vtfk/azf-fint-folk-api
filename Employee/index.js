@@ -90,7 +90,7 @@ module.exports = async function (context, req) {
     const result = req.query.includeRaw === 'true' ? { ...res.repacked, raw: res.raw } : res.repacked
     return httpResponse(200, result)
   } catch (error) {
-    logger('error', [error], context)
-    return { status: 500, body: error.toString() }
+    logger('error', ['Failed when getting employee from FINT', error.response?.data || error.stack || error.toString()], context)
+    return httpResponse(500, error)
   }
 }
