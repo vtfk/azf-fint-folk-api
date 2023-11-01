@@ -66,19 +66,6 @@ module.exports = (feidenavn) => {
               }
             }
             hovedskole
-            programomrade {
-              navn
-              systemId {
-                identifikatorverdi
-              }
-              utdanningsprogram {
-                systemId {
-                  identifikatorverdi
-                }
-                navn
-                grepreferanse
-              }
-            }
             gyldighetsperiode {
               start
               slutt
@@ -87,7 +74,24 @@ module.exports = (feidenavn) => {
               kode
               navn
             }
+            programomrademedlemskap {
+              gyldighetsperiode { start slutt }
+              programomrade {
+                navn
+                systemId {
+                  identifikatorverdi
+                }
+                utdanningsprogram {
+                  systemId {
+                    identifikatorverdi
+                  }
+                  navn
+                  grepreferanse
+                }
+              }
+            }
             basisgruppemedlemskap {
+              gyldighetsperiode { start slutt }
               basisgruppe {
                 navn
                 termin {
@@ -138,46 +142,49 @@ module.exports = (feidenavn) => {
                 }
               }
             }
-            undervisningsgruppe {
-              navn
-              termin {
-                kode
-                gyldighetsperiode { start slutt }
-              }
-              skolear {
-                kode
-                gyldighetsperiode { start slutt }
-              }
-              skole {
+            undervisningsgruppemedlemskap {
+              gyldighetsperiode { start slutt }
+              undervisningsgruppe {
                 navn
-                skolenummer {
-                  identifikatorverdi
+                termin {
+                  kode
+                  gyldighetsperiode { start slutt }
                 }
-              }
-              fag {
+                skolear {
+                  kode
+                  gyldighetsperiode { start slutt }
+                }
+                skole {
+                  navn
+                  skolenummer {
+                    identifikatorverdi
+                  }
+                }
+                fag {
+                  systemId {
+                    identifikatorverdi
+                  }
+                  navn
+                  grepreferanse
+                }
                 systemId {
                   identifikatorverdi
                 }
-                navn
-                grepreferanse
-              }
-              systemId {
-                identifikatorverdi
-              }
-              undervisningsforhold {
-                skoleressurs {
-                  feidenavn {
-                    identifikatorverdi
-                  }
-                  personalressurs {
-                    ansattnummer {
+                undervisningsforhold {
+                  skoleressurs {
+                    feidenavn {
                       identifikatorverdi
                     }
-                    person {
-                      navn {
-                        fornavn
-                        mellomnavn
-                        etternavn
+                    personalressurs {
+                      ansattnummer {
+                        identifikatorverdi
+                      }
+                      person {
+                        navn {
+                          fornavn
+                          mellomnavn
+                          etternavn
+                        }
                       }
                     }
                   }
@@ -185,6 +192,7 @@ module.exports = (feidenavn) => {
               }
             }
             faggruppemedlemskap {
+              gyldighetsperiode { start slutt }
 							faggruppe {
 								navn
 								systemId {
@@ -199,39 +207,42 @@ module.exports = (feidenavn) => {
 								}
 							}
 						}
-            kontaktlarergruppe {
-              navn
-              systemId {
-                identifikatorverdi
-              }
-              termin {
-                kode
-                gyldighetsperiode { start slutt }
-              }
-              skolear {
-                kode
-                gyldighetsperiode { start slutt }
-              }
-              skole {
+            kontaktlarergruppemedlemskap {
+              gyldighetsperiode { start slutt }
+              kontaktlarergruppe {
                 navn
-                skolenummer {
+                systemId {
                   identifikatorverdi
                 }
-              }
-              undervisningsforhold {
-                skoleressurs {
-                  feidenavn {
+                termin {
+                  kode
+                  gyldighetsperiode { start slutt }
+                }
+                skolear {
+                  kode
+                  gyldighetsperiode { start slutt }
+                }
+                skole {
+                  navn
+                  skolenummer {
                     identifikatorverdi
                   }
-                  personalressurs {
-                    ansattnummer {
+                }
+                undervisningsforhold {
+                  skoleressurs {
+                    feidenavn {
                       identifikatorverdi
                     }
-                    person {
-                      navn {
-                        fornavn
-                        mellomnavn
-                        etternavn
+                    personalressurs {
+                      ansattnummer {
+                        identifikatorverdi
+                      }
+                      person {
+                        navn {
+                          fornavn
+                          mellomnavn
+                          etternavn
+                        }
                       }
                     }
                   }

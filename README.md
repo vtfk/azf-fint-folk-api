@@ -100,32 +100,45 @@ GET https://{base_url}/student/fodselsnummer/12345678910
           "organisasjonsId": "87",
           "hovedskole": true
         },
-        "programomrade": {
-          "navn": "Tømrer",
-          "systemId": {
-            "identifikatorverdi": "BATMF2----"
-          },
-          "utdanningsprogram": [
-            {
-              "systemId": {
-                "identifikatorverdi": "BA"
-              },
-              "navn": "Bygg- og anleggsteknikk",
-              "grepreferanse": [
-                "https://psi.udir.no/kl06/BA"
-              ]
-            }
-          ]
-        },
         "kategori": {
           "kode": "2",
           "navn": "heltid"
         },
-        "basisgrupper": [
+        "programomrademedlemskap": [
           {
+            "medlemskapgyldighetsperiode": {
+              "start": "2023-08-21T00:00:00Z",
+              "slutt": "9999-12-31T00:00:00Z",
+              "aktiv": true
+            },
+            "aktiv": true,
+            "navn": "Tømrer",
+            "systemId": {
+              "identifikatorverdi": "BATMF2----"
+            },
+            "utdanningsprogram": [
+              {
+                "systemId": {
+                  "identifikatorverdi": "BA"
+                },
+                "navn": "Bygg- og anleggsteknikk",
+                "grepreferanse": [
+                  "https://psi.udir.no/kl06/BA"
+                ]
+              }
+            ]
+          }
+        ],
+        "basisgruppemedlemskap": [
+          {
+            "medlemskapgyldighetsperiode": {
+              "start": "2023-08-21T00:00:00Z",
+              "slutt": "9999-12-31T00:00:00Z",
+              "aktiv": true
+            },
             "navn": "2TMA",
             "systemId": "1476223",
-            "aktiv": true,
+            "aktiv": true, // Om både medlemskap og basisgruppen er aktiv
             "trinn": "VG2",
             "skole": {
               "navn": "Mordor videregående skole",
@@ -170,11 +183,16 @@ GET https://{base_url}/student/fodselsnummer/12345678910
             ]
           }
         ],
-        "undervisningsgrupper": [
+        "undervisningsgruppemedlemskap": [
           {
+            "medlemskapgyldighetsperiode": {
+              "start": "2023-08-21T00:00:00Z",
+              "slutt": "9999-12-31T00:00:00Z",
+              "aktiv": true
+            },
             "navn": "2TMA/KRO1018",
             "systemId": "12029734",
-            "aktiv": true,
+            "aktiv": true, // Om både medlemskap og undervisningsgruppen er aktiv
             "fag": [
               {
                 "systemId": {
@@ -229,8 +247,14 @@ GET https://{base_url}/student/fodselsnummer/12345678910
             ]
           }
         ],
-        "faggrupper": [
+        "faggruppemedlemskap": [
           {
+            "medlemskapgyldighetsperiode": {
+              "start": "2023-08-21T00:00:00Z",
+              "slutt": "9999-12-31T00:00:00Z",
+              "aktiv": true
+            },
+            "aktiv": true, // Om både medlemskapet er aktivt
             "navn": "B6/REA3036",
             "systemId": "48889",
             "fag": {
@@ -257,11 +281,16 @@ GET https://{base_url}/student/fodselsnummer/12345678910
             }
           }
         ],
-        "kontaktlarergrupper": [
+        "kontaktlarergruppemedlemskap": [
           {
+            "medlemskapgyldighetsperiode": {
+              "start": "2023-08-21T00:00:00Z",
+              "slutt": "9999-12-31T00:00:00Z",
+              "aktiv": true
+            },
             "navn": "2TMA",
             "systemId": "1476214_528823",
-            "aktiv": true,
+            "aktiv": true, // Om både medlemskap og kontaktlærergruppen er aktiv
             "skole": {
               "navn": "Mordor videregående skole",
               "skolenummer": "123456",
