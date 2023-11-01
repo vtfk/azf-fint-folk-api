@@ -12,7 +12,7 @@ module.exports = {
     readAll: process.env.ROLES_READ_ALL ?? 'Read.All',
     teacherRead: process.env.ROLES_TEACHER_READ ?? 'Teacher.Read',
     employeeRead: process.env.ROLES_EMPLOYEE_READ ?? 'Employee.Read',
-    studentRead: process.env.ROLES_EMPLOYEE_READ ?? 'Student.Read',
+    studentRead: process.env.ROLES_STUDENT_READ ?? 'Student.Read',
     personRead: process.env.ROLES_PERSON_READ ?? 'Person.Read',
     organizationRead: process.env.ROLES_ORGANIZATION_READ ?? 'Organization.Read'
   },
