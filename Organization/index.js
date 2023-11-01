@@ -45,8 +45,8 @@ module.exports = async function (context, req) {
       const result = req.query.includeRaw === 'true' ? { ...res.repacked, raw: res.raw } : res.repacked
       return httpResponse(200, result)
     } catch (error) {
-      logger('error', [error], context)
-      return { status: 500, body: error.toString() }
+      logger('error', ['Failed when fetching organization structure from FINT', error.response?.data || error.stack || error.toString()], context)
+      return httpResponse(500, error)
     }
   }
 
@@ -59,8 +59,8 @@ module.exports = async function (context, req) {
       const result = req.query.includeRaw === 'true' ? { flat: res.repacked.reverse(), raw: res.raw } : res.repacked.reverse()
       return httpResponse(200, result)
     } catch (error) {
-      logger('error', error.response?.data || error.stack || error.toString(), context)
-      return { status: 500, body: error.toString() }
+      logger('error', ['Failed when fetching flat organization structure from FINT', error.response?.data || error.stack || error.toString()], context)
+      return httpResponse(500, error)
     }
   }
 
@@ -71,7 +71,7 @@ module.exports = async function (context, req) {
     const result = req.query.includeRaw === 'true' ? { ...res.repacked, raw: res.raw } : res.repacked
     return httpResponse(200, result)
   } catch (error) {
-    logger('error', [error], context)
-    return { status: 500, body: error.toString() }
+    logger('error', ['Failed when fetching organization from FINT', error.response?.data || error.stack || error.toString()], context)
+    return httpResponse(500, error)
   }
 }
