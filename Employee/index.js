@@ -14,7 +14,7 @@ module.exports = async function (context, req) {
   logger('info', ['New Request. Validating token'], context)
   const decoded = decodeAccessToken(req.headers.authorization)
   if (!decoded.verified) {
-    logger('warn', ['Token is not valid', decoded.msg])
+    logger('warn', ['Token is not valid', decoded.msg], context)
     return httpResponse(401, decoded.msg)
   }
   logConfig({
