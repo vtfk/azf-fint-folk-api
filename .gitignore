@@ -131,6 +131,11 @@ dist
 
 # Local settings
 local.settings.json
+*local.settings.json
 
 # Local notes
 localnotes.md
+
+# Local cache
+.token-cache
+.response-cache

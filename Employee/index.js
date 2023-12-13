@@ -6,6 +6,8 @@ const { roles } = require('../config')
 const { getAnsattnummer } = require('../lib/requests/call-graph')
 const { fintGraph } = require('../lib/requests/call-fint')
 const { isAnsattnummer, isEmail, isFnr } = require('../lib/helpers/identifikator-type')
+const { getResponse, setResponse } = require('../lib/response-cache')
+
 
 module.exports = async function (context, req) {
   logConfig({
@@ -40,6 +42,12 @@ module.exports = async function (context, req) {
     return httpResponse(403, 'Missing required role for access')
   }
   logger('info', ['Role validated'], context)
+
+  // Cache
+  if (!req.query.skipCache) {
+    const cachedResponse = getResponse(req.url, context)
+    if (cachedResponse) return httpResponse(200, cachedResponse)
+  }
 
   let ansattnummer
   // If getting with upn
@@ -88,6 +96,7 @@ module.exports = async function (context, req) {
     const res = await fintEmployee(ansattnummer, context)
     if (!res) return httpResponse(404, 'No employee with provided identificator found in FINT')
     const result = req.query.includeRaw === 'true' ? { ...res.repacked, raw: res.raw } : res.repacked
+    if (!req.query.skipCache) setResponse(req.url, result, context) // Cache result
     return httpResponse(200, result)
   } catch (error) {
     logger('error', ['Failed when getting employee from FINT', error.response?.data || error.stack || error.toString()], context)

@@ -22,6 +22,10 @@ module.exports = {
     tenantId: process.env.GRAPH_TENANT_ID ?? 'tenant id',
     scope: process.env.GRAPH_SCOPE ?? 'etSkikkeligSkuup'
   },
+  responseCache: {
+    ttl: (process.env.RESPONSE_CACHE_TTL && Number(process.env.RESPONSE_CACHE_TTL)) ?? 3600, // Seconds
+    enabled: process.env.RESPONSE_CACHE_ENABLED || true
+  },
   graphUrl: process.env.GRAPH_URL ?? 'url til graph',
   feidenavnDomain: process.env.FEIDENAVN_DOMAIN ?? '@domene.com',
   employeeNumberExtenstionAttribute: process.env.EMPLOYEE_NUMBER_EXTENSION_ATTRIBUTE ?? 'extensionAttributeX',
