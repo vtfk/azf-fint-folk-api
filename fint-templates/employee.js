@@ -126,6 +126,9 @@ module.exports = (ansattnummer) => {
 								ansattnummer {
 									identifikatorverdi
 								}
+								kontaktinformasjon {
+									epostadresse
+								}
 								person {
 									navn {
 										fornavn
@@ -143,6 +146,9 @@ module.exports = (ansattnummer) => {
 								leder {
 									ansattnummer {
 										identifikatorverdi
+									}
+									kontaktinformasjon {
+										epostadresse
 									}
 									person {
 										navn {
@@ -162,24 +168,8 @@ module.exports = (ansattnummer) => {
 										ansattnummer {
 											identifikatorverdi
 										}
-										person {
-											navn {
-												fornavn
-												mellomnavn
-												etternavn
-											}
-										}
-									}
-								}
-								overordnet {
-									kortnavn
-									navn
-									organisasjonsId {
-										identifikatorverdi
-									}
-									leder {
-										ansattnummer {
-											identifikatorverdi
+										kontaktinformasjon {
+											epostadresse
 										}
 										person {
 											navn {
@@ -200,24 +190,8 @@ module.exports = (ansattnummer) => {
 										ansattnummer {
 											identifikatorverdi
 										}
-										person {
-											navn {
-												fornavn
-												mellomnavn
-												etternavn
-											}
-										}
-									}
-								}
-								overordnet {
-									kortnavn
-									navn
-									organisasjonsId {
-										identifikatorverdi
-									}
-									leder {
-										ansattnummer {
-											identifikatorverdi
+										kontaktinformasjon {
+											epostadresse
 										}
 										person {
 											navn {
@@ -237,6 +211,53 @@ module.exports = (ansattnummer) => {
 									leder {
 										ansattnummer {
 											identifikatorverdi
+										}
+										kontaktinformasjon {
+											epostadresse
+										}
+										person {
+											navn {
+												fornavn
+												mellomnavn
+												etternavn
+											}
+										}
+									}
+								}
+								overordnet {
+									kortnavn
+									navn
+									organisasjonsId {
+										identifikatorverdi
+									}
+									leder {
+										ansattnummer {
+											identifikatorverdi
+										}
+										kontaktinformasjon {
+											epostadresse
+										}
+										person {
+											navn {
+												fornavn
+												mellomnavn
+												etternavn
+											}
+										}
+									}
+								}
+								overordnet {
+									kortnavn
+									navn
+									organisasjonsId {
+										identifikatorverdi
+									}
+									leder {
+										ansattnummer {
+											identifikatorverdi
+										}
+										kontaktinformasjon {
+											epostadresse
 										}
 										person {
 											navn {
@@ -256,6 +277,9 @@ module.exports = (ansattnummer) => {
 											ansattnummer {
 												identifikatorverdi
 											}
+											kontaktinformasjon {
+												epostadresse
+											}
 											person {
 												navn {
 													fornavn
@@ -273,6 +297,9 @@ module.exports = (ansattnummer) => {
 											leder {
 												ansattnummer {
 													identifikatorverdi
+												}
+												kontaktinformasjon {
+													epostadresse
 												}
 												person {
 													navn {
@@ -292,6 +319,9 @@ module.exports = (ansattnummer) => {
 													ansattnummer {
 														identifikatorverdi
 													}
+													kontaktinformasjon {
+														epostadresse
+													}
 													person {
 														navn {
 															fornavn
@@ -310,6 +340,9 @@ module.exports = (ansattnummer) => {
 														ansattnummer {
 															identifikatorverdi
 														}
+														kontaktinformasjon {
+															epostadresse
+														}
 														person {
 															navn {
 																fornavn
@@ -327,6 +360,9 @@ module.exports = (ansattnummer) => {
 														leder {
 															ansattnummer {
 																identifikatorverdi
+															}
+															kontaktinformasjon {
+																epostadresse
 															}
 															person {
 																navn {
