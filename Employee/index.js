@@ -8,7 +8,6 @@ const { fintGraph } = require('../lib/requests/call-fint')
 const { isAnsattnummer, isEmail, isFnr } = require('../lib/helpers/identifikator-type')
 const { getResponse, setResponse } = require('../lib/response-cache')
 
-
 module.exports = async function (context, req) {
   logConfig({
     prefix: 'azf-fint-folk - Employee'
