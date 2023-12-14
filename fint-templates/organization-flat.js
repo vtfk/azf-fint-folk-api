@@ -5,6 +5,9 @@ module.exports = () => {
 		organisasjonsId {
 			identifikatorverdi
 		}
+		organisasjonsKode {
+			identifikatorverdi
+		}
 		gyldighetsperiode {
 			start
 			slutt
