@@ -55,6 +55,9 @@ module.exports = (identifikator, identifikatorverdi) => {
 						organisasjonsId {
 							identifikatorverdi
 						}
+						organisasjonsKode {
+							identifikatorverdi
+						}
 						gyldighetsperiode {
 							start
 							slutt
@@ -64,6 +67,9 @@ module.exports = (identifikator, identifikatorverdi) => {
 					}
 					underordnet {
 						organisasjonsId {
+							identifikatorverdi
+						}
+						organisasjonsKode {
 							identifikatorverdi
 						}
 						gyldighetsperiode {
