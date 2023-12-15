@@ -8,6 +8,7 @@ API for getting predifned data from FINT (easier usage - predefined graph-templa
 
 ## Optional query params
 - *?includeRaw=true* Defaults to false. Can be used on **all endpoints** (if you want to include the raw data from FINT in the response)
+- *?skipCache=true* Defaults to false/undefined. Can be used on **all endpoints**. If you want latest data and not from cache. Cache is maximum RESPONSE_CACHE_TTL seconds old (default 1 hour)
 - *?includeInactiveEmployees=true* Defaults to false. Can be used on **/organization/{identifikator}/{identifikatorverdi}** (if you want to include inactive "arbeidsforhold" in the response)
 - *?includeInactiveUnits=true* Defaults to false. Can be used on **/organization/flat** and **/organization/structure** (if you want to include inactive "organisasjonselement" in the response)
 
@@ -671,6 +672,11 @@ GET https://{base_url}/employee/fodselsnummer/12345678910
 				"kode": "420",
 				"navn": "Administrasjon"
 			},
+      "narmesteLeder": {
+        "navn": "Grev Farquaad",
+        "kontaktEpostadresse": "grev.farquaad@domene.no",
+        "ansattnummer": "2343455"
+      },
 			"arbeidssted": {
 				"organisasjonsId": "1234",
 				"kortnavn": "SHREK-TEK",
@@ -678,6 +684,7 @@ GET https://{base_url}/employee/fodselsnummer/12345678910
 				"organisasjonsKode": "11200-23",
 				"leder": {
 					"navn": "Grev Farquaad",
+          "kontaktEpostadresse": "grev.farquaad@domene.no",
 					"ansattnummer": "2343455"
 				}
 			},
@@ -688,6 +695,7 @@ GET https://{base_url}/employee/fodselsnummer/12345678910
 					"organisasjonsId": "1234",
 					"leder": {
 						"navn": "Grev Farquaad",
+            "kontaktEpostadresse": "grev.farquaad@domene.no",
 						"ansattnummer": "2343455"
 					}
 				},
@@ -697,6 +705,7 @@ GET https://{base_url}/employee/fodselsnummer/12345678910
 					"organisasjonsId": "1",
 					"leder": {
 						"navn": "Drømmeprinsen",
+            "kontaktEpostadresse": "drommeprinsen@domene.no",
 						"ansattnummer": "324435445"
 					}
 				}
@@ -826,6 +835,7 @@ GET https://{base_url}/organization/organisasjonsKode/1950-23
   "ansvar": [],
   "overordnet": {
     "organisasjonsId": "31",
+    "organisasjonsKode": "11210",
     "aktiv": true,
     "gyldighetsperiode": {
       "start": "2019-11-01T00:00:00Z",
@@ -912,6 +922,7 @@ GET https://{base_url}/organization/structure
 ```json
 {
   "organisasjonsId": "hoved",
+  "organisasjonsKode": "selskapId_1",
   "gyldighetsperiode": {
     "start": "2019-01-01T00:00:00Z",
     "slutt": null,
@@ -928,6 +939,7 @@ GET https://{base_url}/organization/structure
   "underordnet": [
     {
       "organisasjonsId": "6",
+      "organisasjonsKode": "11210-10",
       "gyldighetsperiode": {
         "start": "2019-11-01T00:00:00Z",
         "slutt": null,
@@ -944,6 +956,7 @@ GET https://{base_url}/organization/structure
       "underordnet": [
         {
           "organisasjonsId": "19",
+          "organisasjonsKode": "11210-10-1",
           "gyldighetsperiode": {
             "start": "2019-11-01T00:00:00Z",
             "slutt": null,
@@ -997,6 +1010,7 @@ GET https://{base_url}/organization/flat
 [
   {
     "organisasjonsId": "hoved",
+    "organisasjonsKode": "selskapId_1",
     "gyldighetsperiode": {
       "start": "2019-01-01T00:00:00Z",
       "slutt": null,
@@ -1013,6 +1027,7 @@ GET https://{base_url}/organization/flat
     "overordnet": {
       "aktiv": true,
       "organisasjonsId": "hoved",
+      "organisasjonsKode": "selskapId_1",
       "gyldighetsperiode": {
         "start": "2019-01-01T00:00:00Z",
         "slutt": null,
@@ -1028,6 +1043,7 @@ GET https://{base_url}/organization/flat
     "overordnet": {
       "aktiv": true,
       "organisasjonsId": "hoved",
+      "organisasjonsKode": "selskapId_1",
       "gyldighetsperiode": {
         "start": "2019-11-01T00:00:00Z",
         "slutt": null,
@@ -1037,6 +1053,7 @@ GET https://{base_url}/organization/flat
       "kortnavn": null
     },
     "organisasjonsId": "6",
+    "organisasjonsKode": "11210-10",
     "gyldighetsperiode": {
       "start": "2019-11-01T00:00:00Z",
       "slutt": null,
@@ -1057,6 +1074,7 @@ GET https://{base_url}/organization/flat
     "overordnet": {
       "aktiv": true,
       "organisasjonsId": "6",
+      "organisasjonsKode": "11210-10",
       "gyldighetsperiode": {
         "start": "2019-11-01T00:00:00Z",
         "slutt": null,
@@ -1066,6 +1084,7 @@ GET https://{base_url}/organization/flat
       "kortnavn": "SHREK"
     },
     "organisasjonsId": "15",
+    "organisasjonsKode": "11210-10-1",
     "gyldighetsperiode": {
       "start": "2019-11-01T00:00:00Z",
       "slutt": null,
@@ -1086,6 +1105,7 @@ GET https://{base_url}/organization/flat
     "overordnet": {
       "aktiv": true,
       "organisasjonsId": "6",
+      "organisasjonsKode": "11210-10",
       "gyldighetsperiode": {
         "start": "2019-11-01T00:00:00Z",
         "slutt": null,
@@ -1095,6 +1115,7 @@ GET https://{base_url}/organization/flat
       "kortnavn": "SHREK"
     },
     "organisasjonsId": "16",
+    "organisasjonsKode": "11210-10-2",
     "gyldighetsperiode": {
       "start": "2019-11-01T00:00:00Z",
       "slutt": null,
@@ -1140,7 +1161,10 @@ GET https://{base_url}/organization/flat
     "GRAPH_CLIENT_ID": "app reg client id",
     "GRAPH_URL": "https://graph.microsoft.com/v1.0",
     "FEIDENAVN_DOMAIN": "what is the feidenavn domain for your users",
-    "EMPLOYEE_NUMBER_EXTENSION_ATTRIBUTE": "in which extension attribute do you store ansattnummer for users"
+    "EMPLOYEE_NUMBER_EXTENSION_ATTRIBUTE": "in which extension attribute do you store ansattnummer for users",
+    "RESPONSE_CACHE_ENABLED": "true/false",
+    "RESPONSE_CACHE_TTL": "3600 (seconds to keep responses i cache)",
+    "TOP_UNIT_ID": "hoved (id for top organization unit)"
   }
 }
 ```
