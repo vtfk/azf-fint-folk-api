@@ -130,6 +130,9 @@ module.exports = (feidenavn) => {
                       ansattnummer {
                         identifikatorverdi
                       }
+                      kontaktinformasjon {
+                        epostadresse
+                      }
                       person {
                         navn {
                           fornavn
@@ -178,6 +181,9 @@ module.exports = (feidenavn) => {
                     personalressurs {
                       ansattnummer {
                         identifikatorverdi
+                      }
+                      kontaktinformasjon {
+                        epostadresse
                       }
                       person {
                         navn {
@@ -236,6 +242,9 @@ module.exports = (feidenavn) => {
                     personalressurs {
                       ansattnummer {
                         identifikatorverdi
+                      }
+                      kontaktinformasjon {
+                        epostadresse
                       }
                       person {
                         navn {
