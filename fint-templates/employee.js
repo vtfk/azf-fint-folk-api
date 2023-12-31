@@ -143,6 +143,9 @@ module.exports = (ansattnummer) => {
 								organisasjonsId {
 									identifikatorverdi
 								}
+								organisasjonsKode {
+									identifikatorverdi
+								}
 								leder {
 									ansattnummer {
 										identifikatorverdi
@@ -164,26 +167,7 @@ module.exports = (ansattnummer) => {
 									organisasjonsId {
 										identifikatorverdi
 									}
-									leder {
-										ansattnummer {
-											identifikatorverdi
-										}
-										kontaktinformasjon {
-											epostadresse
-										}
-										person {
-											navn {
-												fornavn
-												mellomnavn
-												etternavn
-											}
-										}
-									}
-								}
-								overordnet {
-									kortnavn
-									navn
-									organisasjonsId {
+									organisasjonsKode {
 										identifikatorverdi
 									}
 									leder {
@@ -208,26 +192,7 @@ module.exports = (ansattnummer) => {
 									organisasjonsId {
 										identifikatorverdi
 									}
-									leder {
-										ansattnummer {
-											identifikatorverdi
-										}
-										kontaktinformasjon {
-											epostadresse
-										}
-										person {
-											navn {
-												fornavn
-												mellomnavn
-												etternavn
-											}
-										}
-									}
-								}
-								overordnet {
-									kortnavn
-									navn
-									organisasjonsId {
+									organisasjonsKode {
 										identifikatorverdi
 									}
 									leder {
@@ -250,6 +215,59 @@ module.exports = (ansattnummer) => {
 									kortnavn
 									navn
 									organisasjonsId {
+										identifikatorverdi
+									}
+									organisasjonsKode {
+										identifikatorverdi
+									}
+									leder {
+										ansattnummer {
+											identifikatorverdi
+										}
+										kontaktinformasjon {
+											epostadresse
+										}
+										person {
+											navn {
+												fornavn
+												mellomnavn
+												etternavn
+											}
+										}
+									}
+								}
+								overordnet {
+									kortnavn
+									navn
+									organisasjonsId {
+										identifikatorverdi
+									}
+									organisasjonsKode {
+										identifikatorverdi
+									}
+									leder {
+										ansattnummer {
+											identifikatorverdi
+										}
+										kontaktinformasjon {
+											epostadresse
+										}
+										person {
+											navn {
+												fornavn
+												mellomnavn
+												etternavn
+											}
+										}
+									}
+								}
+								overordnet {
+									kortnavn
+									navn
+									organisasjonsId {
+										identifikatorverdi
+									}
+									organisasjonsKode {
 										identifikatorverdi
 									}
 									leder {
@@ -273,6 +291,9 @@ module.exports = (ansattnummer) => {
 										organisasjonsId {
 											identifikatorverdi
 										}
+										organisasjonsKode {
+											identifikatorverdi
+										}
 										leder {
 											ansattnummer {
 												identifikatorverdi
@@ -292,6 +313,9 @@ module.exports = (ansattnummer) => {
 											kortnavn
 											navn
 											organisasjonsId {
+												identifikatorverdi
+											}
+											organisasjonsKode {
 												identifikatorverdi
 											}
 											leder {
@@ -315,6 +339,9 @@ module.exports = (ansattnummer) => {
 												organisasjonsId {
 													identifikatorverdi
 												}
+												organisasjonsKode {
+													identifikatorverdi
+												}
 												leder {
 													ansattnummer {
 														identifikatorverdi
@@ -336,6 +363,9 @@ module.exports = (ansattnummer) => {
 													organisasjonsId {
 														identifikatorverdi
 													}
+													organisasjonsKode {
+														identifikatorverdi
+													}
 													leder {
 														ansattnummer {
 															identifikatorverdi
@@ -355,6 +385,9 @@ module.exports = (ansattnummer) => {
 														kortnavn
 														navn
 														organisasjonsId {
+															identifikatorverdi
+														}
+														organisasjonsKode {
 															identifikatorverdi
 														}
 														leder {
