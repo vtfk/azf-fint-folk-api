@@ -114,9 +114,7 @@ GET https://{base_url}/student/fodselsnummer/12345678910
             },
             "aktiv": true,
             "navn": "Tømrer",
-            "systemId": {
-              "identifikatorverdi": "BATMF2----"
-            },
+            "systemId": "BATMF2----",
             "utdanningsprogram": [
               {
                 "systemId": {
