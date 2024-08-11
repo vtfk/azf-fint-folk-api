@@ -9,7 +9,7 @@
   },
   "dependencies": {
     "@azure/msal-node": "^1.17.1",
-    "@vtfk/logger": "^5.0.2",
+    "@vtfk/logger": "^6.1.0",
     "axios": "^1.2.3",
     "client-oauth2": "^4.3.3",
     "file-system-cache": "^2.4.4",
