@@ -28,6 +28,7 @@ module.exports = {
   },
   graphUrl: process.env.GRAPH_URL ?? 'url til graph',
   feidenavnDomain: process.env.FEIDENAVN_DOMAIN ?? '@domene.com',
+  studentUpnSuffix: process.env.STUDENT_UPN_SUFFIX ?? '@skole.fylke.no',
   employeeNumberExtenstionAttribute: process.env.EMPLOYEE_NUMBER_EXTENSION_ATTRIBUTE ?? 'extensionAttributeX',
   topUnitId: process.env.TOP_UNIT_ID ?? 'hoved'
 }

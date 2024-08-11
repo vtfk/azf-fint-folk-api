@@ -3,8 +3,7 @@ const { logger, logConfig } = require('@vtfk/logger')
 const { decodeAccessToken } = require('../lib/helpers/decode-access-token')
 const httpResponse = require('../lib/requests/http-response')
 const { isEmail, isFnr } = require('../lib/helpers/identifikator-type')
-const { roles } = require('../config')
-const { getFeidenavn } = require('../lib/requests/call-graph')
+const { roles, studentUpnSuffix, feidenavnDomain } = require('../config')
 const { fintGraph } = require('../lib/requests/call-fint')
 const { getResponse, setResponse } = require('../lib/response-cache')
 
@@ -51,12 +50,14 @@ module.exports = async function (context, req) {
   let feidenavn
   // If getting with upn
   if (identifikator === 'upn') {
-    logger('info', ['Queryparam is type "upn", fetching feidenavn from AzureAD'], context)
+    logger('info', ['Queryparam is type "upn", simply creating feidenavn from given upn'], context)
     try {
-      feidenavn = await getFeidenavn(identifikatorverdi, context)
+      if (!identifikatorverdi.endsWith(studentUpnSuffix)) throw new Error(`Student upn must end with ${studentUpnSuffix}`)
+      const feidenavnPrefix = identifikatorverdi.substring(0, identifikatorverdi.indexOf('@'))
+      feidenavn = `${feidenavnPrefix}${feidenavnDomain}`
       logger('info', [`Got feidenavn: ${feidenavn}`], context)
     } catch (error) {
-      logger('error', ['Failed when getting feidenavn from AzureAD', error.response?.data || error.stack || error.toString()], context)
+      logger('error', ['Failed when constructing feidenavn', error.response?.data || error.stack || error.toString()], context)
       return httpResponse(500, error)
     }
   }
