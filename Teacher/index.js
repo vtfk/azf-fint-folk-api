@@ -94,7 +94,8 @@ module.exports = async function (context, req) {
   if (identifikator === 'feidenavn') feidenavn = identifikatorverdi
 
   try {
-    const res = await fintTeacher(feidenavn, context)
+    const includeStudentSsn = req.query.includeStudentSsn === 'true'
+    const res = await fintTeacher(feidenavn, includeStudentSsn, context)
     if (!res) return httpResponse(404, 'No teacher with provided identificator found in FINT')
     const result = req.query.includeRaw === 'true' ? { ...res.repacked, raw: res.raw } : res.repacked
     if (!req.query.skipCache) setResponse(req.url, result, context) // Cache result

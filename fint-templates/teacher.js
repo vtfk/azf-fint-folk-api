@@ -1,4 +1,4 @@
-module.exports = (feidenavn) => {
+module.exports = (feidenavn, includeStudentSsn) => {
   return {
     query: `
       query {
@@ -117,6 +117,7 @@ module.exports = (feidenavn) => {
                 elevforhold {
                   elev {
                     person {
+                      ${includeStudentSsn ? 'fodselsnummer { identifikatorverdi }' : ''}
                       navn {
                         fornavn
                         mellomnavn
@@ -195,6 +196,7 @@ module.exports = (feidenavn) => {
               elevforhold {
                 elev {
                   person {
+                    ${includeStudentSsn ? 'fodselsnummer { identifikatorverdi }' : ''}
                     navn {
                       fornavn
                       mellomnavn
@@ -218,6 +220,7 @@ module.exports = (feidenavn) => {
                 elevforhold {
                   elev {
                     person {
+                      ${includeStudentSsn ? 'fodselsnummer { identifikatorverdi }' : ''}
                       navn {
                         fornavn
                         mellomnavn
