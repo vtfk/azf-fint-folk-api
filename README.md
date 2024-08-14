@@ -521,6 +521,9 @@ GET https://{base_url}/teacher/feidenavn/larer.laresen@domene.no
             "aktiv": true,
             "fag": [
               {
+		"systemId": {
+		  "KRO1001"
+		}
                 "navn": "Kroppsøving vg2",
                 "grepreferanse": [
                   "https://psi.udir.no/kl06/KRO1018"
