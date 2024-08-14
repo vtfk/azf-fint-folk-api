@@ -51,12 +51,16 @@ module.exports = async function (context, req) {
   let feidenavn
   // If getting with upn
   if (identifikator === 'upn') {
-    logger('info', ['Queryparam is type "upn", fetching feidenavn from AzureAD'], context)
+    logger('info', ['Queryparam is type "upn", fetching feidenavn from EntraID'], context)
     try {
       feidenavn = await getFeidenavn(identifikatorverdi, context)
       logger('info', [`Got feidenavn: ${feidenavn}`], context)
     } catch (error) {
-      logger('error', ['Failed when getting feidenavn from AzureAD', error.response?.data || error.stack || error.toString()], context)
+      if (error.response?.status === 404) {
+        logger('error', ['No user with provided upn found in EntraID', error.response?.data || error.stack || error.toString()], context)
+        return httpResponse(404, 'No user with provided upn found in EntraID')
+      }
+      logger('error', ['Failed when getting feidenavn from EntraID', error.response?.data || error.stack || error.toString()], context)
       return httpResponse(500, error)
     }
   }

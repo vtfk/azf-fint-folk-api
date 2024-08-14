@@ -56,6 +56,10 @@ module.exports = async function (context, req) {
       ansattnummer = await getAnsattnummer(identifikatorverdi)
       logger('info', [`Got ansattnummer: ${ansattnummer}`], context)
     } catch (error) {
+      if (error.response?.status === 404) {
+        logger('error', ['No user with provided upn found in EntraID', error.response?.data || error.stack || error.toString()], context)
+        return httpResponse(404, 'No user with provided upn found in EntraID')
+      }
       logger('error', ['Failed when getting ansattnummer from AzureAD', error.response?.data || error.stack || error.toString()], context)
       return httpResponse(500, error)
     }
