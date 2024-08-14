@@ -181,6 +181,9 @@ module.exports = (feidenavn, includeStudentSsn) => {
                 }
               }
               fag {
+                systemId {
+                  identifikatorverdi
+                }
                 navn
                 grepreferanse
               }
