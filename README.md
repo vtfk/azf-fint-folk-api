@@ -115,6 +115,9 @@ GET https://{base_url}/student/fodselsnummer/12345678910
             "aktiv": true,
             "navn": "Tømrer",
             "systemId": "BATMF2----",
+            "grepreferanse": [
+              "https://psi.udir.no/kl06/BATMF2----"
+            ],
             "utdanningsprogram": [
               {
                 "systemId": {
