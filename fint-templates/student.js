@@ -81,6 +81,7 @@ module.exports = (feidenavn) => {
                 systemId {
                   identifikatorverdi
                 }
+                grepreferanse
                 utdanningsprogram {
                   systemId {
                     identifikatorverdi
