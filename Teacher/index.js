@@ -2,7 +2,7 @@ const { fintTeacher } = require('../lib/fint-teacher')
 const { logger, logConfig } = require('@vtfk/logger')
 const { decodeAccessToken } = require('../lib/helpers/decode-access-token')
 const httpResponse = require('../lib/requests/http-response')
-const { isEmail, isFnr } = require('../lib/helpers/identifikator-type')
+const { isEmail, isFnr, isGuid } = require('../lib/helpers/identifikator-type')
 const { roles } = require('../config')
 const { getFeidenavn, getFeidenavnFromAnsattnummer } = require('../lib/requests/call-graph')
 const { fintGraph } = require('../lib/requests/call-fint')
@@ -32,7 +32,7 @@ module.exports = async function (context, req) {
   if (!validIdentifiers.includes(identifikator)) return httpResponse(400, `Query param ${identifikator} is not valid - must be ${validIdentifiers.join(' or ')}`)
 
   if (identifikator === 'feidenavn' && !isEmail(identifikatorverdi)) return httpResponse(400, '"feidenavn" must be valid email')
-  if (identifikator === 'upn' && !isEmail(identifikatorverdi)) return httpResponse(400, '"upn" must be valid email')
+  if (identifikator === 'upn' && (!isEmail(identifikatorverdi) && !isGuid(identifikatorverdi))) return httpResponse(400, '"upn" must be valid email or guid')
   if (identifikator === 'fodselsnummer' && !isFnr(identifikatorverdi)) return httpResponse(400, 'Property "fodselsnummer" must be 11 characters')
 
   logger('info', ['Validating role'], context)
