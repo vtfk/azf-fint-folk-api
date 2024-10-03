@@ -1,4 +1,4 @@
-module.exports = (schoolNumber, includeUndervisningsgrupper) => {
+module.exports = (schoolNumber, includeStudentSsn, includeUndervisningsgrupper) => {
   // Tabbed out for correct placement in the final query
   const undervisningsgruppeQuery = includeUndervisningsgrupper ? `
           undervisningsgruppe {
@@ -76,6 +76,7 @@ module.exports = (schoolNumber, includeUndervisningsgrupper) => {
             }
             elev {
               person {
+                ${includeStudentSsn ? 'fodselsnummer { identifikatorverdi }' : ''}
                 navn {
                   fornavn
                   mellomnavn
