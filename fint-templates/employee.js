@@ -45,6 +45,8 @@ module.exports = (ansattnummer) => {
             epostadresse
             mobiltelefonnummer
           }
+					`
+					/* Fullmakt for ting til å kræsje...
 					fullmakt {
 						systemId {
 							identifikatorverdi
@@ -68,6 +70,8 @@ module.exports = (ansattnummer) => {
 							beskrivelse
 						}
 					}
+					*/
+					 + `
           arbeidsforhold {
             systemId {
               identifikatorverdi
