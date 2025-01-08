@@ -44,24 +44,6 @@ module.exports = () => {
 										${base}
 										underordnet {
 											${base}
-											underordnet {
-												${base}
-												underordnet {
-													${base}
-													underordnet {
-														${base}
-														underordnet {
-															${base}
-															underordnet {
-																${base}
-																underordnet {
-																	${base}
-																}
-															}
-														}
-													}
-												}
-											}
 										}
 									}
 								}
