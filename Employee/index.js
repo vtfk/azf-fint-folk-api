@@ -31,7 +31,7 @@ module.exports = async function (context, req) {
   const validIdentifiers = ['ansattnummer', 'fodselsnummer', 'upn']
   if (!validIdentifiers.includes(identifikator)) return httpResponse(400, `Query param ${identifikator} is not valid - must be ${validIdentifiers.join(' or ')}`)
 
-  if (identifikator === 'ansattnummer' && !isAnsattnummer(identifikatorverdi)) return httpResponse(400, '"ansattnummer" must be between 7-9 characters')
+  if (identifikator === 'ansattnummer' && !isAnsattnummer(identifikatorverdi)) return httpResponse(400, '"ansattnummer" must be a numerical string, and less than 20 characters')
   if (identifikator === 'upn' && !isEmail(identifikatorverdi)) return httpResponse(400, '"upn" must be valid email')
   if (identifikator === 'fodselsnummer' && !isFnr(identifikatorverdi)) return httpResponse(400, 'Property "fodselsnummer" must be 11 characters')
 
