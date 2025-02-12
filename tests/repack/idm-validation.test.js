@@ -183,12 +183,23 @@ describe('validateRawOrganizationUnits works as expected when', () => {
   })
   test('When some units have broken parent relation link - returns not valid and no units', () => {
     const units = createSimpleOrg()
-    delete units[3]._links.self
-    units[4]._links.self = [{ href: 'tullball' }]
+    units[2]._links.overordnet[0].href = `${url}/administrasjon/organisasjon/organisasjonselement/organisasjonsid/bullshit`
+    units[7]._links.underordnet = [{ href: `${url}/administrasjon/organisasjon/organisasjonselement/organisasjonsid/korok` }]
     const validationResult = validateRawOrganizationUnits(units)
     expect(validationResult.valid).toBe(false)
-    expect(Array.isArray(validationResult.tests.missingSelfOrgIdLink.data)).toBe(true)
-    expect(validationResult.tests.missingSelfOrgIdLink.data.length).toBe(2)
+    expect(Array.isArray(validationResult.tests.brokenParentRelation.data)).toBe(true)
+    expect(validationResult.tests.brokenParentRelation.data.length).toBe(2)
+    expect(validationResult.validUnits).toBe(null)
+  })
+  test('When no top units are present - returns not valid and no units', () => {
+    const units = createSimpleOrg()
+    units.shift() // Remove first top unit (index 0)
+    const secondTopUnit = units.find(unit => unit.organisasjonsId.identifikatorverdi === 'O-39006-A')
+    secondTopUnit._links.overordnet = []
+    const validationResult = validateRawOrganizationUnits(units)
+    expect(validationResult.valid).toBe(false)
+    expect(Array.isArray(validationResult.tests.topUnits.data)).toBe(true)
+    expect(validationResult.tests.topUnits.data.length).toBe(0)
     expect(validationResult.validUnits).toBe(null)
   })
 })
