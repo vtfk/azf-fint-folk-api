@@ -1,52 +1,6 @@
 const { organizationFixed, fint: { url } } = require('../../config')
 const { validateRawOrganizationUnits, validateExceptionRules } = require('../../lib/fint-organization-fixed/idm-validation')
-
-const createTestOrgUnit = (id, overordnetId, underordnetIds) => {
-  if (!id) throw new Error('Missing required parameter "id"')
-  if (id.split('-').length !== 3) throw new Error('Invalid id format')
-  if (!overordnetId) throw new Error('Missing required parameter "overordnetId"')
-  const unit = {
-    organisasjonsId: {
-      identifikatorverdi: id
-    },
-    navn: `Unit med id ${id}`,
-    kortnavn: `U${id}`,
-    organisasjonsKode: {
-      identifikatorverdi: id.split('-')[2]
-    },
-    _links: {
-      overordnet: [
-        {
-          href: `${url}/administrasjon/organisasjon/organisasjonselement/organisasjonsid/${overordnetId}`
-        }
-      ],
-      self: [
-        {
-          href: `${url}/administrasjon/organisasjon/organisasjonselement/organisasjonsid/${id}`
-        }
-      ]
-    }
-  }
-  if (underordnetIds && Array.isArray(underordnetIds) && underordnetIds.length > 0) {
-    unit._links.underordnet = underordnetIds.map(underordnetId => {
-      return {
-        href: `${url}/administrasjon/organisasjon/organisasjonselement/organisasjonsid/${underordnetId}`
-      }
-    })
-  } else {
-    // Bottom level unit, add some arbeidsforhold and shortcode
-    unit._links.arbeidsforhold = [
-      {
-        href: `${url}/administrasjon/personal/arbeidsforhold/systemid/EM-39003-14027402-1-1~~20220815`
-      },
-      {
-        href: `${url}/administrasjon/personal/arbeidsforhold/systemid/EM-39003-14027402-1-1~~20220812`
-      }
-    ]
-    unit.kortnavn = `KORTNAVN-${id.split('-')[2]}`
-  }
-  return unit
-}
+const { createTestOrgUnit } = require('./test-org')
 
 const createSimpleOrg = () => {
   const fakeOrg = [
@@ -54,7 +8,7 @@ const createSimpleOrg = () => {
     {
       id: 'O-39006-hoved',
       overordnet: 'O-39006-hoved',
-      underordnet: ['O-39006-1', 'O-39006-2']
+      underordnet: ['O-39006-1']
     },
     {
       id: 'O-39006-1',
@@ -181,6 +135,17 @@ describe('validateRawOrganizationUnits works as expected when', () => {
     expect(validationResult.tests.missingSelfOrgIdLink.data.length).toBe(2)
     expect(validationResult.validUnits).toBe(null)
   })
+  test('When some units have a child that does not exist - returns not valid and no units', () => {
+    const units = createSimpleOrg()
+    const unitToTweak = units.find(unit => unit.organisasjonsId.identifikatorverdi === 'O-39006-1')
+    unitToTweak._links.underordnet.push({ href: `${url}/administrasjon/organisasjon/organisasjonselement/organisasjonsid/O-39006-tut` })
+    const validationResult = validateRawOrganizationUnits(units)
+    console.log(validationResult.tests.childDoesNotExist.data)
+    expect(validationResult.valid).toBe(false)
+    expect(Array.isArray(validationResult.tests.childDoesNotExist.data)).toBe(true)
+    expect(validationResult.tests.childDoesNotExist.data.length).toBe(1)
+    expect(validationResult.validUnits).toBe(null)
+  })
   test('When some units have broken parent relation link - returns not valid and no units', () => {
     const units = createSimpleOrg()
     units[2]._links.overordnet[0].href = `${url}/administrasjon/organisasjon/organisasjonselement/organisasjonsid/bullshit`
@@ -223,6 +188,17 @@ describe('validateExceptionsRules works as expected when', () => {
             href: `${url}/administrasjon/organisasjon/organisasjonselement/organisasjonsid/O-39006-10001`,
             navn: 'Unit med id O-39006-10001'
           }
+        }
+      },
+      useAbstractAsUnitOverride: {
+        'O-39006-100': {
+          navn: 'Unit med id O-39006-100'
+        }
+      },
+      nameChainOverride: {
+        'O-39006-100': {
+          navn: 'Unit med id O-39006-100',
+          allowedNameChain: ['tutu', 'assasa']
         }
       },
       absorbChildrenOverrides: {
@@ -272,6 +248,17 @@ describe('validateExceptionsRules works as expected when', () => {
           }
         }
       },
+      useAbstractAsUnitOverride: {
+        'O-39006-100-io-ui': {
+          navn: 'Unit med id O-39006-100'
+        }
+      },
+      nameChainOverride: {
+        'O-39006-100-aiaia': {
+          navn: 'Unit med id O-39006-100',
+          allowedNameChain: ['tutu', 'assasa']
+        }
+      },
       absorbChildrenOverrides: {
         'O-39006-1-14': {
           navn: 'Unit med id O-39006-1',
@@ -304,7 +291,7 @@ describe('validateExceptionsRules works as expected when', () => {
     const validationResult = validateExceptionRules(exceptionsRules, units)
     // console.log(validationResult)
     expect(Array.isArray(validationResult.invalidRules)).toBe(true)
-    expect(validationResult.invalidRules.length).toBe(4)
+    expect(validationResult.invalidRules.length).toBe(6)
     expect(validationResult.valid).toBe(false)
   })
   test('Exceptions does not have correct name (on base unit) - returns invalid', () => {
@@ -317,6 +304,17 @@ describe('validateExceptionsRules works as expected when', () => {
             href: `${url}/administrasjon/organisasjon/organisasjonselement/organisasjonsid/O-39006-10001`,
             navn: 'Unit med id O-39006-10001'
           }
+        }
+      },
+      useAbstractAsUnitOverride: {
+        'O-39006-100': {
+          navn: 'Unit med id O-39006-100ogti'
+        }
+      },
+      nameChainOverride: {
+        'O-39006-100': {
+          navn: 'Unit med id O-39006-100nei',
+          allowedNameChain: ['tutu', 'assasa']
         }
       },
       absorbChildrenOverrides: {
@@ -351,7 +349,7 @@ describe('validateExceptionsRules works as expected when', () => {
     const validationResult = validateExceptionRules(exceptionsRules, units)
     // console.log(validationResult)
     expect(Array.isArray(validationResult.invalidRules)).toBe(true)
-    expect(validationResult.invalidRules.length).toBe(4)
+    expect(validationResult.invalidRules.length).toBe(6)
     expect(validationResult.valid).toBe(false)
   })
   test('Exceptions does not have correct name (on child unit) - returns invalid', () => {
@@ -457,6 +455,17 @@ describe('validateExceptionsRules works as expected when', () => {
           }
         }
       },
+      useAbstractAsUnitOverride: {
+        'O-39006-100ogti': {
+          navn: 'Unit med id O-39006-100'
+        }
+      },
+      nameChainOverride: {
+        'O-39006-100hei': {
+          navn: 'Unit med id O-39006-100',
+          allowedNameChain: ['tutu', 'assasa']
+        }
+      },
       absorbChildrenOverrides: {
         'O-39006-gudda': {
           navn: 'Unit med id O-39006-1',
@@ -489,7 +498,7 @@ describe('validateExceptionsRules works as expected when', () => {
     const validationResult = validateExceptionRules(exceptionsRules, units)
     // console.log(validationResult)
     expect(Array.isArray(validationResult.invalidRules)).toBe(true)
-    expect(validationResult.invalidRules.length).toBe(4)
+    expect(validationResult.invalidRules.length).toBe(6)
     expect(validationResult.valid).toBe(false)
   })
   test('Exceptions are malformed - returns invalid', () => {
@@ -502,6 +511,21 @@ describe('validateExceptionsRules works as expected when', () => {
             href: `${url}/administrasjon/organisasjon/organisasjonselement/organisasjonsid/O-39006-10001`,
             navn: 'Unit med id O-39006-10001'
           }
+        }
+      },
+      useAbstractAsUnitOverride: {
+        'O-39006-100': {
+          navns: 'Unit med id O-39006-100'
+        }
+      },
+      nameChainOverride: {
+        'O-39006-100': {
+          navn: 'Unit med id O-39006-100',
+          allowedBlameChain: ['tutu', 'assasa']
+        },
+        'O-39006-1': {
+          navn: 'Unit med id O-39006-1',
+          allowedNameChain: 'sasasa'
         }
       },
       absorbChildrenOverrides: {
@@ -545,7 +569,7 @@ describe('validateExceptionsRules works as expected when', () => {
     const validationResult = validateExceptionRules(exceptionsRules, units)
     // console.log(validationResult)
     expect(Array.isArray(validationResult.invalidRules)).toBe(true)
-    expect(validationResult.invalidRules.length).toBe(6)
+    expect(validationResult.invalidRules.length).toBe(9)
     expect(validationResult.valid).toBe(false)
   })
 })
