@@ -1,4 +1,4 @@
-const { organizationFixed, fint: { url } } = require('../../config')
+const { fint: { url } } = require('../../config')
 
 const createTestOrgUnit = (id, overordnetId, underordnetIds, navn, kortnavn) => {
   if (!id) throw new Error('Missing required parameter "id"')
