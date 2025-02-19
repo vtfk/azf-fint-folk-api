@@ -251,7 +251,7 @@ describe('validateExceptionsRules works as expected when', () => {
       },
       brainChainOverride: {
         'O-39006-100': {
-          navn: 'Unit med id O-39006-100',
+          navn: 'Unit med id O-39006-100'
         }
       },
       nameChainOverride: {

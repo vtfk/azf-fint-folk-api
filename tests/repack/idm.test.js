@@ -4,6 +4,7 @@ const { repackFintIdmEnheter, vgsNameChain } = require('../../lib/fint-organizat
 const { validateRawOrganizationUnits, validateExceptionRules } = require('../../lib/fint-organization-fixed/idm-validation')
 const { createTestOrgUnit } = require('./test-org')
 
+
 const createTestOrg = () => {
   const units = [
     {
@@ -279,7 +280,7 @@ describe('repackFintIdmEnheter works as expected when', () => {
     const topUnitsPresent = expectedTopUnits.every(topUnit => validationResult.tests.topUnits.data.some(unit => unit.organisasjonsId.identifikatorverdi === topUnit))
     expect(validationResult.tests.topUnits.data.length).toBe(expectedTopUnits.length)
     expect(topUnitsPresent).toBe(true)
-    
+
     const expectedNoBottomUnits = ['test-fylkeskommune-1']
     const correspondingBottomUnitMissing = expectedNoBottomUnits.every(expectedNoBottomUnit => repackResult.tests.correspondingBottomUnitMissing.data.some(unit => unit.organisasjonsId.identifikatorverdi === expectedNoBottomUnit))
     expect(repackResult.tests.correspondingBottomUnitMissing.data.length).toBe(expectedNoBottomUnits.length)
@@ -330,7 +331,7 @@ describe('repackFintIdmEnheter works as expected when', () => {
       }
     }
     const repackResult = repackFintIdmEnheter(validationResult.tests.topUnits.data, validationResult.validUnits, exceptionRules)
-    
+
     const expectedNoBottomUnits = []
     const correspondingBottomUnitMissing = expectedNoBottomUnits.every(expectedNoBottomUnit => repackResult.tests.correspondingBottomUnitMissing.data.some(unit => unit.organisasjonsId.identifikatorverdi === expectedNoBottomUnit))
     expect(repackResult.tests.correspondingBottomUnitMissing.data.length).toBe(expectedNoBottomUnits.length)
@@ -469,7 +470,7 @@ describe('repackFintIdmEnheter works as expected when', () => {
       'test-fylkeskommune-1': {
         navn: 'Opplæring',
         leader: {
-          href: `${url}/administrasjon/personal/personalressurs/ansattnummer/1234567`,
+          href: `${url}/administrasjon/personal/personalressurs/ansattnummer/1234567`
         }
       }
     }
