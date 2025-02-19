@@ -7,70 +7,71 @@ const createSimpleOrg = () => {
     // First top unit
     {
       id: 'O-39006-hoved',
-      overordnet: 'O-39006-hoved',
-      underordnet: ['O-39006-1']
+      overordnetId: 'O-39006-hoved',
+      underordnetIds: ['O-39006-1']
     },
     {
       id: 'O-39006-1',
-      overordnet: 'O-39006-hoved',
-      underordnet: ['O-39006-10', 'O-39006-11']
+      overordnetId: 'O-39006-hoved',
+      underordnetIds: ['O-39006-10', 'O-39006-11']
     },
     {
       id: 'O-39006-10',
-      overordnet: 'O-39006-1',
-      underordnet: ['O-39006-100']
+      overordnetId: 'O-39006-1',
+      underordnetIds: ['O-39006-100'],
+      leder: '1234567'
     },
     {
       id: 'O-39006-100',
-      overordnet: 'O-39006-10',
-      underordnet: ['O-39006-10000', 'O-39006-10001', 'O-39006-10002']
+      overordnetId: 'O-39006-10',
+      underordnetIds: ['O-39006-10000', 'O-39006-10001', 'O-39006-10002']
     },
     {
       id: 'O-39006-10000',
-      overordnet: 'O-39006-100'
+      overordnetId: 'O-39006-100'
     },
     {
       id: 'O-39006-10001',
-      overordnet: 'O-39006-100'
+      overordnetId: 'O-39006-100'
     },
     {
       id: 'O-39006-10002',
-      overordnet: 'O-39006-100'
+      overordnetId: 'O-39006-100'
     },
     {
       id: 'O-39006-11',
-      overordnet: 'O-39006-1',
-      underordnet: ['O-39006-110']
+      overordnetId: 'O-39006-1',
+      underordnetIds: ['O-39006-110']
     },
     {
       id: 'O-39006-110',
-      overordnet: 'O-39006-11',
-      underordnet: ['O-39006-11000']
+      overordnetId: 'O-39006-11',
+      underordnetIds: ['O-39006-11000']
     },
     {
       id: 'O-39006-11000',
-      overordnet: 'O-39006-110'
+      overordnetId: 'O-39006-110'
     },
     // Second top unit
     {
       id: 'O-39006-A',
-      overordnet: 'O-39006-A',
-      underordnet: ['O-39006-SUP', 'O-39006-BALLE', 'O-39006-GUNNAR']
+      overordnetId: 'O-39006-A',
+      underordnetIds: ['O-39006-SUP', 'O-39006-BALLE', 'O-39006-GUNNAR']
     },
     {
       id: 'O-39006-SUP',
-      overordnet: 'O-39006-A'
+      overordnetId: 'O-39006-A'
     },
     {
       id: 'O-39006-BALLE',
-      overordnet: 'O-39006-A'
+      overordnetId: 'O-39006-A'
     },
     {
       id: 'O-39006-GUNNAR',
-      overordnet: 'O-39006-A'
+      overordnetId: 'O-39006-A'
     }
   ]
-  return fakeOrg.map(unit => createTestOrgUnit(unit.id, unit.overordnet, unit.underordnet))
+  return fakeOrg.map(unit => createTestOrgUnit(unit))
 }
 
 // OBS OBS tweak config max and min units settings!!!
@@ -137,8 +138,8 @@ describe('validateRawOrganizationUnits works as expected when', () => {
   })
   test('When some units have broken child relation link - returns valid and units - AND returns the units with broken child relation in validation', () => {
     const units = createSimpleOrg()
-    const brokenTopUnit = createTestOrgUnit('O-39006-YOYO', 'O-39006-YOYO', ['O-39006-finnesikke', 'O-39006-Oisann'])
-    const brokenRegularUnit = createTestOrgUnit('O-39006-Oisann', 'O-39006-YOYO', ['O-39006-finneshellerikke'])
+    const brokenTopUnit = createTestOrgUnit({ id: 'O-39006-YOYO', overordnetId: 'O-39006-YOYO', underordnetIds: ['O-39006-finnesikke', 'O-39006-Oisann'] })
+    const brokenRegularUnit = createTestOrgUnit({ id: 'O-39006-Oisann', overordnetId: 'O-39006-YOYO', underordnetIds: ['O-39006-finneshellerikke'] })
     units.push(brokenTopUnit)
     units.push(brokenRegularUnit)
     const validationResult = validateRawOrganizationUnits(units)
@@ -221,7 +222,7 @@ describe('validateExceptionsRules works as expected when', () => {
         'O-39006-100': {
           navn: 'Unit med id O-39006-100',
           leader: {
-            href: `${url}/administrasjon/personal/personalressurs/ansattnummer/1036101`
+            href: `${url}/administrasjon/personal/personalressurs/ansattnummer/1234567`
           }
         }
       }
@@ -279,7 +280,7 @@ describe('validateExceptionsRules works as expected when', () => {
         'O-39006-100': {
           navn: 'Unit med id O-39006-100',
           leader: {
-            href: `${url}/administrasjon/personal/personalressurs/ansattnummer/1036101`
+            href: `${url}/administrasjon/personal/personalressurs/ansattnummer/1234567`
           }
         }
       }
@@ -332,7 +333,7 @@ describe('validateExceptionsRules works as expected when', () => {
         O: {
           navn: 'Unit med id O-39006-100',
           leader: {
-            href: `${url}/administrasjon/personal/personalressurs/ansattnummer/1036101`
+            href: `${url}/administrasjon/personal/personalressurs/ansattnummer/1234567`
           }
         }
       }
@@ -385,7 +386,7 @@ describe('validateExceptionsRules works as expected when', () => {
         'O-39006-100': {
           navn: 'Unit med id O-39006-1000',
           leader: {
-            href: `${url}/administrasjon/personal/personalressurs/ansattnummer/1036101`
+            href: `${url}/administrasjon/personal/personalressurs/ansattnummer/1234567`
           }
         }
       }
@@ -529,7 +530,7 @@ describe('validateExceptionsRules works as expected when', () => {
         'O-39006-frogg': {
           navn: 'Unit med id O-39006-100',
           leader: {
-            href: `${url}/administrasjon/personal/personalressurs/ansattnummer/1036101`
+            href: `${url}/administrasjon/personal/personalressurs/ansattnummer/1234567`
           }
         }
       }
@@ -589,13 +590,13 @@ describe('validateExceptionsRules works as expected when', () => {
         'O-39006-100': {
           navn: 'Unit med id O-39006-100',
           leadder: {
-            href: `${url}/administrasjon/personal/personalressurs/ansattnummer/1036101`
+            href: `${url}/administrasjon/personal/personalressurs/ansattnummer/1234567`
           }
         },
         'O-39006-1': {
           navn: 'Unit med id O-39006-1',
           leader: {
-            hrefAA: `${url}/administrasjon/personal/personalressurs/ansattnummer/1036101`
+            hrefAA: `${url}/administrasjon/personal/personalressurs/ansattnummer/1234567`
           }
         }
       }

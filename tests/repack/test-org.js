@@ -1,10 +1,12 @@
 const { fint: { url } } = require('../../config')
 
-const createTestOrgUnit = (id, overordnetId, underordnetIds, navn, kortnavn) => {
+const createTestOrgUnit = (unit) => {
+  if (!unit || typeof unit !== 'object') throw new Error('Missing required parameter object "unit"')
+  const { id, overordnetId, underordnetIds, navn, kortnavn, leder } = unit
   if (!id) throw new Error('Missing required parameter "id"')
   if (id.split('-').length !== 3) throw new Error('Invalid id format')
   if (!overordnetId) throw new Error('Missing required parameter "overordnetId"')
-  const unit = {
+  const testOrgUnit = {
     organisasjonsId: {
       identifikatorverdi: id
     },
@@ -26,15 +28,22 @@ const createTestOrgUnit = (id, overordnetId, underordnetIds, navn, kortnavn) => 
       ]
     }
   }
+  if (leder) {
+    testOrgUnit._links.leder = [
+      {
+        href: `${url}/administrasjon/personal/personalressurs/ansattnummer/${leder}`
+      }
+    ]
+  }
   if (underordnetIds && Array.isArray(underordnetIds) && underordnetIds.length > 0) {
-    unit._links.underordnet = underordnetIds.map(underordnetId => {
+    testOrgUnit._links.underordnet = underordnetIds.map(underordnetId => {
       return {
         href: `${url}/administrasjon/organisasjon/organisasjonselement/organisasjonsid/${underordnetId}`
       }
     })
   } else {
-    // Bottom level unit, add some arbeidsforhold and shortcode
-    unit._links.arbeidsforhold = [
+    // Bottom level unit, add some arbeidsforhold and shortcode (if missing)
+    testOrgUnit._links.arbeidsforhold = [
       {
         href: `${url}/administrasjon/personal/arbeidsforhold/systemid/EM-39003-14027402-1-1~~20220815`
       },
@@ -42,9 +51,9 @@ const createTestOrgUnit = (id, overordnetId, underordnetIds, navn, kortnavn) => 
         href: `${url}/administrasjon/personal/arbeidsforhold/systemid/EM-39003-14027402-1-1~~20220812`
       }
     ]
-    unit.kortnavn = `KORTNAVN-${id.split('-')[2]}`
+    testOrgUnit.kortnavn = testOrgUnit.kortnavn || `KORTNAVN-${id.split('-')[2]}`
   }
-  return unit
+  return testOrgUnit
 }
 
 module.exports = { createTestOrgUnit }

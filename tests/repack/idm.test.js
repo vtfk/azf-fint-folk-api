@@ -216,7 +216,7 @@ const createTestOrg = () => {
       kortnavn: 'ORG-ARK'
     }
   ]
-  return units.map(unit => createTestOrgUnit(unit.id, unit.overordnetId, unit.underordnetIds, unit.navn, unit.kortnavn))
+  return units.map(unit => createTestOrgUnit(unit))
 }
 
 // OBS OBS tweak config max and min units settings!!!
@@ -396,6 +396,8 @@ describe('repackFintIdmEnheter works as expected when', () => {
     expect(repackResult.tests.correspondingBottomUnitMissing.data.length).toBe(0)
 
     expect(repackResult.tests.correspondingBottomUnitDifferentName.data.length).toBe(0)
+
+    expect(repackResult.tests.missingLeader.data.length).toBeGreaterThan(0)
 
     expect(repackResult.handledByExceptionRules.length).toBe(4)
     const overrideNextProbableLinkRule = repackResult.handledByExceptionRules.some(usedRule => usedRule.rule === 'overrideNextProbableLink' && usedRule.data.organisasjonsId === 'test-fellesvgs-111')
