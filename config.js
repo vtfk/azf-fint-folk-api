@@ -32,7 +32,8 @@ module.exports = {
   employeeNumberExtenstionAttribute: process.env.EMPLOYEE_NUMBER_EXTENSION_ATTRIBUTE ?? 'extensionAttributeX',
   topUnitId: process.env.TOP_UNIT_ID ?? 'hoved',
   organizationFixed: {
-    idmMinimumUnits: process.env.IDM_MINIMUM_UNITS ?? 350,
+    idmMinimumUnits: process.env.IDM_MINIMUM_UNITS ?? 200,
     idmMaximumUnits: process.env.IDM_MAXIMUM_UNITS ?? 500
-  }
+  },
+  teamsStatusAlertUrl: process.env.TEAMS_STATUS_ALERT_URL
 }
