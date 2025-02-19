@@ -1,9 +1,8 @@
 const { organizationFixed, fint: { url } } = require('../../config')
 const { getExceptionRules } = require('../../lib/fint-organization-fixed/exception-rules')
 const { repackFintIdmEnheter, vgsNameChain } = require('../../lib/fint-organization-fixed/idm')
-const { validateRawOrganizationUnits, validateExceptionRules } = require('../../lib/fint-organization-fixed/idm-validation')
+const { validateRawOrganizationUnits } = require('../../lib/fint-organization-fixed/idm-validation')
 const { createTestOrgUnit } = require('./test-org')
-
 
 const createTestOrg = () => {
   const units = [
