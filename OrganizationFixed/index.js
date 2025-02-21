@@ -1,11 +1,9 @@
-const { fintOrganization } = require('../lib/fint-organization')
-const { fintOrganizationStructure } = require('../lib/fint-organization-structure')
-const { fintOrganizationFlat } = require('../lib/fint-organization-flat')
 const { logger, logConfig } = require('@vtfk/logger')
 const { decodeAccessToken } = require('../lib/helpers/decode-access-token')
 const httpResponse = require('../lib/requests/http-response')
-const { roles, topUnitId } = require('../config')
+const { roles } = require('../config')
 const { getResponse, setResponse } = require('../lib/response-cache')
+const { fintOrganizationFixedIdm } = require('../lib/fint-organization-fixed/idm')
 
 module.exports = async function (context, req) {
   logConfig({
@@ -18,7 +16,7 @@ module.exports = async function (context, req) {
     return httpResponse(401, decoded.msg)
   }
   logConfig({
-    prefix: `azf-fint-folk - Organization - ${decoded.appid}${decoded.upn ? ' - ' + decoded.upn : ''}`
+    prefix: `azf-fint-folk - OrganizationFixed - ${decoded.appid}${decoded.upn ? ' - ' + decoded.upn : ''}`
   })
   logger('info', ['Token is valid, checking params'], context)
   if (!req.params) {
@@ -27,7 +25,7 @@ module.exports = async function (context, req) {
   }
 
   const { identifikator, identifikatorverdi } = req.params
-  const validIdentifiers = ['organisasjonsId', 'organisasjonsKode', 'structure', 'flat']
+  const validIdentifiers = ['organisasjonsId', 'organisasjonsKode', 'structure', 'flat', 'idm']
   if (!validIdentifiers.includes(identifikator)) return httpResponse(400, `Query param ${identifikator} is not valid - must be ${validIdentifiers.join(' or ')}`)
 
   logger('info', ['Validating role'], context)
@@ -43,6 +41,48 @@ module.exports = async function (context, req) {
     if (cachedResponse) return httpResponse(200, cachedResponse)
   }
 
+  // If fixed idm-units are requested
+  if (identifikator === 'idm') {
+    try {
+      // await teamsStatusAlert(context)
+      const { rawValidationResult, exceptionRuleValidationResult, repackedFintUnitsResult } = await fintOrganizationFixedIdm(context)
+
+      // Check if we should only validate
+      if (identifikatorverdi === 'validate') {
+        logger('info', ['Only validation requested, returning validation'], context)
+        // Remove all validated units, don't need them right now :)
+
+        if (rawValidationResult) delete rawValidationResult.validUnits
+        if (repackedFintUnitsResult) delete repackedFintUnitsResult.resultingUnitsFlat
+        if (repackedFintUnitsResult) delete repackedFintUnitsResult.resultingUnitsNested
+        return httpResponse(200, { rawValidationResult, exceptionRuleValidationResult: exceptionRuleValidationResult || 'not run', repackedFintUnitsResult: repackedFintUnitsResult || 'not run' })
+      }
+      if (!(rawValidationResult?.valid && exceptionRuleValidationResult?.valid && repackedFintUnitsResult?.valid)) {
+        logger('warn', ['Validation failed, returning 500 and error'], context)
+        if (rawValidationResult) delete rawValidationResult.validUnits
+        if (repackedFintUnitsResult) delete repackedFintUnitsResult.resultingUnitsFlat
+        if (repackedFintUnitsResult) delete repackedFintUnitsResult.resultingUnitsNested
+        return httpResponse(500, { customMessage: 'Validation failed - check errordata, or call OrganizationFixed/idm/validate', customData: { rawValidationResult, exceptionRuleValidationResult: exceptionRuleValidationResult || 'not run', repackedFintUnitsResult: repackedFintUnitsResult || 'not run' } })
+      }
+      logger('info', ['Validation passed, returning 200 and result (in embedded FINT format'], context)
+      const resultingResponse = {
+        _embedded: {
+          _entries: repackedFintUnitsResult.resultingUnitsFlat
+        },
+        total_items: repackedFintUnitsResult.resultingUnitsFlat.length,
+        offset: 0,
+        size: repackedFintUnitsResult.resultingUnitsFlat.length
+      }
+
+      if (req.query.skipCache !== 'true') setResponse(req.url, resultingResponse, context) // Cache result
+      return httpResponse(200, resultingResponse)
+    } catch (error) {
+      logger('error', ['Failed when fetching organization fixed from FINT', error.response?.data || error.stack || error.toString()], context)
+      return httpResponse(500, error)
+    }
+  }
+
+  /* Need to fix the ones below...
   // If all units are requested
   if (identifikator === 'structure') {
     try {
@@ -50,7 +90,7 @@ module.exports = async function (context, req) {
       const res = await fintOrganizationStructure(includeInactiveUnits)
       if (!res) return httpResponse(404, `No organizationUnit with organisasjonsId "${topUnitId}" found in FINT`)
       const result = req.query.includeRaw === 'true' ? { ...res.repacked, raw: res.raw } : res.repacked
-      if (req.query.skipCache !== 'true') setResponse(req.url, result, context) // Cache result
+      if (!req.query.skipCache) setResponse(req.url, result, context) // Cache result
       return httpResponse(200, result)
     } catch (error) {
       logger('error', ['Failed when fetching organization structure from FINT', error.response?.data || error.stack || error.toString()], context)
@@ -65,7 +105,7 @@ module.exports = async function (context, req) {
       if (req.query.includeInactiveUnits !== 'true') res.repacked = res.repacked.filter(unit => unit.aktiv && unit.overordnet.aktiv) // Filter out inactive units if not requested (in structure, this is done in the repack function)
       if (!res) return httpResponse(404, `No organizationUnit with organisasjonsId "${topUnitId}" found in FINT`)
       const result = req.query.includeRaw === 'true' ? { flat: res.repacked.reverse(), raw: res.raw } : res.repacked.reverse()
-      if (req.query.skipCache !== 'true') setResponse(req.url, result, context) // Cache result
+      if (!req.query.skipCache) setResponse(req.url, result, context) // Cache result
       return httpResponse(200, result)
     } catch (error) {
       logger('error', ['Failed when fetching flat organization structure from FINT', error.response?.data || error.stack || error.toString()], context)
@@ -78,10 +118,11 @@ module.exports = async function (context, req) {
     if (!res) return httpResponse(404, `No organizationUnit with ${identifikator} "${identifikatorverdi}" found in FINT`)
     if (req.query.includeInactiveEmployees !== 'true') res.repacked.arbeidsforhold = res.repacked.arbeidsforhold.filter(forhold => forhold.aktiv)
     const result = req.query.includeRaw === 'true' ? { ...res.repacked, raw: res.raw } : res.repacked
-    if (req.query.skipCache !== 'true') setResponse(req.url, result, context) // Cache result
+    if (!req.query.skipCache) setResponse(req.url, result, context) // Cache result
     return httpResponse(200, result)
   } catch (error) {
     logger('error', ['Failed when fetching organization from FINT', error.response?.data || error.stack || error.toString()], context)
     return httpResponse(500, error)
   }
+  */
 }

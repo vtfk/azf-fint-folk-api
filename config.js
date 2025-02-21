@@ -1,6 +1,6 @@
 module.exports = {
   fint: {
-    url: process.env.FINT_URL ?? 'url til fint miljø',
+    url: process.env.FINT_URL ?? 'https://fint-tulball.no',
     clientId: process.env.FINT_CLIENT_ID ?? 'klient id',
     clientSecret: process.env.FINT_CLIENT_SECRET ?? 'klient secret',
     username: process.env.FINT_USERNAME ?? 'klient brukernavn',
@@ -30,5 +30,11 @@ module.exports = {
   feidenavnDomain: process.env.FEIDENAVN_DOMAIN ?? '@domene.com',
   studentUpnSuffix: process.env.STUDENT_UPN_SUFFIX ?? '@skole.fylke.no',
   employeeNumberExtenstionAttribute: process.env.EMPLOYEE_NUMBER_EXTENSION_ATTRIBUTE ?? 'extensionAttributeX',
-  topUnitId: process.env.TOP_UNIT_ID ?? 'hoved'
+  topUnitId: process.env.TOP_UNIT_ID ?? 'hoved',
+  organizationFixed: {
+    idmMinimumUnits: process.env.IDM_MINIMUM_UNITS ?? 200,
+    idmMaximumUnits: process.env.IDM_MAXIMUM_UNITS ?? 550,
+    checkNextLink01: process.env.IDM_CHECK_NEXT_LINK_01 === 'true' || false
+  },
+  teamsStatusAlertUrls: (process.env.TEAMS_STATUS_ALERT_URLS && process.env.TEAMS_STATUS_ALERT_URLS.split(',')) || [],
 }
