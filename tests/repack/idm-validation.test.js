@@ -116,6 +116,19 @@ describe('validateRawOrganizationUnits works as expected when', () => {
     expect(validationResult.tests.abstractWithArbeidsforhold.data.length).toBe(1)
     expect(validationResult.validUnits).toBe(null)
   })
+  test('When some units have itself as a child - returns valid and removes the relation to itself as a child', () => {
+    const units = createSimpleOrg()
+    const unitToModify = units.find(unit => unit.organisasjonsId.identifikatorverdi === 'O-39006-1')
+    const selfLink = unitToModify._links.self[0].href
+    unitToModify._links.underordnet.push({ href: selfLink })
+    const validationResult = validateRawOrganizationUnits(units)
+    expect(validationResult.valid).toBe(true)
+    expect(Array.isArray(validationResult.tests.haveItselfAsChild.data)).toBe(true)
+    expect(validationResult.tests.haveItselfAsChild.data.length).toBe(1)
+    const validatedModifiedUnit = units.find(unit => unit.organisasjonsId.identifikatorverdi === 'O-39006-1')
+    expect(validatedModifiedUnit._links.underordnet.some(link => link.href === selfLink)).toBe(false)
+    expect(validationResult.validUnits.length).toBe(units.length)
+  })
   test('When some units are missing overordnet - returns not valid and no units', () => {
     const units = createSimpleOrg()
     delete units[0]._links.overordnet
