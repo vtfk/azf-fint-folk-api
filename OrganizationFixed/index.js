@@ -82,6 +82,8 @@ module.exports = async function (context, req) {
     }
   }
 
+  return httpResponse(500, { customMessage: 'Not implemented', customData: { identifikator, identifikatorverdi } })
+
   /* Need to fix the ones below...
   // If all units are requested
   if (identifikator === 'structure') {
