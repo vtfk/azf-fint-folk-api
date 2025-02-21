@@ -33,7 +33,8 @@ module.exports = {
   topUnitId: process.env.TOP_UNIT_ID ?? 'hoved',
   organizationFixed: {
     idmMinimumUnits: process.env.IDM_MINIMUM_UNITS ?? 200,
-    idmMaximumUnits: process.env.IDM_MAXIMUM_UNITS ?? 500
+    idmMaximumUnits: process.env.IDM_MAXIMUM_UNITS ?? 550,
+    checkNextLink01: process.env.IDM_CHECK_NEXT_LINK_01 === 'true' || false
   },
-  teamsStatusAlertUrl: process.env.TEAMS_STATUS_ALERT_URL
+  teamsStatusAlertUrls: (process.env.TEAMS_STATUS_ALERT_URLS && process.env.TEAMS_STATUS_ALERT_URLS.split(',')) || [],
 }

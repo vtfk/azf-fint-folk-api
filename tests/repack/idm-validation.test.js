@@ -169,6 +169,36 @@ describe('validateRawOrganizationUnits works as expected when', () => {
     expect(validationResult.tests.topUnits.data.length).toBe(0)
     expect(validationResult.validUnits).toBe(null)
   })
+  test('When a unit points to expired child - returns valid, but expired link and expired unit is removed', () => {
+    const units = createSimpleOrg()
+    const parentUnit = createTestOrgUnit({ id: 'O-39006-PARENT', overordnetId: 'O-39006-PARENT', underordnetIds: ['O-39006-EXPIRED', 'O-39006-NOTEXPIRED'] })
+    const expiredChild = createTestOrgUnit({ id: 'O-39006-EXPIRED', overordnetId: 'O-39006-PARENT', gyldighetsperiode: { start: '1990-01-01', slutt: '1991-01-01' } })
+    const rightNow = new Date()
+    const tomorrow = new Date(rightNow.setDate(rightNow.getDate() + 1))
+    const notExpiredChild = createTestOrgUnit({ id: 'O-39006-NOTEXPIRED', overordnetId: 'O-39006-PARENT', gyldighetsperiode: { start: '1990-01-01', slutt: tomorrow.toISOString() } })
+    units.push(parentUnit, expiredChild, notExpiredChild)
+    const validationResult = validateRawOrganizationUnits(units)
+
+    expect(parentUnit._links.underordnet.some(link => link.href === expiredChild._links.self[0].href)).toBe(false)
+    expect(validationResult.valid).toBe(true)
+    expect(validationResult.tests.expiredUnits.data.length).toBe(1)
+    expect(validationResult.tests.relationToExpiredChild.data.length).toBe(1)
+    expect(validationResult.validUnits.length).toBe(units.length - 1)
+  })
+  test('When a unit points to expired parent - returns not valid and no units', () => {
+    const units = createSimpleOrg()
+    const expiredParentUnit = createTestOrgUnit({ id: 'O-39006-EXPPARENT', overordnetId: 'O-39006-EXPPARENT', underordnetIds: ['O-39006-NOTEXPIRED'], gyldighetsperiode: { start: '1990-01-01', slutt: '1991-01-01' } })
+    const rightNow = new Date()
+    const tomorrow = new Date(rightNow.setDate(rightNow.getDate() + 1))
+    const notExpiredChild = createTestOrgUnit({ id: 'O-39006-NOTEXPIRED', overordnetId: 'O-39006-EXPPARENT', gyldighetsperiode: { start: '1990-01-01', slutt: tomorrow.toISOString() } })
+    units.push(expiredParentUnit, notExpiredChild)
+    const validationResult = validateRawOrganizationUnits(units)
+
+    expect(validationResult.valid).toBe(false)
+    expect(validationResult.tests.expiredUnits.data.length).toBe(1)
+    expect(validationResult.tests.relationToExpiredParent.data.length).toBe(1)
+    expect(validationResult.validUnits).toBe(null)
+  })
 })
 
 describe('validateExceptionsRules works as expected when', () => {
