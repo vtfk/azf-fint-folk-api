@@ -142,6 +142,11 @@ localnotes.md
 
 /ignore
 
-
 # MAC
 .DS_Store
+
+# Azurite
+__azurite*
+__blob*
+__queue*
+__table*
