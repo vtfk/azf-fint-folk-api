@@ -141,3 +141,7 @@ localnotes.md
 .response-cache
 
 /ignore
+
+
+# MAC
+.DS_Store
