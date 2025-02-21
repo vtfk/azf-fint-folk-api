@@ -36,5 +36,5 @@ module.exports = {
     idmMaximumUnits: process.env.IDM_MAXIMUM_UNITS ?? 550,
     checkNextLink01: process.env.IDM_CHECK_NEXT_LINK_01 === 'true' || false
   },
-  teamsStatusAlertUrls: (process.env.TEAMS_STATUS_ALERT_URLS && process.env.TEAMS_STATUS_ALERT_URLS.split(',')) || [],
+  teamsStatusAlertUrls: (process.env.TEAMS_STATUS_ALERT_URLS && process.env.TEAMS_STATUS_ALERT_URLS.split(',')) || []
 }
