@@ -1259,6 +1259,230 @@ GET https://{base_url}/organization/flat
 ```
 </details>
 
+## /organizationfixed/idm
+An unfortunate endpoint, due to new HR-structure with abstract levels we do not wan't in certain integrations
+
+### Om endepunket
+Tar det på norsk her altså...
+
+Ny struktur har abstrakte nivåer uten arbeidsforhold som ikke gir oss det reelle bildet av organisasjonen. F. eks
+- Test fylkeskommune (id: O-FYLKE-0)
+  - Organisasjon (abstrakt enhet) (id: O-FYLKE-1)
+    - Digitale tjenester (abstrakt enhet) (id: O-FYLKE-11)
+      - Digitale tjenester (enda en abstrakt enhet) (id: O-FYLKE-110)
+        - Digitale tjenster (faktisk enhet med arbeidsforhold) (id: O-FYLKE-11000)
+        - Team utvikling (faktisk enhet, som er underordnet av Digitale Tjenester) (id: O-FYLKE-11001)
+        - Team støtte (faktisk enhet, som er underordnet av Digitale Tjenester) (id: O-FYLKE-11002)
+    - Organisasjon (abstrakt enhet igjen) (id: O-FYLKE-10)
+      - Organisasjon (abstrakt enhet igjen) (id: O-FYLKE-100)
+        - Organisasjon (faktisk enhet med arbeidsforhold) (id: O-FYLKE-10000)
+
+Hva endepunktet gjør:
+- Slår sammen de abstrakte nivåene av en enhet med den faktiske enheten, og slår sammen ALLE underordnede fra de abstrakte nivåene, slik at den faktiske enheten ender opp med forhåpentligvis korrekte underordnede
+- F. eks Organisasjon fra eksempelet over:
+  - Starter på Organisasjon O-FYLKE-1, sjekker om den er abstrakt (om det finnes underordnede)
+  - While det fortsatt finnes underordnede
+    - Finner underordnet enhet med "{currentId}0", eller "{currentId}00", dette er neste nivå som sjekkes underordnet eksisterer med en av id-ene
+    - Let etter underordnet fra den underordnede enhet til vi har kommet til bunn
+  - Nå har vi funnet tilsvarende enhet på bunnivå (organisasjon O-FYLKE-10000), med arbeidsforhold, og vi har også funnet alle underordnede enheter på vei ned
+  - Så gjør vi den samme jobben for alle de underordnede av Organisasjon, og ender opp med (forenklet):
+
+```json
+{
+  "id": "O-FYLKE-10000",
+  "navn": "Organisasjon",
+  "traversedAbstract": "O-FYLKE-1 --> O-FYLKE-10 --> O-FYLKE-100 --> O-FYLKE-10000",
+  "arbeidsforhold": ["..."],
+  "underordnet": [
+    {
+      "id": "O-FYLKE-11000",
+      "navn": "Digitale tjenester",
+      "traversedAbstract": "O-FYLKE-11 --> O-FYLKE-110 --> O-FYLKE-11000",
+      "arbeidsforhold": ["..."],
+      "underordnet": [
+        {
+          "id": "O-FYLKE-11001",
+          "navn": "Team utvikling",
+          "traversedAbstract": "O-FYLKE-11001",
+          "arbeidsforhold": ["..."]
+        },
+        {
+          "id": "O-FYLKE-11002",
+          "navn": "Team støtte",
+          "traversedAbstract": "O-FYLKE-11002",
+          "arbeidsforhold": ["..."]
+        }
+      ]
+    }
+  ]
+}
+```
+
+### Unntaksregler
+Selfølgelig følger ikke alle enheter en fast struktur der vi bare kan følge id med "{currentId}0" eller "{currentId}00" for å finne faktisk enhet på bunnivå. Og det kan trengs andre tilpasninger, det er derfor satt opp [mulighet for unntaksregler](./lib/fint-organization-fixed/exception-rules.js)
+
+#### overrideNextProbableLink
+Denner regelen overstyrer hvilken underordnet enhet man går videre til for å finne faktisk enhet på bunnivå. Eksempelvis hvis Organsiasjon (O-FYLKE-10) ikke følger strukture, og neste abstrakte enhet har id O-FYLKE-101, kan vi legge inn regel:
+```js
+{
+  overrideNextProbableLink: {
+    'O-FYLKE-10': {
+      navn: 'Organisasjon' // MÅ matche navnet på enhet 'O-FYLKE-10' fra rawdata - for å unngå krøll dersom enheter bytter id/navn
+      nextLink: {
+        href: `${url}/administrasjon/organisasjon/organisasjonselement/organisasjonsid/O-FYLKE-101`, // Overstyrer neste enhet i abstrakt nivå, slik at vi får riktig bunn/faktisk enhet
+        navn: 'Organisasjon' // MÅ matche navnet på enhet 'O-FYLKE-101' fra rawdata - for å unngå krøll dersom enheter bytter id/navn
+      }
+    }
+  }
+}
+```
+
+#### useAbstractAsUnitOverride
+Noen enheter har ingen faktisk tilsvarende enhet på bunnivå - og vil resultere i feil, disse kan overstyres ved å akseptere og bruke den abstrakte enheten som en faktisk enhet ved å legge inn regel:
+```js
+{
+  useAbstractAsUnitOverride: {
+    'O-FYLKE-1': {
+      navn: 'Test Fylkeskommune' // MÅ matche navnet på enhet 'O-FYLKE-1' fra rawdata - for å unngå krøll dersom enheter bytter id/navn
+    }
+  }
+}
+```
+
+#### nameChainOverride
+Det sjekkes også at alle abstrakte enheter har samme navn hele veien ned til bunnivå - for å fange opp dersom enheter bytter navn/id og ikke skape krøll. Enheter som ikke har samme navn på alle abstrakte nivåer krever derfor nameChainOverride for å ikke skape feil. Se typisk eksempel nedenfor
+```js
+{
+  nameChainOverride: {
+    'O-FYLKE-13': {
+      navn: 'Politiske tjenester og økonomi', // MÅ matche navnet på enhet 'O-FYLKE-13' fra rawdata - for å unngå krøll dersom enheter bytter id/navn
+      allowedNameChain: ['Politiske tjenester og økonomi', 'Politisk tjenester og økonomi', 'Pol. tjenester og økonomi']
+    }
+  }
+}
+```
+
+#### absorbChildrenOverrides
+Det kan også være ønskelig å fjerne noen abstrakte enheter fullstendig fra org-strukturen dersom de ikke har noen hensikt for oss. Da har vi en regel for å absorbere en underenhet, slik at parent arver alle underordnede, og underenheten fjernes fra org-strukturen. Se eksempel nedenfor
+```js
+{
+  absorbChildrenOverrides: {
+    'O-FYLKE-4': {
+      navn: 'Opplæring og tannhelse', // MÅ matche navnet på enhet 'O-FYLKE-4' fra rawdata - for å unngå krøll dersom enheter bytter id/navn
+      absorbChildren: [
+        {
+          href: `${url}/administrasjon/organisasjon/organisasjonselement/organisasjonsid/O-FYLKE-42`,
+          navn: 'Andre virksomheter' // MÅ matche navnet på enhet 'O-FYLKE-42' fra rawdata - for å unngå krøll dersom enheter bytter id/navn
+        },
+        {
+          href: `${url}/administrasjon/organisasjon/organisasjonselement/organisasjonsid/O-FYLKE-41`,
+          navn: 'VGS Felles' // MÅ matche navnet på enhet 'O-FYLKE-41' fra rawdata - for å unngå krøll dersom enheter bytter id/navn
+        }
+      ]
+    }
+  }
+}
+```
+
+#### manualLeaders
+Det kan være ønskelig å legge til en leder på en enhet som f.eks mangler leder, eller har feil, dette kan overstyres av en manualLeader exception-rule. Se eksempel nedenfor
+```js
+{
+  manualLeaders: {
+    'O-FYLKE-1': {
+      navn: 'Test Fylkeskommune', // MÅ matche navnet på enhet 'O-FYLKE-1' fra rawdata - for å unngå krøll dersom enheter bytter id/navn
+      leader: {
+        href: `${url}/administrasjon/personal/personalressurs/ansattnummer/123456` // Lederen du ønsker for Test Fylkeskommune
+      }
+    }
+  }
+}
+```
+
+### Returns
+<details>
+  <summary>Click here to view return example</summary>
+
+```json
+{
+	"_embedded": {
+		"_entries": [
+						{
+				"abstractEnhetOrganisasjonsId": "O-FYLKE-18",
+				"abstractEnhetNavn": "Kontrollutvalg",
+				"abstractTraversedUnits": [
+					{
+						"organisasjonsId": "O-FYLKE-18",
+						"navn": "Kontrollutvalg",
+						"href": "https://greier.no/administrasjon/organisasjon/organisasjonselement/organisasjonsid/O-FYLKE-18"
+					},
+					{
+						"organisasjonsId": "O-FYLKE-180",
+						"navn": "Kontrollutvalg",
+						"href": "https://greier.no/administrasjon/organisasjon/organisasjonselement/organisasjonsid/O-FYLKE-180"
+					},
+					{
+						"organisasjonsId": "O-FYLKE-1800",
+						"navn": "Kontrollutvalg",
+						"href": "https://greier.no/administrasjon/organisasjon/organisasjonselement/organisasjonsid/O-FYLKE-1800"
+					}
+				],
+				"gyldighetsperiode": {
+					"start": "1900-01-01T12:00:00Z"
+				},
+				"navn": "Kontrollutvalg",
+				"organisasjonsId": {
+					"identifikatorverdi": "O-FYLKE-1800"
+				},
+				"organisasjonsKode": {
+					"identifikatorverdi": "1800"
+				},
+				"_links": {
+					"ansvar": [
+						{
+							"href": "https://greier.no/administrasjon/kodeverk/ansvar/systemid/TC-FYLKE-A-1800"
+						}
+					],
+					"leder": [
+						{
+							"href": "https://greier.no/administrasjon/personal/personalressurs/ansattnummer/12345490"
+						}
+					],
+          "arbeidsforhold": ["..."],
+					"overordnet": [
+						{
+							"href": "https://greier.no/administrasjon/organisasjon/organisasjonselement/organisasjonsid/O-FYLKE-170000"
+						}
+					],
+					"self": [
+						{
+							"href": "https://greier.no/administrasjon/organisasjon/organisasjonselement/organisasjonsid/O-FYLKE-1800"
+						},
+						{
+							"href": "https://greier.no/administrasjon/organisasjon/organisasjonselement/organisasjonskode/1800"
+						}
+					],
+					"underordnet": []
+				}
+			},
+      "..."
+    ]
+  },
+  "total_items": 268,
+	"offset": 0,
+	"size": 268
+}
+```
+</details>
+
+## /organizationfixed/idm/validate
+Kverner data og returnerer en valideringsrapport for om organization/idm sine data fungerer og om exception rules er satt opp korrekt
+
+See [idm-validation.js](./lib/fint-organization-fixed/idm-validation.js) for detaljer
+
+## TIMER TRIGGER IdmTeamsStatus
+Bruker resultatet fra idm/validate og sender en overordnet rapport til Teams-kanal-webhook-workflow(er) i process.env.TEAMS_STATUS_ALERT_URLS
+
 # Local development
 - git clone
 - make sure you have installed [Azure Functions Core Tools](https://learn.microsoft.com/en-us/azure/azure-functions/functions-run-local?tabs=v4%2Cwindows%2Ccsharp%2Cportal%2Cbash#v2)
@@ -1287,7 +1511,8 @@ GET https://{base_url}/organization/flat
     "EMPLOYEE_NUMBER_EXTENSION_ATTRIBUTE": "in which extension attribute do you store ansattnummer for users",
     "RESPONSE_CACHE_ENABLED": "true/false",
     "RESPONSE_CACHE_TTL": "3600 (seconds to keep responses i cache)",
-    "TOP_UNIT_ID": "hoved (id for top organization unit)"
+    "TOP_UNIT_ID": "hoved (id for top organization unit)",
+    "TEAMS_STATUS_ALERT_URLS": "teamswebhook.com/workflow" // optional, if you want a status alert for idm-validation
   }
 }
 ```
