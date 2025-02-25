@@ -1,9 +1,11 @@
 const { logger, logConfig } = require('@vtfk/logger')
 const { decodeAccessToken } = require('../lib/helpers/decode-access-token')
 const httpResponse = require('../lib/requests/http-response')
-const { roles } = require('../config')
+const { roles, topUnitId } = require('../config')
 const { getResponse, setResponse } = require('../lib/response-cache')
 const { fintOrganizationFixedIdm } = require('../lib/fint-organization-fixed/idm')
+const { fixedOrganizationFlat } = require('../lib/fint-organization-fixed/fixed-organization-flat')
+const { fixedOrganizationStructure } = require('../lib/fint-organization-fixed/fixed-organization-structure')
 
 module.exports = async function (context, req) {
   logConfig({
@@ -82,17 +84,14 @@ module.exports = async function (context, req) {
     }
   }
 
-  return httpResponse(500, { customMessage: 'Not implemented', customData: { identifikator, identifikatorverdi } })
-
-  /* Need to fix the ones below...
   // If all units are requested
   if (identifikator === 'structure') {
     try {
       const includeInactiveUnits = req.query.includeInactiveUnits === 'true'
-      const res = await fintOrganizationStructure(includeInactiveUnits)
+      const res = await fixedOrganizationStructure(includeInactiveUnits, context)
       if (!res) return httpResponse(404, `No organizationUnit with organisasjonsId "${topUnitId}" found in FINT`)
       const result = req.query.includeRaw === 'true' ? { ...res.repacked, raw: res.raw } : res.repacked
-      if (!req.query.skipCache) setResponse(req.url, result, context) // Cache result
+      if (req.query.skipCache !== 'true') setResponse(req.url, result, context) // Cache result
       return httpResponse(200, result)
     } catch (error) {
       logger('error', ['Failed when fetching organization structure from FINT', error.response?.data || error.stack || error.toString()], context)
@@ -103,17 +102,21 @@ module.exports = async function (context, req) {
   // If all units are requested and flattened (array)
   if (identifikator === 'flat') {
     try {
-      const res = await fintOrganizationFlat()
+      const res = await fixedOrganizationFlat(context)
       if (req.query.includeInactiveUnits !== 'true') res.repacked = res.repacked.filter(unit => unit.aktiv && unit.overordnet.aktiv) // Filter out inactive units if not requested (in structure, this is done in the repack function)
       if (!res) return httpResponse(404, `No organizationUnit with organisasjonsId "${topUnitId}" found in FINT`)
       const result = req.query.includeRaw === 'true' ? { flat: res.repacked.reverse(), raw: res.raw } : res.repacked.reverse()
-      if (!req.query.skipCache) setResponse(req.url, result, context) // Cache result
+      if (req.query.skipCache !== 'true') setResponse(req.url, result, context) // Cache result
       return httpResponse(200, result)
     } catch (error) {
-      logger('error', ['Failed when fetching flat organization structure from FINT', error.response?.data || error.stack || error.toString()], context)
+      logger('error', ['Failed when fetching flat fixed organization structure from FINT', error.response?.data || error.stack || error.toString()], context)
       return httpResponse(500, error)
     }
   }
+
+  return httpResponse(500, { customMessage: 'Not implemented', customData: { identifikator, identifikatorverdi } })
+
+  /* Need to fix the ones below...
 
   try {
     const res = await fintOrganization(identifikator, identifikatorverdi)

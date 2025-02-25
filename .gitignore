@@ -139,6 +139,7 @@ localnotes.md
 # Local cache
 .token-cache
 .response-cache
+.*-cache
 
 /ignore
 

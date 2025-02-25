@@ -47,7 +47,7 @@ module.exports = async function (context, req) {
   if (identifikator === 'structure') {
     try {
       const includeInactiveUnits = req.query.includeInactiveUnits === 'true'
-      const res = await fintOrganizationStructure(includeInactiveUnits)
+      const res = await fintOrganizationStructure(includeInactiveUnits, context)
       if (!res) return httpResponse(404, `No organizationUnit with organisasjonsId "${topUnitId}" found in FINT`)
       const result = req.query.includeRaw === 'true' ? { ...res.repacked, raw: res.raw } : res.repacked
       if (req.query.skipCache !== 'true') setResponse(req.url, result, context) // Cache result
@@ -61,7 +61,7 @@ module.exports = async function (context, req) {
   // If all units are requested and flattened (array)
   if (identifikator === 'flat') {
     try {
-      const res = await fintOrganizationFlat()
+      const res = await fintOrganizationFlat(context)
       if (req.query.includeInactiveUnits !== 'true') res.repacked = res.repacked.filter(unit => unit.aktiv && unit.overordnet.aktiv) // Filter out inactive units if not requested (in structure, this is done in the repack function)
       if (!res) return httpResponse(404, `No organizationUnit with organisasjonsId "${topUnitId}" found in FINT`)
       const result = req.query.includeRaw === 'true' ? { flat: res.repacked.reverse(), raw: res.raw } : res.repacked.reverse()
@@ -74,7 +74,7 @@ module.exports = async function (context, req) {
   }
 
   try {
-    const res = await fintOrganization(identifikator, identifikatorverdi)
+    const res = await fintOrganization(identifikator, identifikatorverdi, context)
     if (!res) return httpResponse(404, `No organizationUnit with ${identifikator} "${identifikatorverdi}" found in FINT`)
     if (req.query.includeInactiveEmployees !== 'true') res.repacked.arbeidsforhold = res.repacked.arbeidsforhold.filter(forhold => forhold.aktiv)
     const result = req.query.includeRaw === 'true' ? { ...res.repacked, raw: res.raw } : res.repacked
