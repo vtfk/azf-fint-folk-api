@@ -797,6 +797,8 @@ GET https://{base_url}/employee/fodselsnummer/12345678910
 			},
       "narmesteLeder": {
         "navn": "Grev Farquaad",
+        "fornavn": "Grev",
+        "etternavn": "Farquaad",
         "kontaktEpostadresse": "grev.farquaad@domene.no",
         "ansattnummer": "2343455"
       },
@@ -817,6 +819,8 @@ GET https://{base_url}/employee/fodselsnummer/12345678910
 					"navn": "Shrek teknologi",
 					"organisasjonsId": "1234",
 					"leder": {
+            "fornavn": "Grev",
+            "etternavn": "Farquaad",
 						"navn": "Grev Farquaad",
             "kontaktEpostadresse": "grev.farquaad@domene.no",
 						"ansattnummer": "2343455"
@@ -828,6 +832,8 @@ GET https://{base_url}/employee/fodselsnummer/12345678910
 					"organisasjonsId": "1",
 					"leder": {
 						"navn": "Drømmeprinsen",
+            "fornavn": "Drømmeprinsen",
+            "etternavn": null,
             "kontaktEpostadresse": "drommeprinsen@domene.no",
 						"ansattnummer": "324435445"
 					}
@@ -953,7 +959,8 @@ GET https://{base_url}/organization/organisasjonsKode/1950-23
     "ansattnummer": "123456",
     "navn": "Grev Farquaad",
     "fornavn": "Grev",
-    "etternavn": "Farquaad"
+    "etternavn": "Farquaad",
+    "kontaktEpostadresse": "grev.farquaad@domene.no"
   },
   "ansvar": [],
   "overordnet": {
@@ -1057,7 +1064,8 @@ GET https://{base_url}/organization/structure
     "ansattnummer": null,
     "navn": null,
     "fornavn": null,
-    "etternavn": null
+    "etternavn": null,
+    "kontaktEpostadresse": null
   },
   "underordnet": [
     {
@@ -1074,7 +1082,8 @@ GET https://{base_url}/organization/structure
         "ansattnummer": "5056034",
         "navn": "Grev Farquaad",
         "fornavn": "Grev",
-        "etternavn": "Farquaad"
+        "etternavn": "Farquaad",
+        "kontaktEpostadresse": "grev.farquaad@domene.no"
       },
       "underordnet": [
         {
@@ -1091,7 +1100,8 @@ GET https://{base_url}/organization/structure
             "ansattnummer": "17102303",
             "navn": "Kaptein Sabeltann",
             "fornavn": "Kaptein",
-            "etternavn": "Sabeltann"
+            "etternavn": "Sabeltann",
+            "kontaktEpostadresse": "kapterin.sabeltann@domene.no"
           }
         },
         {
@@ -1107,7 +1117,8 @@ GET https://{base_url}/organization/structure
             "ansattnummer": "17106423",
             "navn": "Mulle Mekk",
             "fornavn": "Mulle",
-            "etternavn": "Mekk"
+            "etternavn": "Mekk",
+            "kontaktEpostadresse": "mulle.mekk@domene.no"
           }
         }
       ]
@@ -1145,7 +1156,8 @@ GET https://{base_url}/organization/flat
       "ansattnummer": null,
       "navn": null,
       "fornavn": null,
-      "etternavn": null
+      "etternavn": null,
+      "kontaktEpostadresse": null
     },
     "overordnet": {
       "aktiv": true,
@@ -1188,7 +1200,8 @@ GET https://{base_url}/organization/flat
       "ansattnummer": "24434554",
       "navn": "Grev Farquaad",
       "fornavn": "Grev",
-      "etternavn": "Farquaad"
+      "etternavn": "Farquaad",
+      "kontaktEpostadresse": "grev.farquaad@domene.no"
     },
     "aktiv": true,
     "level": 1
@@ -1219,7 +1232,8 @@ GET https://{base_url}/organization/flat
       "ansattnummer": "435454",
       "navn": "Kaptein Sabeltann",
       "fornavn": "Kaptein",
-      "etternavn": "Sabeltann"
+      "etternavn": "Sabeltann",
+      "kontaktEpostadresse": "kaptein.sabeltann@domene.no"
     },
     "aktiv": true,
     "level": 2
@@ -1250,7 +1264,8 @@ GET https://{base_url}/organization/flat
       "ansattnummer": "435254",
       "navn": "Mulle Mekk",
       "fornavn": "Mulle",
-      "etternavn": "Mekk"
+      "etternavn": "Mekk",
+      "kontaktEpostadresse": "mulle.mekk@domene.no"
     },
     "aktiv": true,
     "level": 2
@@ -1482,6 +1497,15 @@ See [idm-validation.js](./lib/fint-organization-fixed/idm-validation.js) for det
 
 ## TIMER TRIGGER IdmTeamsStatus
 Bruker resultatet fra idm/validate og sender en overordnet rapport til Teams-kanal-webhook-workflow(er) i process.env.TEAMS_STATUS_ALERT_URLS
+
+## /organizationfixed/structure
+Samme som [/organization/structure](#organizationstructure) men bruker orgstrukturen fra [organizationfixed/idm](#organizationfixedidm)
+
+## /organizationfixed/flat
+Samme som [/organization/flat](#organizationflat) men bruker orgstrukturen fra [organizationfixed/idm](#organizationfixedidm)
+
+## /organizationfixed/{identifikator}/{identifikatorverdi}
+Samme som [/organization//{identifikator}/{identifikatorverdi}](#organizationfixedidentifikatoridentifikatorverdi) men bruker orgstrukturen fra [organizationfixed/idm](#organizationfixedidm)
 
 # Local development
 - git clone

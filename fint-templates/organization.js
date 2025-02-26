@@ -39,6 +39,9 @@ module.exports = (identifikator, identifikatorverdi) => {
 						ansattnummer {
 							identifikatorverdi
 						}
+						kontaktinformasjon {
+							epostadresse
+						}
 						person {
 							navn {
 								fornavn

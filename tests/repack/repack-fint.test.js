@@ -1,4 +1,4 @@
-const { aktivPeriode } = require('../../lib/helpers/repack-fint')
+const { aktivPeriode, repackLeder } = require('../../lib/helpers/repack-fint')
 
 describe('aktivPeriode is aktiv when', () => {
   test('Sluttdato is null', () => {
@@ -68,5 +68,64 @@ describe('aktivPeriode is NOT aktiv when', () => {
     }
     const aktiv = aktivPeriode(periode)
     expect(aktiv).toBe(false)
+  })
+})
+
+describe('repackLeder work as excpected when', () => {
+  test('there is no leder', () => {
+    const leder = null
+    const repackedLeder = repackLeder(leder)
+    expect(repackedLeder).toEqual({
+      ansattnummer: null,
+      navn: null,
+      fornavn: null,
+      etternavn: null,
+      kontaktEpostadresse: null
+    })
+  })
+  test('there is a leder with some props missing', () => {
+    const leder = {
+      ansattnummer: {
+        identifikatorverdi: '12345'
+      },
+      person: {
+        navn: {
+          fornavn: 'Arne',
+          etternavn: 'Bjarne'
+        }
+      }
+    }
+    const repackedLeder = repackLeder(leder)
+    expect(repackedLeder).toEqual({
+      ansattnummer: '12345',
+      navn: 'Arne Bjarne',
+      fornavn: 'Arne',
+      etternavn: 'Bjarne',
+      kontaktEpostadresse: null
+    })
+  })
+  test('there is a leder with all props', () => {
+    const leder = {
+      ansattnummer: {
+        identifikatorverdi: '12345'
+      },
+      person: {
+        navn: {
+          fornavn: 'Arne',
+          etternavn: 'Bjarne'
+        }
+      },
+      kontaktinformasjon: {
+        epostadresse: 'arne.bjarne@fylke.no'
+      }
+    }
+    const repackedLeder = repackLeder(leder)
+    expect(repackedLeder).toEqual({
+      ansattnummer: '12345',
+      navn: 'Arne Bjarne',
+      fornavn: 'Arne',
+      etternavn: 'Bjarne',
+      kontaktEpostadresse: 'arne.bjarne@fylke.no'
+    })
   })
 })
