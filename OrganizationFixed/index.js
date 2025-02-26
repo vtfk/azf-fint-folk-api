@@ -6,6 +6,7 @@ const { getResponse, setResponse } = require('../lib/response-cache')
 const { fintOrganizationFixedIdm } = require('../lib/fint-organization-fixed/idm')
 const { fixedOrganizationFlat } = require('../lib/fint-organization-fixed/fixed-organization-flat')
 const { fixedOrganizationStructure } = require('../lib/fint-organization-fixed/fixed-organization-structure')
+const { fixedOrganization } = require('../lib/fint-organization-fixed/fixed-organization')
 
 module.exports = async function (context, req) {
   logConfig({
@@ -114,12 +115,8 @@ module.exports = async function (context, req) {
     }
   }
 
-  return httpResponse(500, { customMessage: 'Not implemented', customData: { identifikator, identifikatorverdi } })
-
-  /* Need to fix the ones below...
-
   try {
-    const res = await fintOrganization(identifikator, identifikatorverdi)
+    const res = await fixedOrganization(identifikator, identifikatorverdi, context)
     if (!res) return httpResponse(404, `No organizationUnit with ${identifikator} "${identifikatorverdi}" found in FINT`)
     if (req.query.includeInactiveEmployees !== 'true') res.repacked.arbeidsforhold = res.repacked.arbeidsforhold.filter(forhold => forhold.aktiv)
     const result = req.query.includeRaw === 'true' ? { ...res.repacked, raw: res.raw } : res.repacked
@@ -129,5 +126,4 @@ module.exports = async function (context, req) {
     logger('error', ['Failed when fetching organization from FINT', error.response?.data || error.stack || error.toString()], context)
     return httpResponse(500, error)
   }
-  */
 }
