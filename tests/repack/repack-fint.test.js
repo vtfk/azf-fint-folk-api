@@ -1,4 +1,4 @@
-const { aktivPeriode, repackLeder } = require('../../lib/helpers/repack-fint')
+const { aktivPeriode, repackLeder, createStruktur } = require('../../lib/helpers/repack-fint')
 
 describe('aktivPeriode is aktiv when', () => {
   test('Sluttdato is null', () => {
@@ -127,5 +127,145 @@ describe('repackLeder work as excpected when', () => {
       etternavn: 'Bjarne',
       kontaktEpostadresse: 'arne.bjarne@fylke.no'
     })
+  })
+})
+
+describe('createStruktur works as expected when', () => {
+  test('using fixedOrgFlat and graphQlFlat', () => {
+    const fixedOrgFlat = [
+      {
+        organisasjonsId: { identifikatorverdi: '1' },
+        navn: 'Fylke',
+        _links: {
+          overordnet: [{ href: '/organisasjonsid/1' }]
+        }
+      },
+      {
+        organisasjonsId: { identifikatorverdi: '2' },
+        navn: 'Sektor',
+        _links: {
+          overordnet: [{ href: '/organisasjonsid/1' }]
+        }
+      },
+      {
+        organisasjonsId: { identifikatorverdi: '3' },
+        navn: 'Seksjon',
+        _links: {
+          overordnet: [{ href: '/organisasjonsid/2' }]
+        }
+      },
+      {
+        organisasjonsId: { identifikatorverdi: '4' },
+        navn: 'Team',
+        _links: {
+          overordnet: [{ href: '/organisasjonsid/3' }]
+        }
+      }
+    ]
+    const graphQlFlat = [
+      {
+        organisasjonsId: { identifikatorverdi: '1' },
+        organisasjonsKode: { identifikatorverdi: '1' },
+        navn: 'Fylke',
+        kortnavn: null,
+        leder: {
+          person: { navn: { fornavn: 'Fylkes', etternavn: 'Leder' } },
+          kontaktinformasjon: { epostadresse: 'fylkes.leder@fylke.no' },
+          ansattnummer: { identifikatorverdi: '12345' }
+        }
+      },
+      {
+        organisasjonsId: { identifikatorverdi: '2' },
+        organisasjonsKode: { identifikatorverdi: '2' },
+        navn: 'Sektor',
+        kortnavn: 'F-S',
+        leder: {
+          person: { navn: { fornavn: 'Sektor', etternavn: 'Leder' } },
+          kontaktinformasjon: { epostadresse: 'sektor.leder@fylke.no' },
+          ansattnummer: { identifikatorverdi: '12346' }
+        }
+      },
+      {
+        organisasjonsId: { identifikatorverdi: '3' },
+        organisasjonsKode: { identifikatorverdi: '3' },
+        kortnavn: 'F-S-S',
+        navn: 'Seksjon',
+        leder: null
+      },
+      {
+        organisasjonsId: { identifikatorverdi: '4' },
+        organisasjonsKode: { identifikatorverdi: '4' },
+        navn: 'Team',
+        kortnavn: 'F-S-S-T',
+        leder: {
+          person: { navn: { fornavn: 'Team', etternavn: 'Leder' } },
+          kontaktinformasjon: { epostadresse: 'team.leder@fylke.no' },
+          ansattnummer: { identifikatorverdi: '12348' }
+        }
+      }
+    ]
+    const shouldBeOk = createStruktur({ organisasjonsId: { identifikatorverdi: '4' } }, fixedOrgFlat, graphQlFlat)
+    expect(shouldBeOk).toEqual([
+      {
+        kortnavn: 'F-S-S-T',
+        navn: 'Team',
+        organisasjonsId: '4',
+        organisasjonsKode: '4',
+        leder: {
+          ansattnummer: '12348',
+          navn: 'Team Leder',
+          etternavn: 'Leder',
+          fornavn: 'Team',
+          kontaktEpostadresse: 'team.leder@fylke.no'
+        }
+      },
+      {
+        kortnavn: 'F-S-S',
+        navn: 'Seksjon',
+        organisasjonsId: '3',
+        organisasjonsKode: '3',
+        leder: {
+          ansattnummer: null,
+          navn: null,
+          etternavn: null,
+          fornavn: null,
+          kontaktEpostadresse: null
+        }
+      },
+      {
+        kortnavn: 'F-S',
+        navn: 'Sektor',
+        organisasjonsId: '2',
+        organisasjonsKode: '2',
+        leder: {
+          ansattnummer: '12346',
+          navn: 'Sektor Leder',
+          etternavn: 'Leder',
+          fornavn: 'Sektor',
+          kontaktEpostadresse: 'sektor.leder@fylke.no'
+        }
+      },
+      {
+        kortnavn: null,
+        navn: 'Fylke',
+        organisasjonsId: '1',
+        organisasjonsKode: '1',
+        leder: {
+          ansattnummer: '12345',
+          navn: 'Fylkes Leder',
+          etternavn: 'Leder',
+          fornavn: 'Fylkes',
+          kontaktEpostadresse: 'fylkes.leder@fylke.no'
+        }
+      }
+    ])
+    const shouldAlsoBeOk = createStruktur({ organisasjonsId: { identifikatorverdi: '2' } }, fixedOrgFlat, graphQlFlat)
+    expect(shouldAlsoBeOk.length).toBe(2)
+    expect(shouldAlsoBeOk[0].navn).toBe('Sektor')
+    const shouldAlsoAlsoBeOk = createStruktur({ organisasjonsId: { identifikatorverdi: '1' } }, fixedOrgFlat, graphQlFlat)
+    expect(shouldAlsoAlsoBeOk.length).toBe(1)
+    expect(shouldAlsoAlsoBeOk[0].navn).toBe('Fylke')
+    const shouldThrow = () => createStruktur({ organisasjonsId: { identifikatorverdi: '5' } }, fixedOrgFlat, graphQlFlat)
+    expect(shouldThrow).toThrow()
   })
 })
