@@ -151,3 +151,6 @@ __azurite*
 __blob*
 __queue*
 __table*
+
+# Test endpoints
+/Drit

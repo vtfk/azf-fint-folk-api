@@ -36,5 +36,14 @@ module.exports = {
     idmMaximumUnits: process.env.IDM_MAXIMUM_UNITS ?? 550,
     checkNextLink01: process.env.IDM_CHECK_NEXT_LINK_01 === 'true' || false
   },
-  teamsStatusAlertUrls: (process.env.TEAMS_STATUS_ALERT_URLS && process.env.TEAMS_STATUS_ALERT_URLS.split(',')) || []
+  teamsStatusAlertUrls: (process.env.TEAMS_STATUS_ALERT_URLS && process.env.TEAMS_STATUS_ALERT_URLS.split(',')) || [],
+  aditro: {
+    apiUrl: process.env.ADITRO_API_URL,
+    clientId: process.env.ADITRO_CLIENT_ID,
+    clientSecret: process.env.ADITRO_CLIENT_SECRET,
+    tenantId: process.env.ADITRO_TENANT_ID,
+    tokenUrl: process.env.ADITRO_TOKEN_URL,
+    topUnitId: process.env.ADITRO_TOP_UNIT_ID,
+    maxUnitsWithUnknownOrgType: process.env.ADITRO_MAX_UNITS_WITH_UNKNOWN_ORG_TYPE ?? 20
+  }
 }
