@@ -2,7 +2,7 @@ const { organizationFixed, fint: { url } } = require('../../config')
 const { getExceptionRules } = require('../../lib/fint-organization-fixed/exception-rules')
 const { repackFintIdmEnheter, vgsNameChain } = require('../../lib/fint-organization-fixed/idm')
 const { validateRawOrganizationUnits } = require('../../lib/fint-organization-fixed/idm-validation')
-const { createTestOrgUnit } = require('./test-org')
+const { createTestOrgUnit, createAditroUnits, getValidExcepttionRules } = require('./test-org')
 
 const createTestOrg = () => {
   const units = [
@@ -215,7 +215,11 @@ const createTestOrg = () => {
       kortnavn: 'ORG-ARK'
     }
   ]
-  return units.map(unit => createTestOrgUnit(unit))
+
+  const orgUnits = units.map(unit => createTestOrgUnit(unit))
+  const aditroUnits = createAditroUnits(units)
+
+  return { units: orgUnits, aditroUnits }
 }
 
 // OBS OBS tweak config max and min units settings!!!
@@ -253,12 +257,15 @@ describe('vgsNameChain', () => {
 
 describe('createTestOrg', () => {
   test('Works', () => {
-    const org = createTestOrg()
-    expect(org).toBeDefined()
+    const { units, aditroUnits } = createTestOrg()
+    expect(units).toBeDefined()
+    expect(units.length).toBeGreaterThan(0)
+    expect(aditroUnits).toBeDefined()
+    expect(aditroUnits.size).toBeGreaterThan(0)
   })
   test('Is valid raw organizations', () => {
-    const org = createTestOrg()
-    const validationResult = validateRawOrganizationUnits(org)
+    const { units } = createTestOrg()
+    const validationResult = validateRawOrganizationUnits(units)
     expect(validationResult.valid).toBe(true)
   })
 })
@@ -272,9 +279,9 @@ describe('repackFintIdmEnheter works as expected when', () => {
     expect(shouldAlsoThrow).toThrow()
   })
   test('test org is repacked, but has validation errors when no exceptions are defined', () => {
-    const units = createTestOrg()
+    const { units, aditroUnits } = createTestOrg()
     const validationResult = validateRawOrganizationUnits(units)
-    const repackResult = repackFintIdmEnheter(validationResult.tests.topUnits.data, validationResult.validUnits, getExceptionRules())
+    const repackResult = repackFintIdmEnheter(validationResult.tests.topUnits.data, validationResult.validUnits, aditroUnits, getExceptionRules())
     const expectedTopUnits = ['test-fylkeskommune-1']
     const topUnitsPresent = expectedTopUnits.every(topUnit => validationResult.tests.topUnits.data.some(unit => unit.organisasjonsId.identifikatorverdi === topUnit))
     expect(validationResult.tests.topUnits.data.length).toBe(expectedTopUnits.length)
@@ -296,7 +303,7 @@ describe('repackFintIdmEnheter works as expected when', () => {
 
 describe('repackFintIdmEnheter works as expected when', () => {
   test('We add exception rule for overrideNextProbableLink', () => {
-    const units = createTestOrg()
+    const { aditroUnits, units } = createTestOrg()
     const validationResult = validateRawOrganizationUnits(units)
     const exceptionRules = getExceptionRules() // Gets empty rules
     exceptionRules.overrideNextProbableLink = {
@@ -308,7 +315,7 @@ describe('repackFintIdmEnheter works as expected when', () => {
         }
       }
     }
-    const repackResult = repackFintIdmEnheter(validationResult.tests.topUnits.data, validationResult.validUnits, exceptionRules)
+    const repackResult = repackFintIdmEnheter(validationResult.tests.topUnits.data, validationResult.validUnits, aditroUnits, exceptionRules)
 
     const expectedDifferentNameChain = ['test-opplaring-11', 'annen-drit-112']
     const differentNameChain = expectedDifferentNameChain.every(expectedDifferentNameChainUnit => repackResult.tests.correspondingBottomUnitDifferentName.data.some(unit => unit.organisasjonsId.identifikatorverdi === expectedDifferentNameChainUnit))
@@ -321,7 +328,7 @@ describe('repackFintIdmEnheter works as expected when', () => {
     expect(repackResult.valid).toBe(false)
   })
   test('We add exception rule for useAbstractAsUnit', () => {
-    const units = createTestOrg()
+    const { units, aditroUnits } = createTestOrg()
     const validationResult = validateRawOrganizationUnits(units)
     const exceptionRules = getExceptionRules() // Gets empty rules
     exceptionRules.useAbstractAsUnitOverride = {
@@ -329,7 +336,7 @@ describe('repackFintIdmEnheter works as expected when', () => {
         navn: 'Test Fylkeskommune'
       }
     }
-    const repackResult = repackFintIdmEnheter(validationResult.tests.topUnits.data, validationResult.validUnits, exceptionRules)
+    const repackResult = repackFintIdmEnheter(validationResult.tests.topUnits.data, validationResult.validUnits, aditroUnits, exceptionRules)
 
     const expectedNoBottomUnits = []
     const correspondingBottomUnitMissing = expectedNoBottomUnits.every(expectedNoBottomUnit => repackResult.tests.correspondingBottomUnitMissing.data.some(unit => unit.organisasjonsId.identifikatorverdi === expectedNoBottomUnit))
@@ -342,7 +349,7 @@ describe('repackFintIdmEnheter works as expected when', () => {
     expect(repackResult.valid).toBe(false)
   })
   test('We add exception rule for nameChainOverride', () => {
-    const units = createTestOrg()
+    const { units, aditroUnits } = createTestOrg()
     const validationResult = validateRawOrganizationUnits(units)
     const exceptionRules = getExceptionRules() // Gets empty rules
     exceptionRules.nameChainOverride = {
@@ -351,7 +358,7 @@ describe('repackFintIdmEnheter works as expected when', () => {
         allowedNameChain: ['Opplæring', 'Opplærings', 'Opplæring']
       }
     }
-    const repackResult = repackFintIdmEnheter(validationResult.tests.topUnits.data, validationResult.validUnits, exceptionRules)
+    const repackResult = repackFintIdmEnheter(validationResult.tests.topUnits.data, validationResult.validUnits, aditroUnits, exceptionRules)
 
     const expectedDifferentNameChain = ['test-fellesvgs-111', 'annen-drit-112']
     const differentNameChain = expectedDifferentNameChain.every(expectedDifferentNameChainUnit => repackResult.tests.correspondingBottomUnitDifferentName.data.some(unit => unit.organisasjonsId.identifikatorverdi === expectedDifferentNameChainUnit))
@@ -364,33 +371,11 @@ describe('repackFintIdmEnheter works as expected when', () => {
     expect(repackResult.valid).toBe(false)
   })
   test('We add needed exception rules and get valid result', () => {
-    const units = createTestOrg()
+    const { aditroUnits, units } = createTestOrg()
     const validationResult = validateRawOrganizationUnits(units)
-    const exceptionRules = getExceptionRules() // Gets empty rules
-    exceptionRules.overrideNextProbableLink = {
-      'test-fellesvgs-111': {
-        navn: 'Felles VGS',
-        nextLink: {
-          href: `${url}/administrasjon/organisasjon/organisasjonselement/organisasjonsid/test-fellesvgs-1111`,
-          navn: 'Felles VGS'
-        }
-      }
-    }
-    exceptionRules.useAbstractAsUnitOverride = {
-      'test-fylkeskommune-1': {
-        navn: 'Test Fylkeskommune'
-      },
-      'annen-drit-112': {
-        navn: 'Annen drit'
-      }
-    }
-    exceptionRules.nameChainOverride = {
-      'test-opplaring-11': {
-        navn: 'Opplæring',
-        allowedNameChain: ['Opplæring', 'Opplærings', 'Opplæring']
-      }
-    }
-    const repackResult = repackFintIdmEnheter(validationResult.tests.topUnits.data, validationResult.validUnits, exceptionRules)
+    const exceptionRules = getValidExcepttionRules() // Gets valid rules
+
+    const repackResult = repackFintIdmEnheter(validationResult.tests.topUnits.data, validationResult.validUnits, aditroUnits, exceptionRules)
 
     expect(repackResult.tests.correspondingBottomUnitMissing.data.length).toBe(0)
 
@@ -426,32 +411,9 @@ describe('repackFintIdmEnheter works as expected when', () => {
     expect(repackResult.valid).toBe(true)
   })
   test('We add extra exception rules and get valid result', () => {
-    const units = createTestOrg()
+    const { units, aditroUnits } = createTestOrg()
     const validationResult = validateRawOrganizationUnits(units)
-    const exceptionRules = getExceptionRules() // Gets empty rules
-    exceptionRules.overrideNextProbableLink = {
-      'test-fellesvgs-111': {
-        navn: 'Felles VGS',
-        nextLink: {
-          href: `${url}/administrasjon/organisasjon/organisasjonselement/organisasjonsid/test-fellesvgs-1111`,
-          navn: 'Felles VGS'
-        }
-      }
-    }
-    exceptionRules.useAbstractAsUnitOverride = {
-      'test-fylkeskommune-1': {
-        navn: 'Test Fylkeskommune'
-      },
-      'annen-drit-112': {
-        navn: 'Annen drit'
-      }
-    }
-    exceptionRules.nameChainOverride = {
-      'test-opplaring-11': {
-        navn: 'Opplæring',
-        allowedNameChain: ['Opplæring', 'Opplærings', 'Opplæring']
-      }
-    }
+    const exceptionRules = getValidExcepttionRules() // Gets valid rules
     exceptionRules.absorbChildrenOverrides = {
       'test-opplaring-11': {
         navn: 'Opplæring',
@@ -475,7 +437,7 @@ describe('repackFintIdmEnheter works as expected when', () => {
         }
       }
     }
-    const repackResult = repackFintIdmEnheter(validationResult.tests.topUnits.data, validationResult.validUnits, exceptionRules)
+    const repackResult = repackFintIdmEnheter(validationResult.tests.topUnits.data, validationResult.validUnits, aditroUnits, exceptionRules)
 
     expect(repackResult.tests.correspondingBottomUnitMissing.data.length).toBe(0)
 
@@ -520,6 +482,35 @@ describe('repackFintIdmEnheter works as expected when', () => {
     expect(repackResult.tests.handledMoreThanOneTimeUnits.data.length).toBe(0)
     expect(repackResult.tests.notHandledUnits.data.length).toBe(0)
 
+    expect(repackResult.resultingUnitsFlat.some(unit => typeof unit.organisasjonsType.navn !== 'string' || unit.organisasjonsType.navn.length < 1)).toBe(false)
+
     expect(repackResult.valid).toBe(true)
+  })
+  test('We mess with aditro units and get invalid result', () => {
+    const { aditroUnits, units } = createTestOrg()
+    const validationResult = validateRawOrganizationUnits(units)
+
+    const bottomUnitOrganisasjonsId = 'annen-drit-1120'
+    aditroUnits.delete(bottomUnitOrganisasjonsId) // Remove one of the aditro units that should be present
+
+    aditroUnits.set('test-organisasjon-13000', { lonnOrganizationId: 'test-organisasjon-13000', description: 'samma det', projectDimension6Hours: undefined })
+    aditroUnits.set('test-fellesvgs-11110', { lonnOrganizationId: 'test-fellesvgs-11110', description: 'samma det', projectDimension6Hours: { id: 'halla holder ikke' } })
+    aditroUnits.set('test-digi-13010', { lonnOrganizationId: 'test-digi-13010', description: 'samma det da', projectDimension6Hours: { id: 'prupp', kode: '', beskrivelse: '' } })
+
+    const exceptionRules = getValidExcepttionRules() // Gets valid rules
+
+    const repackResult = repackFintIdmEnheter(validationResult.tests.topUnits.data, validationResult.validUnits, aditroUnits, exceptionRules)
+
+    console.log(repackResult.tests.missingAditroOrgType.data)
+
+    expect(repackResult.tests.missingAditroUnit.data.length).toBe(1)
+    expect(repackResult.tests.missingAditroUnit.data[0].organisasjonsId).toBe(bottomUnitOrganisasjonsId)
+
+    expect(repackResult.tests.missingAditroOrgType.data.length).toBe(3)
+    expect(repackResult.tests.missingAditroOrgType.data.some(unit => unit.organisasjonsId === 'test-organisasjon-13000')).toBe(true)
+    expect(repackResult.tests.missingAditroOrgType.data.some(unit => unit.organisasjonsId === 'test-fellesvgs-11110')).toBe(true)
+    expect(repackResult.tests.missingAditroOrgType.data.some(unit => unit.organisasjonsId === 'test-digi-13010')).toBe(true)
+
+    expect(repackResult.valid).toBe(false)
   })
 })

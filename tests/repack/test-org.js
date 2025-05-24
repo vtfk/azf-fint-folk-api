@@ -1,4 +1,5 @@
 const { fint: { url } } = require('../../config')
+const { getExceptionRules } = require('../../lib/fint-organization-fixed/exception-rules')
 
 const createTestOrgUnit = (unit) => {
   if (!unit || typeof unit !== 'object') throw new Error('Missing required parameter object "unit"')
@@ -61,4 +62,53 @@ const createTestOrgUnit = (unit) => {
   return testOrgUnit
 }
 
-module.exports = { createTestOrgUnit }
+const getValidExcepttionRules = () => {
+  const exceptionRules = getExceptionRules()
+  exceptionRules.overrideNextProbableLink = {
+    'test-fellesvgs-111': {
+      navn: 'Felles VGS',
+      nextLink: {
+        href: `${url}/administrasjon/organisasjon/organisasjonselement/organisasjonsid/test-fellesvgs-1111`,
+        navn: 'Felles VGS'
+      }
+    }
+  }
+  exceptionRules.useAbstractAsUnitOverride = {
+    'test-fylkeskommune-1': {
+      navn: 'Test Fylkeskommune'
+    },
+    'annen-drit-112': {
+      navn: 'Annen drit'
+    }
+  }
+  exceptionRules.nameChainOverride = {
+    'test-opplaring-11': {
+      navn: 'Opplæring',
+      allowedNameChain: ['Opplæring', 'Opplærings', 'Opplæring']
+    }
+  }
+  return exceptionRules
+}
+
+const createAditroUnits = (units) => {
+  if (!units || !Array.isArray(units)) throw new Error('Missing required parameter "units" as an array')
+  const aditroUnits = new Map()
+  // id navn
+  for (const unit of units) {
+    if (!unit.id || typeof unit.id !== 'string') {
+      throw new Error('Invalid unit, missing or invalid id')
+    }
+    aditroUnits.set(unit.id, {
+      lonnOrganizationId: unit.id,
+      description: unit.navn || `Unit with lonnOrganizationId ${unit.id}`,
+      projectDimension6Hours: {
+        id: 'et-eller-annet',
+        value: 'et-eller-annet',
+        description: 'et-eller-annet'
+      }
+    })
+  }
+  return aditroUnits
+}
+
+module.exports = { createTestOrgUnit, getValidExcepttionRules, createAditroUnits }
