@@ -74,6 +74,7 @@ module.exports = (schoolNumber, includeStudentSsn, includeUndervisningsgrupper) 
             systemId {
               identifikatorverdi
             }
+            hovedskole
             elev {
               person {
                 ${includeStudentSsn ? 'fodselsnummer { identifikatorverdi }' : ''}
