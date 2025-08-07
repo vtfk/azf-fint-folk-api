@@ -25,7 +25,7 @@ module.exports = async function (context, req) {
     logger('info', ['No params here...'], context)
     return httpResponse(400, 'Missing query params')
   }
-  
+
   const { identifikator, identifikatorverdi } = req.params
   const validIdentifiers = ['feidenavn', 'fodselsnummer', 'upn']
   if (!validIdentifiers.includes(identifikator)) return httpResponse(400, `Query param ${identifikator} is not valid - must be ${validIdentifiers.join(' or ')}`)
@@ -40,7 +40,7 @@ module.exports = async function (context, req) {
     return httpResponse(403, 'Missing required role for access')
   }
   logger('info', ['Role validated'], context)
-  
+
   // Cache
   if (req.query.skipCache !== 'true') {
     const cachedResponse = getResponse(req.url, context)
