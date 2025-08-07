@@ -1,8 +1,10 @@
-module.exports = (feidenavn) => {
+module.exports = (feidenavn, elevnummer) => {
+  if (!feidenavn && !elevnummer) throw new Error('Either feidenavn or elevnummer must be provided to fintStudent function')
+  const identificator = feidenavn ? `feidenavn: "${feidenavn}"` : `elevnummer: "${elevnummer}"`
   return {
     query: `
       query {
-        elev(feidenavn: "${feidenavn}") {
+        elev(${identificator}) {
           person {
             navn {
               fornavn

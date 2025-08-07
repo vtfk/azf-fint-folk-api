@@ -25,7 +25,7 @@ module.exports = async function (context, req) {
     logger('info', ['No params here...'], context)
     return httpResponse(400, 'Missing query params')
   }
-
+  
   const { identifikator, identifikatorverdi } = req.params
   const validIdentifiers = ['feidenavn', 'fodselsnummer', 'upn']
   if (!validIdentifiers.includes(identifikator)) return httpResponse(400, `Query param ${identifikator} is not valid - must be ${validIdentifiers.join(' or ')}`)
@@ -40,14 +40,15 @@ module.exports = async function (context, req) {
     return httpResponse(403, 'Missing required role for access')
   }
   logger('info', ['Role validated'], context)
-
+  
   // Cache
   if (req.query.skipCache !== 'true') {
     const cachedResponse = getResponse(req.url, context)
     if (cachedResponse) return httpResponse(200, cachedResponse)
   }
 
-  let feidenavn
+  let feidenavn = null
+  let elevnummer = null
   // If getting with upn
   if (identifikator === 'upn') {
     logger('info', ['Queryparam is type "upn", simply creating feidenavn from given upn'], context)
@@ -62,8 +63,32 @@ module.exports = async function (context, req) {
     }
   }
 
-  // If getting with fnr
-  if (identifikator === 'fodselsnummer') {
+  // If getting with fnr and ignoring feidenavn
+  if (identifikator === 'fodselsnummer' && req.query.useElevnummer === 'true') {
+    logger('info', ['Queryparam is type "fodselsnummer", and  feidenavn from FINT'], context)
+    try {
+      const payload = {
+        query: `
+          query {
+            person(fodselsnummer: "${identifikatorverdi}") {
+              elev {
+                elevnummer {
+                  identifikatorverdi
+                }
+              }
+            }
+          }
+        `
+      }
+      const { data } = await fintGraph(payload, context)
+      elevnummer = data.person?.elev?.elevnummer?.identifikatorverdi
+      if (!elevnummer) return httpResponse(404, 'No student with provided identificator found in FINT')
+      logger('info', [`Got elevnummer: ${elevnummer}`], context)
+    } catch (error) {
+      logger('error', ['Failed when getting elevnummer from FINT', error.response?.data || error.stack || error.toString()], context)
+      return httpResponse(500, error)
+    }
+  } else if (identifikator === 'fodselsnummer') { // If getting with fnr and fetching feidenavn
     logger('info', ['Queryparam is type "fodselsnummer", fetching feidenavn from FINT'], context)
     try {
       const payload = {
@@ -93,7 +118,7 @@ module.exports = async function (context, req) {
   if (identifikator === 'feidenavn') feidenavn = identifikatorverdi
 
   try {
-    const res = await fintStudent(feidenavn, context)
+    const res = await fintStudent(feidenavn, elevnummer, context)
     if (!res) return httpResponse(404, 'No student with provided identificator found in FINT')
     const result = req.query.includeRaw === 'true' ? { ...res.repacked, raw: res.raw } : res.repacked
     if (req.query.skipCache !== 'true') setResponse(req.url, result, context) // Cache result
