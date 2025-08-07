@@ -19,6 +19,13 @@ Valid "identifikator"-values:
  - **feidenavn**
  - **fodselsnummer** (Will first fetch feidenavn from FINT, so is more resource expensive)
 
+> [!IMPORTANT]  
+> If you are unlucky (Robin), and need to get elever without feidenavn, you can get them by using fodselsnummer and queryparam "useElevnummer=true" like this:
+>
+> `GET https://{base_url}/student/fodselsnummer/12345678910?useElevnummer=true`
+>
+> This will allow elever to not have feidenavn in the response
+
 ### Example calls
 ```
 GET https://{base_url}/student/upn/elev.elevesen@skole.domene.no
